@@ -32,15 +32,15 @@ export default class extends Controller {
     }
     // 平板设备 (768px - 1024px): 中等基础尺寸
     else if (windowWidth < 1024) {
-      return (containerWidth - containerPadding - (space * 3)) / 4
+      return (containerWidth - containerPadding - (space * 2)) / 3
     }
     // 桌面设备 (> 1024px)
     else if (windowWidth >= 1024 && windowWidth < 1366) {
-      return (containerWidth - containerPadding - (space * 5)) / 6
+      return (containerWidth - containerPadding - (space * 4)) / 3
     }
     // 桌面设备 (> 1280px)
     else {
-      return 200
+      return 400
     }
   }
 
@@ -199,7 +199,7 @@ export default class extends Controller {
         // 使用计算的基础尺寸进行缩放
         const itemSize = this.baseItemSize * zoomValue
         item.style.width = `${itemSize}px`
-        item.style.height = `${itemSize}px`
+        // item.style.height = `${itemSize}px`
       })
     }
   }

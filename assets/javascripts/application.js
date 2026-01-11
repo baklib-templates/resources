@@ -14639,11 +14639,11 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
       if (windowWidth < 768) {
         return (containerWidth - containerPadding - space) / 2;
       } else if (windowWidth < 1024) {
-        return (containerWidth - containerPadding - space * 3) / 4;
+        return (containerWidth - containerPadding - space * 2) / 3;
       } else if (windowWidth >= 1024 && windowWidth < 1366) {
-        return (containerWidth - containerPadding - space * 5) / 6;
+        return (containerWidth - containerPadding - space * 4) / 3;
       } else {
-        return 200;
+        return 400;
       }
     }
     connect() {
@@ -14755,7 +14755,6 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
           if (!view.contains(item)) return;
           const itemSize = this.baseItemSize * zoomValue;
           item.style.width = `${itemSize}px`;
-          item.style.height = `${itemSize}px`;
         });
       }
     }

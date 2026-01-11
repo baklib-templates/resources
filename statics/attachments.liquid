@@ -38,7 +38,7 @@
 {% endquery %}
 
 <turbo-frame id="attachments_frame">
-  <div class="min-h-full flex flex-col flex-1 w-full min-w-0 p-4 md:p-6 bg-white dark:bg-gray-900" data-image-zoom-target="view" x-cloak>
+  <div class="min-h-full flex flex-col flex-1 w-full min-w-0" data-image-zoom-target="view" x-cloak>
     {% search filtered_pages, keywords: params.search_q, by_user: true, allow_empty_keywords: true %}
       {% if sort %}
         {% assign search_pages = search.pages | order_by: sort %}

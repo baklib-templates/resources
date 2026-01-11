@@ -3,7 +3,7 @@
   <!-- Left Column - Image Preview (2/3 width) -->
   <div class="lg:col-span-4">
     <div class="space-y-4 sticky top-6 ">
-      <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden flex items-center justify-center min-h-[400px]">
+      <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden flex items-center justify-center min-h-[400px] shadow">
         {% if entity and entity.previewable? %}
           <img src="{{ entity.preview.cover }}"
               alt="{{ page.link_text }}"
@@ -20,10 +20,10 @@
 
       <div class="flex items-start gap-2 border-b border-gray-100 pb-4 mb-4">
         <div class="flex flex-col gap-2">
-          <div class="font-medium text-2xl leading-tight">高质量科技感 UI 界面设计展示样机素材包{{ page.settings.title }}</div>
+          <div class="font-medium text-2xl leading-tight">{{ page.settings.title }}</div>
           <div class="flex items-center gap-1 text-sm text-base-content/70">
             <i class="ri-user-smile-line"></i>
-            <span>上传者：<strong>{{ page.author.name }}</strong></span>
+            <span>创建者：<strong>{{ page.author.name }}</strong></span>
           </div>
         </div>
       </div>
@@ -33,7 +33,7 @@
   <!-- Right Column - Resource Details Card (1/3 width) -->
   <div class="lg:col-span-2">
     <div class="space-y-4">
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
         <!-- Title Section -->
         <div class="flex items-center gap-2 border-b border-gray-100 pb-4 mb-4">
           <i class="ri-price-tag-3-line text-primary"></i>
@@ -60,10 +60,10 @@
             <div class="flex flex-col space-y-0.1">
               <span class="text-[12px] text-base-content/50">文件类型</span>
               <span class="font-bold">
-                {% if entity.metadata.content_type %}
-                  {{ entity.metadata.content_type | split: '/' | last | upcase }}
-                {% elsif entity.metadata.kind %}
-                  {{ entity.metadata.kind | upcase }}
+                {% if entity.metadata.kind %}
+                  {{ entity.metadata.kind }}
+                {% elsif entity.metadata.content_type %}
+                  {{ entity.metadata.content_type | split: '/' | last }}
                 {% endif %}
               </span>
             </div>
@@ -123,31 +123,21 @@
           {% endif %}
         </div>
 
-        <!-- Tags -->
-        {% if page.settings.resource_tags.size > 0 %}
-          <div class="flex flex-wrap gap-2 mb-6">
-            {% for tag in page.settings.resource_tags %}
-              <span class="inline-flex items-center px-3 py-1 bg-indigo-100 dark:bg-indigo-900/20 text-blue-600 dark:text-blue-400 rounded-md text-sm font-medium">{{ tag.name }}</span>
-            {% endfor %}
-          </div>
-        {% endif %}
-
         <!-- Action Buttons -->
         <div class="flex flex-col gap-3">
-          <a href="{{ entity.url[site.settings.resource_download_expiry_time] }}" download class="btn btn-primary btn-lg w-full bg-blue-600 hover:bg-blue-700 text-white border-none rounded-lg space-x-2 hover:translate-y-[-2px] transition-all duration-300 hover:shadow-lg">
+          <a href="{{ entity.url[site.settings.resource_download_expiry_time] }}" download class="btn btn-primary btn-lg w-full bg-blue-600 hover:bg-blue-700 text-white border-none rounded-lg space-x-2 hover:translate-y-[-2px] transition-all duration-300 hover:shadow">
             <i class="ri-download-cloud-2-line"></i>
             <span class="text-sm">立即下载</span>
           </a>
         </div>
       </div>
 
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
         <div class="flex items-center gap-2 border-b border-gray-100 pb-4 mb-4">
           <i class="ri-price-tag-3-line text-primary"></i>
           <span class="font-medium">文件标签</span>
         </div>
-        <div class="flex flex-wrap gap-2">
-          <div class="inline-flex items-center px-3 py-1 bg-primary/10 text-primary/80 rounded text-sm"># UI设计</div>
+        <div class="flex flex-wrap gap-2 min-h-[36px]">
           {% for tag in page.settings.resource_tags %}
             <span class="inline-flex items-center px-3 py-1 bg-primary/10 text-primary/80 rounded text-sm">{{ tag.name }}</span>
           {% endfor %}
@@ -156,19 +146,17 @@
 
       <!-- Resource Description -->
       {% assign has_content = page.settings.content | replace: '<p></p>', '' | present? %}
-      {% if has_content %}
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
           <div class="flex items-center gap-2 border-b border-gray-100 pb-4 mb-4">
             <i class="ri-article-line text-primary"></i>
             <span class="font-medium">文件描述</span>
           </div>
           <section
-            class="ProseMirror prose prose-sm max-w-none dark:prose-invert prose-headings:mt-4 prose-headings:mb-2 prose-p:my-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-1 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg prose-img:my-4"
+            class="ProseMirror prose prose-sm max-w-none dark:prose-invert prose-headings:mt-4 prose-headings:mb-2 prose-p:my-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-1 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg prose-img:my-4 min-h-[36px]"
             data-controller="link-target images-viewer">
             {{ page.settings.content }}
           </section>
         </div>
-      {% endif %}
     </div>
   </div>
 </div>

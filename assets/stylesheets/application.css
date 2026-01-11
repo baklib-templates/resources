@@ -2436,6 +2436,9 @@
       }
     }
   }
+  .my-1 {
+    margin-block: calc(var(--spacing) * 1);
+  }
   .label {
     @layer daisyui.l1.l2.l3 {
       display: inline-flex;
@@ -2887,6 +2890,9 @@
   .w-48 {
     width: calc(var(--spacing) * 48);
   }
+  .w-52 {
+    width: calc(var(--spacing) * 52);
+  }
   .w-64 {
     width: calc(var(--spacing) * 64);
   }
@@ -3159,6 +3165,12 @@
   }
   .rounded {
     border-radius: 0.25rem;
+  }
+  .rounded-box {
+    border-radius: var(--radius-box);
+  }
+  .rounded-box {
+    border-radius: var(--radius-box);
   }
   .rounded-full {
     border-radius: calc(infinity * 1px);

@@ -1,0 +1,112 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "resource_hub",
+    "theme_label": "",
+    "theme_description": "",
+    "theme_version": "0.0.1",
+    "theme_syntax_version": "v2",
+    "theme_scope": "cms",
+    "theme_author": "Baklib",
+    "theme_documentation_url": "https://dev.baklib.cn/",
+    "theme_support_url": "https://www.baklib.com/",
+    "theme_thumb_url": "images/theme/thumb.webp",
+    "theme_preview_images": [
+    ],
+    "theme_languages": [
+      {
+        "name": "中文简体",
+        "value": "zh-CN"
+      },
+      {
+        "name": "English",
+        "value": "en"
+      }
+    ],
+    "recommendations": {
+      "color_schemas": {
+        "default": {
+          "name": "默认",
+          "colors": {
+            "--theme-color-primary": "#2563EB",
+            "--theme-color-secondary": "#60A5FA",
+            "--theme-color-accent": "#3B82F6",
+            "--theme-color-info": "#3B82F6",
+            "--theme-color-success": "#10B981",
+            "--theme-color-warning": "#F59E0B"
+          }
+        },
+        "modern": {
+          "name": "现代",
+          "colors": {
+            "--theme-color-primary": "#2563EB",
+            "--theme-color-secondary": "#60A5FA",
+            "--theme-color-accent": "#6366F1",
+            "--theme-color-info": "#3B82F6",
+            "--theme-color-success": "#059669",
+            "--theme-color-warning": "#F59E0B"
+          }
+        },
+        "elegant": {
+          "name": "优雅",
+          "colors": {
+            "--theme-color-primary": "#1E40AF",
+            "--theme-color-secondary": "#93C5FD",
+            "--theme-color-accent": "#6366F1",
+            "--theme-color-info": "#3B82F6",
+            "--theme-color-success": "#059669",
+            "--theme-color-warning": "#D97706"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "品牌设置",
+    "settings": [
+      {
+        "id": "logo_url",
+        "type": "image_picker",
+        "width": 300,
+        "height": 80,
+        "label": "Logo",
+        "info": "网站 Logo"
+      }
+    ]
+  },
+  {
+    "name": "导航菜单设置",
+    "settings": [
+      {
+        "id": "head_html",
+        "type": "code",
+        "language": "html",
+        "label": "<head>标签内 HTML 代码",
+        "rows": 10
+      },
+      {
+        "id": "header_menu",
+        "type": "textarea",
+        "label": "导航菜单",
+        "rows": 10,
+        "info": "格式：menu_name[url]，每行一个链接。",
+        "default": ""
+      }
+    ]
+  },
+  {
+    "name": "资源设置",
+    "settings": [
+      {
+        "id": "resource_download_expiry_time",
+        "type": "number",
+        "label": "资源下载链接有效期",
+        "info": "单位：秒; 设置为0 则永不过期。预览图有效期固定为7200秒",
+        "default": 7200,
+        "step": 1,
+        "min": 0,
+        "max": 99999999
+      }
+    ]
+  }
+]

@@ -1,0 +1,113 @@
+{% comment %}
+  分页组件
+  变量:
+  - paginate: 分页对象
+  - paginate.total_count: 总条数
+  - paginate.total_pages: 总页数
+  - paginate.prev_page: 上一页
+  - paginate.next_page: 下一页
+  - paginate.url_for: 分页链接
+  - paginate.series: 页码列表
+{% endcomment %}
+{% if paginate.total_count > 0 %}
+  <div class="py-4 md:py-6"></div>
+    {% if paginate.total_pages > 1 %}
+      {% comment %} 分页按钮组 - 使用 daisyui join 组件，参考官方文档 https://daisyui.com/components/pagination/ {% endcomment %}
+      <div class="flex justify-center px-2 md:px-4">
+        <div class="join">
+          {% comment %} 上一页 {% endcomment %}
+          <button
+            type="button"
+            {% if paginate.prev_page %}
+              @click="if ({{ paginate.prev_page }}) { if ({{ paginate.prev_page }} === 1) { delete attachmentsQuery._page; } else { attachmentsQuery._page = {{ paginate.prev_page }}; } updateAttachmentsSrc(true); }"
+            {% else %}
+              disabled aria-disabled="true"
+            {% endif %}
+            class="join-item btn btn-sm md:btn-md btn-circle {% unless paginate.prev_page %}btn-disabled pointer-events-none{% endunless %}">
+            <i class="ri-arrow-left-s-line text-base md:text-lg"></i>
+            <span class="sr-only">{{ "paginate.previous" | t: '上一页' }}</span>
+          </button>
+
+          {% comment %} 页码 - 手机端只显示当前页和相邻页 {% endcomment %}
+          {% assign current_page_num = null %}
+          {% for i in paginate.series %}
+            {% assign type = i | typeof %}
+            {% if type == 'string' and i != 'gap' %}
+              {% assign current_page_num = i | plus: 0 %}
+            {% endif %}
+          {% endfor %}
+
+          {% for i in paginate.series %}
+            {% assign type = i | typeof %}
+            {% case type %}
+              {% when 'string' %}
+                {% if i == 'gap' %}
+                  {% comment %} 手机端隐藏省略号 {% endcomment %}
+                  <span class="hidden md:inline-flex join-item btn btn-sm md:btn-md btn-circle">...</span>
+                {% else %}
+                  {% comment %} 当前页 - 使用 daisyui btn-active 标记当前页（官方推荐方式）{% endcomment %}
+                  <span aria-current="page" class="join-item btn btn-sm md:btn-md btn-active btn-circle min-w-10 md:min-w-12">
+                    {{i}}
+                  </span>
+                {% endif %}
+              {% when 'integer' %}
+                {% comment %} 手机端只显示当前页前后各一页，或前3页/后3页 {% endcomment %}
+                {% assign show_on_mobile = false %}
+                {% if current_page_num %}
+                  {% assign prev_page = current_page_num | minus: 1 %}
+                  {% assign next_page = current_page_num | plus: 1 %}
+                  {% if i == prev_page or i == next_page %}
+                    {% assign show_on_mobile = true %}
+                  {% elsif current_page_num == 1 and i <= 3 %}
+                    {% assign show_on_mobile = true %}
+                  {% elsif current_page_num == paginate.total_pages and i >= paginate.total_pages | minus: 2 %}
+                    {% assign show_on_mobile = true %}
+                  {% endif %}
+                {% endif %}
+
+                <button
+                  type="button"
+                  @click="if ({{ i }} === 1) { delete attachmentsQuery._page; } else { attachmentsQuery._page = {{ i }}; } updateAttachmentsSrc(true);"
+                  class="join-item btn btn-sm md:btn-md btn-circle min-w-10 md:min-w-12 {% unless show_on_mobile %}hidden md:inline-flex{% endunless %}">
+                  {{i}}
+                </button>
+            {% endcase %}
+          {% endfor %}
+
+          {% comment %} 下一页 {% endcomment %}
+          <button
+            type="button"
+            {% if paginate.next_page %}
+              @click="if ({{ paginate.next_page }}) { if ({{ paginate.next_page }} === 1) { delete attachmentsQuery._page; } else { attachmentsQuery._page = {{ paginate.next_page }}; } updateAttachmentsSrc(true); }"
+            {% else %}
+              disabled aria-disabled="true"
+            {% endif %}
+            class="join-item btn btn-sm md:btn-md btn-circle {% unless paginate.next_page %}btn-disabled pointer-events-none{% endunless %}">
+            <i class="ri-arrow-right-s-line text-base md:text-lg"></i>
+            <span class="sr-only">{{ "paginate.next" | t: '下一页' }}</span>
+          </button>
+        </div>
+      </div>
+
+      {% comment %} 记录信息 {% endcomment %}
+      <div class="text-center text-base-content/60 mt-4 md:mt-5 text-xs md:text-sm">
+        {{ "paginate.showing" | t: "当前显示第" }}
+        <span class="font-semibold text-base-content">{{paginate.from}}</span>
+        <span class="hidden md:inline">~</span>
+        <span class="md:hidden">-</span>
+        <span class="font-semibold text-base-content">{{paginate.to}}</span>
+        {{ "paginate.records" | t: "条记录" }},
+        {{ "paginate.records" | t: "总共" }}
+        <span class="font-semibold text-base-content">{{paginate.total_count}}</span>
+        {{ "paginate.records" | t: "条记录" }}
+      </div>
+    {% else %}
+      {% comment %} 只有一页时只显示总数 {% endcomment %}
+      <div class="text-center text-base-content/60 mt-4 md:mt-5 text-xs md:text-sm">
+        {{ "paginate.records" | t: "总共" }}
+        <span class="font-semibold text-base-content">{{paginate.total_count}}</span>
+        {{ "paginate.records" | t: "条记录" }}
+      </div>
+    {% endif %}
+  </div>
+{% endif %}

@@ -1,0 +1,53 @@
+{% schema %}
+  {
+    "name": "资源",
+    "description": "",
+    "thumb_url": "images/theme/page.webp",
+    "settings": [
+      {
+        "id": "title",
+        "type": "text",
+        "label": "资源名称"
+      },
+      {
+        "id": "asset",
+        "type": "dam_picker",
+        "label": "资源选择",
+        "queryable": {
+          "metadata": {
+            "fields": ["filename", "size", "kind"]
+          }
+        }
+      },
+      {
+        "id": "resource_tags",
+        "type": "tag_picker",
+        "label": "资源标签",
+        "queryable": true,
+        "multiple": true
+      },
+      {
+        "id": "content",
+        "type": "richtext",
+        "label": "资源描述",
+        "searchable": true
+      }
+    ]
+  }
+{% endschema %}
+
+<main class="flex-1 bg-gray-50 overflow-y-auto">
+  {% assign entity = page.settings.asset %}
+
+  <div class="px-8 py-6 min-h-[calc(100vh-80px)]">
+    <!-- Breadcrumbs -->
+    <div class="mb-6">
+      {% render 'breadcrumb', breadcrumb: page.breadcrumb %}
+    </div>
+      {% render 'attachment/image', page: page, entity: entity %}
+
+  </div>
+
+  <!-- Footer -->
+  {% render 'footer' %}
+</main>

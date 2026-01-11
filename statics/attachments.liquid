@@ -1,0 +1,61 @@
+{% layout none %}
+
+{% assign sort = params.sort %}
+{% comment %} 100MB {% endcomment %}
+{% assign file_limit = 104857600 %}
+
+{% comment %} 计算文件大小范围（MB转字节） {% endcomment %}
+{% assign has_size_min = false %}
+{% assign has_size_max = false %}
+{% if params.size_min %}
+  {% assign size_min_bytes = params.size_min | times: 1048576 %}
+  {% assign has_size_min = true %}
+{% endif %}
+{% if params.size_max %}
+  {% assign size_max_bytes = params.size_max | times: 1048576 %}
+  {% assign has_size_max = true %}
+{% endif %}
+
+{% comment %} 定义查询条件变量 {% endcomment %}
+{% assign any_string = params.any_string %}
+{% assign file_type = params.file_type %}
+{% if params.channel %}
+  {% assign base_pages = site.pages[params.channel].pages_in_list %}
+{% else %}
+  {% assign base_pages = site.pages_in_list %}
+{% endif %}
+
+{% query filtered_pages from base_pages %}
+  {
+    "where": {
+      "template_name_eq": "page",
+      "settings.asset.metadata.kind_in": file_type,
+      "settings.asset.metadata.size_gteq": size_min_bytes,
+      "settings.asset.metadata.size_lteq": size_max_bytes,
+      "settings.resource_tags_array_cont_any": params.resource_tags
+    }
+  }
+{% endquery %}
+
+<turbo-frame id="attachments_frame">
+  <div class="min-h-full flex flex-col flex-1 w-full min-w-0 p-4 md:p-6 bg-white dark:bg-gray-900" data-image-zoom-target="view" x-cloak>
+    {% search filtered_pages, keywords: params.search_q, by_user: true, allow_empty_keywords: true %}
+      {% if sort %}
+        {% assign search_pages = search.pages | order_by: sort %}
+      {% else %}
+        {% assign search_pages = search.pages %}
+      {% endif %}
+
+      {% paginate_tag search_pages, per: 30%}
+        <div class="flex-1">
+          {% render 'attachments/grid', filtered_pages: search_pages %}
+        </div>
+
+        {% comment %} 分页 {% endcomment %}
+        <div class="mt-6 flex-0">
+          {% render 'paginate', paginate: paginate %}
+        </div>
+      {% endpaginate_tag %}
+    {% endsearch %}
+  </div>
+</turbo-frame>

@@ -1,0 +1,51 @@
+{% comment %} 权限拒绝提示片段 - 用于 turbo-frame 中 {% endcomment %}
+
+{% assign page_restricted_text = 'shared.templates.403.page_restricted_text' | t: "" | presence %}
+{% comment %} 兼容 v1 模板翻译 {% endcomment %}
+{% unless page_restricted_text %}{% assign page_restricted_text = 'prompts.page_restricted' | t: '该页面已限制访问' %}{% endunless %}
+
+{% assign login_button_text = 'buttons.login' | t: '登录' %}
+{% assign authorize_button_text = 'buttons.authorize' | t: '需要登录/授权' %}
+
+<div class="h-full flex items-center justify-center p-6">
+  <div class="w-full max-w-md text-center">
+    {% comment %} 权限提示信息 {% endcomment %}
+    <div class="mb-6">
+      <i class="ri-lock-line text-5xl text-gray-400 dark:text-gray-500 mb-4"></i>
+      <p class="text-base text-gray-700 dark:text-gray-300 mb-2">
+        {{ page_restricted_text }}
+      </p>
+      <p class="text-sm text-gray-500 dark:text-gray-400">
+        查看详细信息需要登录授权
+      </p>
+    </div>
+
+    {% comment %} 授权按钮 - 链接到详细页面，携带列表页面的URL参数 {% endcomment %}
+    <div class="space-y-3">
+      <a
+        :href="buildAuthUrl()"
+        class="btn btn-primary w-full"
+        x-data="{
+          buildAuthUrl() {
+            // 获取当前列表页面的URL参数
+            const urlParams = this.$getQueryParams(window.location.href);
+
+            // 排除不需要的参数
+            const filteredParams = {};
+            Object.keys(urlParams).forEach(key => {
+              if (!['full_slug', 'open_item'].includes(key)) {
+                filteredParams[key] = urlParams[key];
+              }
+            });
+
+            // 使用$buildUrl构建详细页面URL
+            return this.$buildUrl('{{ page.url }}', filteredParams);
+          }
+        }">
+        <i class="ri-login-box-line mr-2"></i>
+        {{ authorize_button_text }}
+      </a>
+    </div>
+  </div>
+</div>
+

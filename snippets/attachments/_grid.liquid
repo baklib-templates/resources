@@ -1,0 +1,47 @@
+{% comment %} 网格视图 {% endcomment %}
+{% comment %}
+  types = [:fragment, :link, :image, :video, :audio, :pdf, :ppt, :word, :excel, :archive, :other]
+{% endcomment %}
+<div class="flex flex-wrap gap-2 md:gap-4">
+  {% for item in filtered_pages %}
+    {% assign entity = item.settings.asset %}
+    <a
+      id="item-{{ item.full_slug | replace: '/', '-' | replace: '.', '-' }}"
+      class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer group relative flex flex-col"
+      data-image-zoom-target="item"
+      style="height: 0; width: 0;"
+      href="{{ item.url }}"
+      data-turbo="false"
+    >
+      {% comment %} 根据文件类型加载对应的模板 {% endcomment %}
+      {% if entity and entity.image? %}
+        {% render 'attachments/grid/image', entity: entity, item: item %}
+      {% elsif entity and entity.video? %}
+        {% render 'attachments/grid/video', entity: entity, item: item %}
+      {% elsif entity and entity.audio? %}
+        {% render 'attachments/grid/audio', entity: entity, item: item %}
+      {% elsif entity and entity.pdf? %}
+        {% render 'attachments/grid/pdf', entity: entity, item: item %}
+      {% elsif entity and entity.metadata.kind == 'word' %}
+        {% render 'attachments/grid/word', entity: entity, item: item %}
+      {% elsif entity and entity.metadata.kind == 'excel' %}
+        {% render 'attachments/grid/excel', entity: entity, item: item %}
+      {% elsif entity and entity.metadata.kind == 'ppt' %}
+        {% render 'attachments/grid/ppt', entity: entity, item: item %}
+      {% elsif entity and entity.metadata.kind == 'archive' %}
+        {% render 'attachments/grid/archive', entity: entity, item: item %}
+      {% else %}
+        {% render 'attachments/grid/other', entity: entity, item: item %}
+      {% endif %}
+    </a>
+  {% else %}
+      {% comment %} 添加没有内容的展示 {% endcomment %}
+      <div class="w-full py-12">
+        <div class="text-center">
+          <i class="ri-folder-open-line text-6xl text-gray-400 mb-4"></i>
+          <p class="text-gray-600 dark:text-gray-400 text-lg">暂无文件</p>
+          <p class="text-gray-500 dark:text-gray-500 text-sm mt-2">当前筛选条件下没有找到任何资源</p>
+        </div>
+      </div>
+  {% endfor %}
+</div>

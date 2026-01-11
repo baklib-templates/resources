@@ -1,0 +1,112 @@
+{% comment %} PDF资源详情展示 {% endcomment %}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+  <!-- Left Column - PDF Preview (2/3 width) -->
+  <div class="lg:col-span-2">
+    <div class="bg-red-50 dark:bg-red-900/20 rounded-lg overflow-hidden min-h-[400px] flex items-center justify-center">
+      {% if entity and entity.previewable? and entity.preview.cover %}
+        <img src="{{ entity.preview.cover }}"
+             alt="{{ page.link_text }}"
+             class="max-w-full max-h-[600px] object-contain">
+      {% elsif page.settings.cover %}
+        <img src="{{ page.settings.cover }}"
+             alt="{{ page.link_text }}"
+             class="max-w-full max-h-[600px] object-contain">
+      {% else %}
+        <div class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 p-8">
+          <i class="ri-file-pdf-line text-8xl text-red-500 mb-4"></i>
+          <p class="text-lg">暂无预览</p>
+          {% if entity and entity.metadata.filename %}
+            <p class="text-sm mt-2 text-gray-500 dark:text-gray-400">{{ entity.metadata.filename }}</p>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Right Column - Resource Details Card (1/3 width) -->
+  <div class="lg:col-span-1">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sticky top-6">
+      <!-- Title Section -->
+      <div class="flex items-start gap-3 mb-6">
+        <div class="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/20 flex items-center justify-center flex-shrink-0">
+          <i class="ri-file-pdf-line text-red-600 dark:text-red-400 text-xl"></i>
+        </div>
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100 leading-tight">{{ page.settings.title }}</h1>
+      </div>
+
+      <!-- Metadata Section -->
+      <div class="space-y-4 mb-6">
+        {% if page.author and page.author.name %}
+          <div class="flex items-center gap-3 text-gray-600 dark:text-gray-400">
+            <i class="ri-user-line text-gray-400 dark:text-gray-500"></i>
+            <span class="text-sm">作者：<span class="text-gray-800 dark:text-gray-100 font-medium">{{ page.author.name }}</span></span>
+          </div>
+        {% elsif page.settings.creator %}
+          <div class="flex items-center gap-3 text-gray-600 dark:text-gray-400">
+            <i class="ri-user-line text-gray-400 dark:text-gray-500"></i>
+            <span class="text-sm">创建者：<span class="text-gray-800 dark:text-gray-100 font-medium">{{ page.settings.creator }}</span></span>
+          </div>
+        {% endif %}
+        {% if page.published_at %}
+          <div class="flex items-center gap-3 text-gray-600 dark:text-gray-400">
+            <i class="ri-calendar-line text-gray-400 dark:text-gray-500"></i>
+            <span class="text-sm">上传日期：<span class="text-gray-800 dark:text-gray-100 font-medium">{{ page.published_at | date: "%Y-%m-%d" }}</span></span>
+          </div>
+        {% endif %}
+        {% if entity and entity.metadata.human_size %}
+          <div class="flex items-center gap-3 text-gray-600 dark:text-gray-400">
+            <i class="ri-file-size-line text-gray-400 dark:text-gray-500"></i>
+            <span class="text-sm">文件大小：<span class="text-gray-800 dark:text-gray-100 font-medium">{{ entity.metadata.human_size }}</span></span>
+          </div>
+        {% endif %}
+        <div class="flex items-center gap-3 text-gray-600 dark:text-gray-400">
+          <i class="ri-folder-line text-gray-400 dark:text-gray-500"></i>
+          <span class="text-sm">分类：<span class="text-gray-800 dark:text-gray-100 font-medium">
+            {% if entity.metadata.kind %}
+              {{ entity.metadata.kind | upcase }}
+            {% elsif entity.metadata.content_type %}
+              {{ entity.metadata.content_type | split: '/' | last | upcase }}
+            {% else %}
+              PDF
+            {% endif %}
+          </span></span>
+        </div>
+      </div>
+
+      <!-- Tags -->
+      {% if page.settings.resource_tags.size > 0 %}
+        <div class="flex flex-wrap gap-2 mb-6">
+          {% for tag in page.settings.resource_tags %}
+            <span class="inline-flex items-center px-3 py-1 bg-indigo-100 dark:bg-indigo-900/20 text-blue-600 dark:text-blue-400 rounded-md text-sm font-medium">{{ tag.name }}</span>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col gap-3">
+        <a href="{{ entity.url[site.settings.resource_download_expiry_time] }}" download class="btn btn-primary w-full bg-blue-600 hover:bg-blue-700 text-white border-none">
+          <i class="ri-download-line"></i>
+          下载
+        </a>
+        {% if entity and entity.url %}
+          <a href="{{ entity.url[site.settings.resource_download_expiry_time] }}" target="_blank" class="btn btn-outline w-full border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+            <i class="ri-eye-line"></i>
+            在线查看
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Resource Description -->
+{% assign has_content = page.settings.content | replace: '<p></p>', '' | present? %}
+{% if has_content %}
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+    <h2 class="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4">资源描述</h2>
+    <section class="ProseMirror prose prose-sm max-w-none dark:prose-invert prose-headings:mt-4 prose-headings:mb-2 prose-p:my-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-1 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg prose-img:my-4" data-controller="link-target images-viewer">
+      {{ page.settings.content }}
+    </section>
+  </div>
+{% endif %}
+

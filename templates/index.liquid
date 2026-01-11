@@ -1,0 +1,672 @@
+{% schema %}
+  {
+    "name": "首页",
+    "description": "列表展示所有栏目",
+    "thumb_url": "images/theme/index.webp",
+    "sub_page_templates": ["channel", "page"]
+  }
+{% endschema %}
+
+{% assign channel = params.channel | default: '/' %}
+{% assign defaultBreadcrumb = site.pages[channel].breadcrumb | default: [] %}
+
+<div
+  class="flex-1 flex min-h-0 overflow-hidden"
+  data-controller="breadcrumb"
+  data-breadcrumb-channel-value="{{ params.channel }}"
+  data-breadcrumb-default-breadcrumb-value='{{ defaultBreadcrumb | to_json }}'
+  @open-detail="openDetail($event.detail)"
+  x-data="{
+    attachmentsBaseSrc: '/s/attachments',
+    attachmentsQuery: {},
+    attachmentsSrc: '',
+    attachmentSrc: '/s/attachment',
+    skipNextWatch: false,
+    showDetail: false,
+    attachmentTitle: '',
+    searchKeyword: '',
+    sizeMin: '',
+    sizeMax: '',
+    selectedYear: 'all',
+    selectedMonth: 'all',
+    tagInput: '',
+    showAdvancedFilters: false,
+    fileTypes: [
+      { value: 'image', label: '图片', icon: 'ri-image-line', icon_color: 'text-blue-500' },
+      { value: 'video', label: '视频', icon: 'ri-video-line', icon_color: 'text-purple-500' },
+      { value: 'audio', label: '音频', icon: 'ri-audio-line', icon_color: 'text-green-500' },
+      { value: 'pdf', label: 'PDF', icon: 'ri-file-pdf-line', icon_color: 'text-red-500' },
+      { value: 'ppt', label: 'PPT', icon: 'ri-file-ppt-line', icon_color: 'text-orange-500' },
+      { value: 'word', label: 'Word', icon: 'ri-file-word-line', icon_color: 'text-blue-600' },
+      { value: 'excel', label: 'Excel', icon: 'ri-file-excel-line', icon_color: 'text-green-600' },
+      { value: 'archive', label: '压缩包', icon: 'ri-file-zip-line', icon_color: 'text-yellow-500' },
+      { value: 'other', label: '其他', icon: 'ri-file-line', icon_color: 'text-gray-500' },
+    ],
+    init() {
+      this.attachmentsQuery = this.$getQueryParams(window.location.href)
+
+      // 初始化 resource_tags 为数组
+      if (this.attachmentsQuery.resource_tags) {
+        if (!Array.isArray(this.attachmentsQuery.resource_tags)) {
+          // 如果是单个值，转换为数组
+          this.attachmentsQuery.resource_tags = [this.attachmentsQuery.resource_tags];
+        }
+      } else {
+        this.attachmentsQuery.resource_tags = [];
+      }
+
+      // 初始化 file_type 为数组
+      if (this.attachmentsQuery.file_type) {
+        if (!Array.isArray(this.attachmentsQuery.file_type)) {
+          // 如果是单个值，转换为数组
+          this.attachmentsQuery.file_type = [this.attachmentsQuery.file_type];
+        }
+      } else {
+        this.attachmentsQuery.file_type = [];
+      }
+
+      // 初始化搜索关键词
+      this.searchKeyword = this.attachmentsQuery.search_q || '';
+
+      // 初始化文件大小范围
+      this.sizeMin = this.attachmentsQuery.size_min || '';
+      this.sizeMax = this.attachmentsQuery.size_max || '';
+
+      // 初始化 channel 参数
+      this.channel = this.attachmentsQuery.channel || '';
+
+      // 初始化年月筛选
+      this.selectedYear = this.attachmentsQuery.year || 'all';
+      this.selectedMonth = this.attachmentsQuery.month || 'all';
+
+      // 检查是否有筛选参数，如果有则自动展开高级筛选
+      const hasFilters = this.attachmentsQuery.year ||
+                        this.attachmentsQuery.month ||
+                        (this.attachmentsQuery.file_type && this.attachmentsQuery.file_type.length > 0) ||
+                        this.attachmentsQuery.size_min ||
+                        this.attachmentsQuery.size_max ||
+                        (this.attachmentsQuery.resource_tags && this.attachmentsQuery.resource_tags.length > 0);
+      this.showAdvancedFilters = hasFilters || false;
+
+      // 检查是否有open_item参数（从403页面登录后重定向回来）
+      const openItem = this.attachmentsQuery.open_item;
+      if (openItem) {
+        // 从URL中删除open_item参数
+        delete this.attachmentsQuery.open_item;
+        this.$updateQuery(this.attachmentsQuery, 'replace');
+
+        // 等待turbo-frame加载完成后，滚动到对应资源并打开详情
+        const attachmentsFrame = document.getElementById('attachments_frame');
+        if (attachmentsFrame) {
+          const handleFrameLoad = () => {
+            this.openItemBySlug(openItem);
+            attachmentsFrame.removeEventListener('turbo:frame-load', handleFrameLoad);
+          };
+          attachmentsFrame.addEventListener('turbo:frame-load', handleFrameLoad, { once: true });
+        }
+      }
+
+      this.updateAttachmentsSrc();
+      this.temPage = this.attachmentsQuery._page;
+      this.$watch('attachmentsQuery', (newValue, oldValue) => {
+        this.closeDetail();
+        this.searchKeyword = this.attachmentsQuery.search_q;
+        if (this.skipNextWatch) {
+          this.skipNextWatch = false;
+          return;
+        }
+        console.log('temPage', this.temPage, this.attachmentsQuery._page);
+        if (this.temPage && this.attachmentsQuery._page == this.temPage) {
+          this.skipNextWatch = true;
+          delete this.attachmentsQuery._page;
+        }
+        this.temPage = this.attachmentsQuery._page;
+        this.updateAttachmentsSrc(true);
+      }, { deep: true });
+      window.addEventListener('popstate', () => {
+        this.skipNextWatch = true;
+        this.attachmentsQuery = this.$getQueryParams(window.location.href);
+        // 同步 resource_tags 为数组
+        if (this.attachmentsQuery.resource_tags) {
+          if (!Array.isArray(this.attachmentsQuery.resource_tags)) {
+            // 如果是单个值，转换为数组
+            this.attachmentsQuery.resource_tags = [this.attachmentsQuery.resource_tags];
+          }
+        } else {
+          this.attachmentsQuery.resource_tags = [];
+        }
+        // 同步 file_type 为数组
+        if (this.attachmentsQuery.file_type) {
+          if (!Array.isArray(this.attachmentsQuery.file_type)) {
+            // 如果是单个值，转换为数组
+            this.attachmentsQuery.file_type = [this.attachmentsQuery.file_type];
+          }
+        } else {
+          this.attachmentsQuery.file_type = [];
+        }
+        // 同步搜索关键词
+        this.searchKeyword = this.attachmentsQuery.search_q || '';
+        // 同步文件大小范围
+        this.sizeMin = this.attachmentsQuery.size_min || '';
+        this.sizeMax = this.attachmentsQuery.size_max || '';
+        // 同步 channel 参数
+        this.channel = this.attachmentsQuery.channel || '';
+        // 同步年月
+        this.selectedYear = this.attachmentsQuery.year || 'all';
+        this.selectedMonth = this.attachmentsQuery.month || 'all';
+        // 同步高级筛选展开状态
+        const hasFilters = this.attachmentsQuery.year ||
+                          this.attachmentsQuery.month ||
+                          (this.attachmentsQuery.file_type && this.attachmentsQuery.file_type.length > 0) ||
+                          this.attachmentsQuery.size_min ||
+                          this.attachmentsQuery.size_max ||
+                          (this.attachmentsQuery.resource_tags && this.attachmentsQuery.resource_tags.length > 0);
+        this.showAdvancedFilters = hasFilters || false;
+        this.updateAttachmentsSrc(false);
+      });
+      // 监听移动端 modal 关闭事件
+      const modal = document.getElementById('mobile-detail-modal');
+      if (modal) {
+        modal.addEventListener('close', () => {
+          this.showDetail = false;
+          this.attachmentSrc = '';
+        });
+      }
+    },
+    openItemBySlug(fullSlug) {
+      // 构建item的id（将full_slug中的/和.替换为-）
+      const itemId = 'item-' + fullSlug.replace(/\//g, '-').replace(/\./g, '-');
+      const targetItem = document.getElementById(itemId);
+
+      if (targetItem) {
+        // 滚动到目标元素
+        targetItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        // 等待滚动完成后触发点击事件打开详情
+        setTimeout(() => {
+          targetItem.click();
+        }, 300);
+      }
+    },
+    submitSearch() {
+      // 将搜索关键词同步到查询参数
+      if (this.searchKeyword && this.searchKeyword.trim()) {
+        this.attachmentsQuery.search_q = this.searchKeyword.trim();
+      } else {
+        delete this.attachmentsQuery.search_q;
+      }
+      this.updateAttachmentsSrc(true);
+    },
+    updateAttachmentsSrc(push = false) {
+      $nextTick(() => {
+        // 清理空值参数
+        const cleanedQuery = { ...this.attachmentsQuery };
+        Object.keys(cleanedQuery).forEach(key => {
+          const value = cleanedQuery[key];
+          // 删除空值、null、undefined
+          if (value === '' || value === null || value === undefined) {
+            delete cleanedQuery[key];
+          }
+          // 删除空数组
+          if (Array.isArray(value) && value.length === 0) {
+            delete cleanedQuery[key];
+          }
+        });
+        this.attachmentsSrc = this.$buildUrl(this.attachmentsBaseSrc, cleanedQuery);
+        if (push) this.$updateQuery(cleanedQuery);
+      });
+    },
+    openDetail(item) {
+      this.attachmentTitle = item.title;
+      this.attachmentSrc = this.$buildUrl('/s/attachment', { full_slug: item.full_slug });
+      this.showDetail = true;
+      // 移动端打开 modal
+      if (window.innerWidth < 768) {
+        const modal = document.getElementById('mobile-detail-modal');
+        if (modal) {
+          modal.showModal();
+        }
+      }
+    },
+    closeDetail() {
+      this.showDetail = false;
+      // 移动端关闭 modal
+      const modal = document.getElementById('mobile-detail-modal');
+      if (modal) {
+        modal.close();
+      }
+    },
+    toggleTag(tagName) {
+      if (!this.attachmentsQuery.resource_tags) {
+        this.attachmentsQuery.resource_tags = [];
+      }
+      const index = this.attachmentsQuery.resource_tags.indexOf(tagName);
+      if (index > -1) {
+        this.attachmentsQuery.resource_tags.splice(index, 1);
+      } else {
+        this.attachmentsQuery.resource_tags.push(tagName);
+      }
+      // 如果数组为空，删除该属性
+      if (this.attachmentsQuery.resource_tags.length === 0) {
+        delete this.attachmentsQuery.resource_tags;
+      }
+      this.updateAttachmentsSrc(true);
+    },
+    isTagSelected(tagName) {
+      return this.attachmentsQuery.resource_tags && this.attachmentsQuery.resource_tags.includes(tagName);
+    },
+    removeTag(tagName) {
+      if (this.attachmentsQuery.resource_tags) {
+        const index = this.attachmentsQuery.resource_tags.indexOf(tagName);
+        if (index > -1) {
+          this.attachmentsQuery.resource_tags.splice(index, 1);
+        }
+        if (this.attachmentsQuery.resource_tags.length === 0) {
+          delete this.attachmentsQuery.resource_tags;
+        }
+        this.updateAttachmentsSrc(true);
+      }
+    },
+    toggleFileType(fileType) {
+      if (!this.attachmentsQuery.file_type) {
+        this.attachmentsQuery.file_type = [];
+      }
+      const index = this.attachmentsQuery.file_type.indexOf(fileType);
+      if (index > -1) {
+        this.attachmentsQuery.file_type.splice(index, 1);
+      } else {
+        this.attachmentsQuery.file_type.push(fileType);
+      }
+      // 如果数组为空，删除该属性
+      if (this.attachmentsQuery.file_type.length === 0) {
+        delete this.attachmentsQuery.file_type;
+      }
+      this.updateAttachmentsSrc(true);
+    },
+    isFileTypeSelected(fileType) {
+      return this.attachmentsQuery.file_type && this.attachmentsQuery.file_type.includes(fileType);
+    },
+    removeFileType(fileType) {
+      if (this.attachmentsQuery.file_type) {
+        const index = this.attachmentsQuery.file_type.indexOf(fileType);
+        if (index > -1) {
+          this.attachmentsQuery.file_type.splice(index, 1);
+        }
+        if (this.attachmentsQuery.file_type.length === 0) {
+          delete this.attachmentsQuery.file_type;
+        }
+        this.updateAttachmentsSrc(true);
+      }
+    },
+    getFileTypeLabel(fileType) {
+      const found = this.fileTypes.find(ft => ft.value === fileType);
+      return found ? found.label : fileType;
+    },
+    clearAllTags() {
+      delete this.attachmentsQuery.resource_tags;
+      this.updateAttachmentsSrc(true);
+    },
+    clearAllFileTypes() {
+      delete this.attachmentsQuery.file_type;
+      this.updateAttachmentsSrc(true);
+    },
+    updateSizeFilter(type, value) {
+      // 设置 skipNextWatch 避免触发 watch
+      this.skipNextWatch = true;
+      if (type === 'min') {
+        this.sizeMin = value;
+        if (value && value.trim() !== '') {
+          this.attachmentsQuery.size_min = value;
+        } else {
+          delete this.attachmentsQuery.size_min;
+        }
+      } else if (type === 'max') {
+        this.sizeMax = value;
+        if (value && value.trim() !== '') {
+          this.attachmentsQuery.size_max = value;
+        } else {
+          delete this.attachmentsQuery.size_max;
+        }
+      }
+      this.updateAttachmentsSrc(true);
+    },
+    updateChannel(channelPath) {
+      if (channelPath && channelPath.trim() !== '') {
+        this.attachmentsQuery.channel = channelPath.trim();
+        this.channel = channelPath.trim();
+      } else {
+        delete this.attachmentsQuery.channel;
+        this.channel = '';
+      }
+      this.updateAttachmentsSrc(true);
+    },
+    setYearFilter(year) {
+      this.selectedYear = year;
+      if (year === 'all') {
+        delete this.attachmentsQuery.year;
+      } else {
+        this.attachmentsQuery.year = year;
+      }
+      this.updateAttachmentsSrc(true);
+    },
+    isYearSelected(year) {
+      return (this.attachmentsQuery.year || 'all') === year;
+    },
+    setMonthFilter(month) {
+      this.selectedMonth = month;
+      if (month === 'all') {
+        delete this.attachmentsQuery.month;
+      } else {
+        this.attachmentsQuery.month = month;
+      }
+      this.updateAttachmentsSrc(true);
+    },
+    isMonthSelected(month) {
+      return (this.attachmentsQuery.month || 'all') === month;
+    },
+    applySizeRange(min, max) {
+      this.skipNextWatch = true;
+      this.sizeMin = min ? `${min}` : '';
+      this.sizeMax = max ? `${max}` : '';
+      if (min !== undefined && min !== null && min !== '') {
+        this.attachmentsQuery.size_min = `${min}`;
+      } else {
+        delete this.attachmentsQuery.size_min;
+      }
+      if (max !== undefined && max !== null && max !== '') {
+        this.attachmentsQuery.size_max = `${max}`;
+      } else {
+        delete this.attachmentsQuery.size_max;
+      }
+      this.updateAttachmentsSrc(true);
+    },
+    isSizeRangeActive(min, max) {
+      const currentMin = this.attachmentsQuery.size_min || '';
+      const currentMax = this.attachmentsQuery.size_max || '';
+      return `${min || ''}` === `${currentMin}` && `${max || ''}` === `${currentMax}`;
+    },
+    resetFilters() {
+      window.location.href = '/';
+    },
+    toggleAdvancedFilters() {
+      this.showAdvancedFilters = !this.showAdvancedFilters;
+    }
+  }"
+>
+  {% comment %} 左侧边栏 {% endcomment %}
+  {% render 'aside', page: page %}
+
+  {% comment %} 主内容区 {% endcomment %}
+  <main class="flex-1 h-full bg-gray-50 overflow-y-auto min-h-[calc(100vh-80px)]" data-controller="image-zoom">
+    <div class="flex-1 flex flex-col px-6 py-4 min-h-[calc(100vh-80px)]">
+      <div class='flex-0' data-image-zoom-target="zoomControl"></div>
+
+      <!-- 筛选区域 -->
+      <div class="flex-0 bg-white rounded-lg shadow-sm p-6 mb-4 space-y-4 text-sm">
+        <!-- 关键词搜索和操作按钮 -->
+        <div class="flex items-start justify-between gap-4"  :class="showAdvancedFilters ? '': 'mb-0'">
+          <div class="flex items-start flex-1">
+            <span class="w-24 shrink-0 text-gray-500 pt-1.5 ">关键词</span>
+            <div class="flex-1 flex flex-wrap gap-3 items-center ">
+              <div class="join w-full max-w-lg">
+                <input type="text" class="input input-bordered input-sm join-item flex-1 bg-gray-50  h-9"
+                  placeholder="输入关键词搜索资源..." x-model="searchKeyword" @keydown.enter.prevent="submitSearch">
+                <button class="btn btn-primary join-item bg-blue-600 border-blue-600 text-white  h-9 min-h-0"
+                  @click="submitSearch">
+                  <i class="ri-search-2-line"></i> 搜索
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- 重置和高级筛选按钮 -->
+          <div class="flex items-center gap-1 shrink-0">
+            <button class="btn btn-sm btn-link text-gray-600 hover:text-red-700 hover:bg-red-50"
+              @click="resetFilters">
+              重置
+            </button>
+            <button class="btn btn-sm btn-link"
+              :class="showAdvancedFilters ? 'btn-primary' : 'btn-ghost text-gray-600 hover:bg-gray-100'"
+              @click="toggleAdvancedFilters">
+              高级筛选
+            </button>
+          </div>
+        </div>
+
+        <!-- 高级筛选区域 -->
+        <div x-show="showAdvancedFilters" x-cloak x-transition class="space-y-4">
+            <!-- 年份筛选 -->
+          <div class="flex items-start">
+            <span class="w-24 shrink-0 text-gray-500 pt-1.5 ">年份</span>
+            <div class="flex-1 flex flex-wrap gap-3 items-center ">
+              <button
+                class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
+                :class="isYearSelected('all') ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+                @click="setYearFilter('all')">全部</button>
+              <button
+                class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
+                :class="isYearSelected('2025') ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+                @click="setYearFilter('2025')">2025</button>
+              <button
+                class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
+                :class="isYearSelected('2024') ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+                @click="setYearFilter('2024')">2024</button>
+              <button
+                class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
+                :class="isYearSelected('2023') ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+                @click="setYearFilter('2023')">2023</button>
+              <button
+                class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
+                :class="isYearSelected('2022') ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+                @click="setYearFilter('2022')">2022</button>
+              <button
+                class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
+                :class="isYearSelected('2021') ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+                @click="setYearFilter('2021')">2021</button>
+              <button
+                class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
+                :class="isYearSelected('2020') ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+                @click="setYearFilter('2020')">2020</button>
+            </div>
+          </div>
+
+          <!-- 月份筛选 -->
+          <div class="flex items-start">
+            <span class="w-24 shrink-0 text-gray-500 pt-1.5 ">月份</span>
+            <div class="flex-1 flex flex-wrap gap-3 items-center ">
+              <button
+                class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
+                :class="isMonthSelected('all') ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+                @click="setMonthFilter('all')">全部</button>
+              <template x-for="month in [1,2,3,4,5,6,7,8,9,10,11,12]" :key="month">
+                <button
+                  class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
+                  :class="isMonthSelected(`${month}`) ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+                  @click="setMonthFilter(`${month}`)"
+                  x-text="`${month}月`"></button>
+              </template>
+            </div>
+          </div>
+
+          <!-- 文件类型 -->
+          <div class="flex items-start">
+            <span class="w-24 shrink-0 text-gray-500 pt-1.5 ">文件类型</span>
+            <div class="flex-1 flex flex-wrap gap-3 items-center">
+              <button class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
+                :class="!attachmentsQuery.file_type || attachmentsQuery.file_type.length === 0 ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+                @click="clearAllFileTypes()">全部</button>
+              <template x-for="fileType in fileTypes" :key="fileType.value">
+                <button
+                  class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
+                  :class="isFileTypeSelected(fileType.value) ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+                  @click="toggleFileType(fileType.value)">
+                  <i :class="fileType.icon + ' text-sm ' + fileType.icon_color"></i>
+                  <span x-text="fileType.label"></span>
+                </button>
+              </template>
+            </div>
+          </div>
+
+          <!-- 文件大小 -->
+          <div class="flex items-start">
+            <span class="w-24 shrink-0 text-gray-500 pt-1.5 ">文件大小</span>
+            <div class="flex-1 flex flex-wrap gap-3 items-center ">
+              <button
+                class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
+                :class="isSizeRangeActive('', '') ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+                @click="applySizeRange('', '')">全部</button>
+              <button
+                class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
+                :class="isSizeRangeActive(0, 10) ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+                @click="applySizeRange(0, 10)">0-10MB</button>
+              <button
+                class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
+                :class="isSizeRangeActive(10, 50) ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+                @click="applySizeRange(10, 50)">10-50MB</button>
+              <button
+                class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
+                :class="isSizeRangeActive(50, 100) ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+                @click="applySizeRange(50, 100)">50-100MB</button>
+              <button
+                class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
+                :class="isSizeRangeActive(100, 1024) ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+                @click="applySizeRange(100, 1024)">100MB-1GB</button>
+              <button
+                class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
+                :class="isSizeRangeActive(1024, 10240) ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+                @click="applySizeRange(1024, 10240)">1GB-10GB</button>
+
+              <button
+                class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
+                :class="isSizeRangeActive(10240, 102400) ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+                @click="applySizeRange(10240, 102400)">
+                  &gt;10GB
+                </button>
+            </div>
+          </div>
+
+          <!-- 标签筛选 -->
+          <div class="flex items-start">
+            <span class="w-24 shrink-0 text-gray-500 pt-1.5 ">标签筛选</span>
+            <div class="flex-1 flex flex-col gap-3 ">
+              <div class="relative">
+                <input type="text" class="input input-bordered input-sm w-64 pl-8 bg-gray-50 "
+                  placeholder="回车添加或筛选标签" x-model="tagInput"
+                  @keydown.enter.prevent="if(tagInput && tagInput.trim()) { toggleTag(tagInput.trim()); tagInput=''; }">
+                <i class="ri-search-line absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 "></i>
+              </div>
+              <div class="flex items-center text-xs gap-2 flex-wrap" x-show="attachmentsQuery.resource_tags && attachmentsQuery.resource_tags.length">
+                <template x-for="tag in attachmentsQuery.resource_tags" :key="tag">
+                  <span class="inline-flex items-center gap-1.5 px-2 py-1 bg-indigo-100 text-primary/90 rounded-md ">
+                    <span x-text="tag"></span>
+                    <i class="ri-close-line cursor-pointer opacity-70 hover:opacity-100 text-sm" @click="removeTag(tag)"></i>
+                  </span>
+                </template>
+              </div>
+              <div class="flex items-center text-xs gap-2 flex-wrap" x-show="!attachmentsQuery.resource_tags || attachmentsQuery.resource_tags.length === 0">
+                <span class="text-gray-400">暂无已选标签，输入后回车即可添加</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 排序工具栏 -->
+      <div class="flex-0 flex justify-between items-center pb-4">
+        <div class="flex gap-2">
+          <button
+            class="px-5 py-2 rounded-md text-sm cursor-pointer transition-all duration-200 border-none flex items-center gap-1.5 bg-blue-600 text-white">
+            <i class="ri-time-line"></i>
+            <span>最新</span>
+          </button>
+          <button
+            class="px-5 py-2 rounded-md text-sm cursor-pointer transition-all duration-200 border-none flex items-center gap-1.5 bg-white text-gray-500 hover:text-blue-600">
+            <i class="ri-fire-line"></i>
+            <span>最热</span>
+          </button>
+        </div>
+        <div class="dropdown dropdown-end">
+          <div tabindex="0" role="button" class="btn btn-sm btn-outline border-gray-300 hover:bg-gray-50 text-gray-600 gap-2">
+            <i class="ri-filter-3-line"></i>
+            <span>筛选排序</span>
+            <i class="ri-arrow-down-s-line"></i>
+          </div>
+          <div tabindex="0"
+            class="dropdown-content z-[1] menu p-4 shadow-xl bg-white rounded-xl w-72 border border-gray-100 mt-2">
+            <h3 class="font-bold text-gray-800 mb-4 text-base">排序设置</h3>
+
+            <div class="mb-4">
+              <span class=" text-gray-500 mb-3 block">排序方式</span>
+              <label class="label cursor-pointer hover:bg-gray-50 rounded-lg px-2 py-2 mb-1">
+                <span class="label-text text-gray-700">最新发布</span>
+                <input type="radio" name="sort-method" class="radio radio-primary radio-sm" checked>
+              </label>
+              <label class="label cursor-pointer hover:bg-gray-50 rounded-lg px-2 py-2 mb-1">
+                <span class="label-text text-gray-700">热门下载</span>
+                <input type="radio" name="sort-method" class="radio radio-primary radio-sm">
+              </label>
+              <label class="label cursor-pointer hover:bg-gray-50 rounded-lg px-2 py-2">
+                <span class="label-text text-gray-700">最多收藏</span>
+                <input type="radio" name="sort-method" class="radio radio-primary radio-sm">
+              </label>
+            </div>
+
+            <div class="mb-4 border-t border-gray-100 pt-4">
+              <span class=" text-gray-500 mb-3 block">排序方向</span>
+              <label class="label cursor-pointer hover:bg-gray-50 rounded-lg px-2 py-2 mb-1">
+                <input type="radio" name="sort-direction" class="radio radio-primary radio-sm" checked>
+                <span class="label-text text-gray-700">降序</span>
+              </label>
+              <label class="label cursor-pointer hover:bg-gray-50 rounded-lg px-2 py-2">
+                <input type="radio" name="sort-direction" class="radio radio-primary radio-sm">
+                <span class="label-text text-gray-700">升序</span>
+              </label>
+            </div>
+
+            <div class="flex gap-2 mt-4">
+              <button class="btn btn-sm btn-ghost flex-1 text-gray-600">重置</button>
+              <button class="btn btn-sm btn-primary flex-1 bg-blue-600 border-blue-600 text-white">应用</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% comment %} 图片网格区域 {% endcomment %}
+      <div class="flex-1 min-h-0 h-full overflow-auto">
+        <turbo-frame class='c' id="attachments_frame" :src="attachmentsSrc">
+          <div class="h-[200px] flex items-center justify-center text-gray-500 dark:text-gray-400">
+            <span class="loading loading-spinner loading-md"></span>
+          </div>
+        </turbo-frame>
+      </div>
+    </div>
+
+    <div class="flex-0">
+      {% render 'footer' %}
+    </div>
+  </main>
+</div>
+
+{% comment %} 移动端筛选器切换脚本 {% endcomment %}
+<script>
+  (function () {
+    document.addEventListener('DOMContentLoaded', function () {
+      const filterToggle = document.getElementById('mobile-filter-toggle');
+      const filterPanel = document.getElementById('mobile-filter-panel');
+      const filterIcon = document.getElementById('mobile-filter-icon');
+
+      if (filterToggle && filterPanel && filterIcon) {
+        filterToggle.addEventListener('click', function () {
+          const isHidden = filterPanel.classList.contains('hidden');
+
+          if (isHidden) {
+            filterPanel.classList.remove('hidden');
+            filterIcon.style.transform = 'rotate(180deg)';
+          } else {
+            filterPanel.classList.add('hidden');
+            filterIcon.style.transform = 'rotate(0deg)';
+          }
+        });
+      }
+    });
+  })();
+</script>

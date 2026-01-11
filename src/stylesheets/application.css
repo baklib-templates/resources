@@ -1,0 +1,87 @@
+@import "tailwindcss";
+@plugin "daisyui";
+@import 'viewerjs/dist/viewer.css';
+
+/* 视图缩放相关样式 */
+:root {
+  --view-zoom: 1;
+}
+
+[x-cloak] {
+  display: none;
+}
+
+.custom-menu {
+  list-style: none;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  flex-wrap: wrap;
+  --menu-active-fg: var(--color-neutral-content);
+  --menu-active-bg: var(--color-neutral);
+  font-size: 0.875rem;
+
+  :where(li) {
+    position: relative;
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: stretch;
+    width: 100%;
+    margin-top: 0;
+  }
+
+  [turbo-nav-tree-item] {
+    @apply mt-1;
+  }
+
+  [turbo-nav-tree-item]:hover {
+    [turbo-nav-tree-item-target-icon]{
+      @apply text-primary
+    }
+  }
+
+  li[active] > [turbo-nav-tree-item][active] {
+    @apply bg-primary/10 text-primary;
+
+    .nav-tree-channel-item {
+      @apply font-semibold text-primary;
+    }
+
+    svg[fill="currentColor"] {
+      @apply text-primary;
+    }
+
+    [turbo-nav-tree-item-target-icon] svg {
+      @apply text-primary;
+    }
+  }
+
+  /* 未选中项的默认样式 */
+  [turbo-nav-tree-item]:not([active]) {
+    .nav-tree-channel-item {
+      @apply text-base-content/80;
+    }
+
+    svg[fill="currentColor"] {
+      @apply text-primary;
+    }
+
+    [turbo-nav-tree-item-target-icon] svg {
+      @apply text-base-content/80;
+    }
+  }
+
+
+  :where(li ul) {
+    position: relative;
+    padding-left: 0;
+    margin-left: 0;
+
+    /* 移除连接线，使用更简洁的样式 */
+    &:before {
+      display: none;
+    }
+  }
+}

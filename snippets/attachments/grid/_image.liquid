@@ -1,0 +1,26 @@
+{% comment %} 图片类型模板 {% endcomment %}
+
+<div class="flex-1 aspect-square overflow-hidden bg-gray-100 dark:bg-gray-700 relative flex items-center justify-center">
+  {% if entity.previewable? %}
+    <img src="{{ entity.preview.cover }}" alt="{{ item.link_text }}"
+      class="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-300">
+  {% elsif entity.metadata.content_type == 'image/svg+xml' %}
+    <img src="{{ entity.url[site.settings.resource_download_expiry_time] }}" alt="{{ item.link_text }}"
+      class="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-300">
+  {% else %}
+    <div class="w-full h-full flex items-center justify-center">
+      <i class="ri-image-line text-4xl text-gray-400"></i>
+    </div>
+  {% endif %}
+
+  <div class="absolute top-2 right-2 px-2 py-1 bg-primary text-white text-xs rounded font-semibold shadow-sm">
+    图片
+  </div>
+</div>
+<div class="p-2 item-name flex-0">
+  <p class="text-xs text-gray-600 dark:text-gray-400 truncate">{{ item.link_text }}</p>
+  {% if entity and entity.metadata.human_size %}
+    <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">{{ entity.metadata.human_size }}</p>
+  {% endif %}
+</div>
+

@@ -1,0 +1,35 @@
+{% schema %}
+{
+  "name": "资源栏目页",
+  "description": "可用于资源的分类目录",
+  "thumb_url": "images/theme/channel-card.webp",
+  "sub_page_templates": ["page","channel"],
+  "settings": [
+    {
+      "id": "title",
+      "type": "text",
+      "label": "栏目名称"
+    },
+    {
+      "id": "description",
+      "type": "textarea",
+      "label": "描述",
+      "info": "栏目描述"
+    }
+  ]
+}
+{% endschema %}
+
+{% layout 'theme_no_content' %}
+
+<div
+  data-controller="redirect"
+  data-redirect-target-url-value="/"
+  data-redirect-params-value='{"channel": "{{ page.full_slug }}"}'
+  data-redirect-use-current-url-value="true"
+  data-redirect-override-value="false"
+  data-redirect-keep-history-value="false"
+  class="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center"
+>
+  <span class="loading loading-spinner loading-md"></span>
+</div>

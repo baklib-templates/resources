@@ -1,0 +1,118 @@
+<header class="h-14 md:h-20 bg-white border-b border-gray-200 flex items-center justify-between px-4 md:px-8 shadow-sm">
+  {% comment %} 左侧区域 {% endcomment %}
+  <div class="flex items-center gap-2 md:gap-3">
+    {% comment %} 展开/折叠左侧菜单 - 移动端显示 {% endcomment %}
+    <label for="my-drawer-3" class="btn btn-sm drawer-button lg:hidden btn-ghost p-2 min-h-0 h-auto">
+      <i class="ri-menu-line text-lg"></i>
+    </label>
+
+    {% comment %} Logo {% endcomment %}
+    {% if site.settings.logo_url %}
+      <a href="/" class="flex items-center">
+        <img src="{{ site.settings.logo_url }}" alt="{{ site.name }}" class="h-8 md:h-10 w-auto">
+      </a>
+    {% else %}
+      {% comment %} 移动端显示蓝色方块带R字母，桌面端显示三个蓝色条 {% endcomment %}
+      <a href="/" class="lg:hidden flex items-center justify-center w-8 h-8 bg-blue-600 rounded-md text-white font-bold text-lg">
+        R
+      </a>
+      <div class="hidden lg:flex flex-col gap-0.5">
+        <div class="w-6 h-1.5 rounded-sm bg-blue-500"></div>
+        <div class="w-6 h-1.5 rounded-sm bg-blue-400 ml-0.5"></div>
+        <div class="w-6 h-1.5 rounded-sm bg-blue-300 ml-1.5"></div>
+      </div>
+    {% endif %}
+
+    {% comment %} 站点名称 {% endcomment %}
+    <a href="/" class="text-lg md:text-2xl font-bold text-gray-800 md:text-blue-600 hover:text-blue-700 transition-colors">
+      {{ site.name | default: 'ResourceHub' }}
+    </a>
+
+  </div>
+
+  {% comment %} 右侧区域 {% endcomment %}
+  <div class="flex items-center gap-2 md:gap-4">
+    {% comment %} 更多导航菜单 - 桌面端显示 {% endcomment %}
+    <div class="hidden lg:block relative"
+          data-controller="more-menu">
+      <button type="button"
+              class="p-2 rounded-md hover:bg-gray-100 transition-colors text-gray-600"
+              data-action="click->more-menu#toggle"
+              title="更多导航菜单">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                <path d="M11.644 1.59a.75.75 0 0 1 .712 0l9.75 5.25a.75.75 0 0 1 0 1.32l-9.75 5.25a.75.75 0 0 1-.712 0l-9.75-5.25a.75.75 0 0 1 0-1.32l9.75-5.25Z" />
+                <path d="m3.265 10.602 7.668 4.129a2.25 2.25 0 0 0 2.134 0l7.668-4.13 1.37.739a.75.75 0 0 1 0 1.32l-9.75 5.25a.75.75 0 0 1-.71 0l-9.75-5.25a.75.75 0 0 1 0-1.32l1.37-.738Z" />
+                <path d="m10.933 19.231-7.668-4.13-1.37.739a.75.75 0 0 0 0 1.32l9.75 5.25c.221.12.489.12.71 0l9.75-5.25a.75.75 0 0 0 0-1.32l-1.37-.738-7.668 4.13a2.25 2.25 0 0 1-2.134-.001Z" />
+              </svg>
+      </button>
+      <div class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50"
+            data-more-menu-target="menu">
+        <div class="py-1">
+          {% assign header_menus = site.settings.header_menu | newline_to_br | split: '<br />' %}
+          {% for menu_line in header_menus %}
+            {% assign menu_parts = menu_line | split: '[' %}
+            {% assign menu_name = menu_parts[0] %}
+            {% assign menu_url = menu_parts[1] | split: ']' | first %}
+            <a href="{{ menu_url }}" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+              <i class="ri-link"></i>
+              <span>{{ menu_name }}</span>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    {% comment %} 个人中心 {% endcomment %}
+    {% if current_user %}
+      <div class="relative" data-controller="user-menu">
+        <button type="button"
+                class="p-1.5 md:p-2 rounded-md hover:bg-gray-100 transition-colors text-gray-600"
+                data-action="click->user-menu#toggle"
+                title="个人中心">
+          {% if current_user.avatar.url %}
+            <img src="{{ current_user.avatar.url | asset_url }}"
+                  alt="{{ current_user.name }}"
+                  class="w-7 h-7 md:w-8 md:h-8 rounded-full object-cover">
+          {% else %}
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 md:size-6">
+                <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clip-rule="evenodd" />
+              </svg>
+          {% endif %}
+        </button>
+        <div class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50"
+              data-user-menu-target="menu">
+          <ul class="py-2">
+            <li>
+              <a href="{{ current_user.profile_url }}"
+                  class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  data-discover="true">
+                <i class="ri-user-3-line text-lg"></i>
+                <span>个人信息</span>
+              </a>
+            </li>
+            <li>
+              {% form_tag 'sign_out' %}
+                <button type="submit"
+                        class="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-gray-100 w-full text-left cursor-pointer"
+                        data-disable-with="退出中...">
+                  <i class="ri-logout-box-r-line text-lg"></i>
+                  <span>{{ 'generic.signout' | t: '退出登录' }}</span>
+                </button>
+              {% endform_tag %}
+            </li>
+          </ul>
+        </div>
+      </div>
+    {% else %}
+      {% comment %} 登录按钮 {% endcomment %}
+      {% form_tag 'sign_in_with_baklib' %}
+        <button type="submit"
+                class="btn btn-primary btn-sm bg-blue-600 hover:bg-blue-700 text-white border-none text-sm md:text-base px-3 md:px-4"
+                data-disable-with="登录中...">
+          <span class="lg:hidden">登录</span>
+          <span class="hidden lg:inline">登录 / 注册</span>
+        </button>
+      {% endform_tag %}
+    {% endif %}
+  </div>
+</header>

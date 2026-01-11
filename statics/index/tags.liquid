@@ -1,0 +1,14 @@
+
+{% layout none %}
+
+{{ assign keywords = params.keywords | presence }}
+
+{% if keywords %}
+  {% assign filtered_tags = site.tags | tag: keywords %}
+  {% paginate_tag filtered_tags, per: 10 %}
+    {
+      "data": {{ filtered_tags | to_json | escape }},
+      "paginate": {{ paginate | to_json | escape }}
+    }
+  {% endpaginate_tag %}
+{% endif %}

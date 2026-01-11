@@ -1,0 +1,21 @@
+{% comment %} 音频类型模板 {% endcomment %}
+<div class="aspect-square bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center relative overflow-hidden">
+  {% if entity.previewable? %}
+    <img src="{{ entity.preview.cover }}" alt="{{ item.link_text }}"
+      class="w-full h-full object-cover">
+  {% else %}
+    <div class="absolute inset-0 flex items-center justify-center">
+      <i class="ri-music-2-line text-6xl text-purple-400 dark:text-purple-500"></i>
+    </div>
+  {% endif %}
+  <div class="absolute bottom-2 right-2 px-2 py-1 bg-black/70 text-white text-xs rounded">
+    音频
+  </div>
+</div>
+<div class="p-2 item-name">
+  <p class="text-xs text-gray-600 dark:text-gray-400 truncate">{{ item.link_text }}</p>
+  {% if entity and entity.metadata.human_size %}
+    <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">{{ entity.metadata.human_size }}</p>
+  {% endif %}
+</div>
+

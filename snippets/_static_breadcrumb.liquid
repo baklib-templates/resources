@@ -1,0 +1,29 @@
+<div class="hidden md:flex flex-1 items-center gap-2 text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap overflow-auto">
+  <div class="flex items-center">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+      class="text-gray-400 h-4 w-4 mr-1" fill="currentColor">
+      <path
+        d="M19 21H5C4.44772 21 4 20.5523 4 20V11L1 11L11.3273 1.6115C11.7087 1.26475 12.2913 1.26475 12.6727 1.6115L23 11L20 11V20C20 20.5523 19.5523 21 19 21ZM13 19H18V9.15745L12 3.7029L6 9.15745V19H11V13H13V19Z">
+      </path>
+    </svg>
+    <a href="/" class="hover:text-gray-900 dark:hover:text-gray-100 transition-colors cursor-pointer">首页</a>
+  </div>
+  <div class="flex items-center gap-2" data-breadcrumb-target="breadcrumbContainer"></div>
+  <template data-breadcrumb-target="breadcrumbTemplate">
+    {% raw %}
+      <div class="flex items-center">
+        <svg class='text-gray-400 h-4 w-4 mr-1' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="currentColor">
+          <path
+            d="M12.1717 12.0005L9.34326 9.17203L10.7575 7.75781L15.0001 12.0005L10.7575 16.2431L9.34326 14.8289L12.1717 12.0005Z">
+          </path>
+        </svg>
+        <a
+          href="?channel={{path}}"
+          class="hover:text-gray-900 dark:hover:text-gray-100 transition-colors cursor-pointer"
+        >{{link_text}}</a>
+      </div>
+    {% endraw %}
+  </template>
+</div>
+

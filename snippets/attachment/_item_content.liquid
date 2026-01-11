@@ -1,0 +1,10 @@
+{% comment %} 描述信息展示 {% endcomment %}
+
+{% assign has_content = page.settings.content | replace: '<p></p>', '' | present? %}
+{% if has_content %}
+  <div class="pt-4 mt-4 border-t border-gray-200 dark:border-gray-700 max-w-full overflow-x-auto">
+    <section class="ProseMirror prose prose-sm max-w-none dark:prose-invert prose-headings:mt-4 prose-headings:mb-2 prose-p:my-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-1 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg prose-img:my-4" data-controller="link-target images-viewer">
+      {{ page.settings.content }}
+    </section>
+  </div>
+{% endif %}

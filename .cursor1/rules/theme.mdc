@@ -1,0 +1,7 @@
+---
+alwaysApply: true
+---
+
+- js 使用stimulus js、 alpinejs、turbo js
+- 样式使用 tailwindcss 4，主要使用 daisyui
+  - daisyui doc: https://daisyui.com/docs

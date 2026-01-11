@@ -1,0 +1,23 @@
+{% comment %} 视频类型模板 {% endcomment %}
+<div class="aspect-square overflow-hidden bg-gray-100 dark:bg-gray-700 relative">
+
+  {% if entity.previewable? %}
+    <img src="{{ entity.preview.cover }}" alt="{{ item.link_text }}"
+      class="w-full h-full object-cover">
+  {% endif %}
+  <div class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
+    <div class="w-12 h-12 rounded-full bg-white/90 dark:bg-gray-800/90 flex items-center justify-center shadow-lg">
+      <i class="ri-play-fill text-2xl text-gray-700 dark:text-gray-300"></i>
+    </div>
+  </div>
+  <div class="absolute top-2 right-2 px-2 py-1 bg-black/70 text-white text-xs rounded">
+    视频
+  </div>
+</div>
+<div class="p-2 item-name">
+  <p class="text-xs text-gray-600 dark:text-gray-400 truncate">{{ item.link_text }}</p>
+  {% if entity and entity.metadata.human_size %}
+    <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">{{ entity.metadata.human_size }}</p>
+  {% endif %}
+</div>
+

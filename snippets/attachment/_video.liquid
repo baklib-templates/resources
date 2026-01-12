@@ -1,140 +1,170 @@
 {% comment %} 视频资源详情展示 {% endcomment %}
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+<div class="grid grid-cols-1 lg:grid-cols-7 gap-6 mb-8">
   <!-- Left Column - Video Preview (2/3 width) -->
-  <div class="lg:col-span-2">
-    <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
-      {% if entity and entity.url %}
-        <video
-          src="{{ entity.url[site.settings.resource_download_expiry_time] }}"
-          controls
-          class="w-full max-h-[600px]"
-          poster="{% if entity.previewable? and entity.preview.cover %}{{ entity.preview.cover }}{% elsif page.settings.cover %}{{ page.settings.cover }}{% endif %}">
-          您的浏览器不支持视频播放。
-        </video>
-      {% elsif entity and entity.previewable? and entity.preview.cover %}
-        <div class="relative min-h-[400px] flex items-center justify-center">
+  <div class="lg:col-span-3">
+    <div class="space-y-4 sticky top-6">
+      <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow flex items-center justify-center min-h-[400px] h-[calc(100vh-300px)]">
+        {% if entity and entity.url %}
+          <video
+            src="{{ entity.url[site.settings.resource_download_expiry_time] }}"
+            controls
+            class="max-w-full max-h-full object-contain"
+            poster="{% if entity.previewable? and entity.preview.cover %}{{ entity.preview.cover }}{% elsif page.settings.cover %}{{ page.settings.cover }}{% endif %}">
+            您的浏览器不支持视频播放。
+          </video>
+        {% elsif entity and entity.previewable? and entity.preview.cover %}
           <img src="{{ entity.preview.cover }}"
                alt="{{ page.link_text }}"
-               class="w-full h-full object-cover">
-          <div class="absolute inset-0 flex items-center justify-center bg-black/20">
-            <div class="w-16 h-16 rounded-full bg-white/90 dark:bg-gray-800/90 flex items-center justify-center shadow-lg">
-              <i class="ri-play-fill text-3xl text-gray-700 dark:text-gray-300"></i>
-            </div>
-          </div>
-        </div>
-      {% elsif page.settings.cover %}
-        <div class="relative min-h-[400px] flex items-center justify-center">
+               class="max-w-full max-h-full object-contain">
+        {% elsif page.settings.cover %}
           <img src="{{ page.settings.cover }}"
                alt="{{ page.link_text }}"
-               class="w-full h-full object-cover">
-          <div class="absolute inset-0 flex items-center justify-center bg-black/20">
-            <div class="w-16 h-16 rounded-full bg-white/90 dark:bg-gray-800/90 flex items-center justify-center shadow-lg">
-              <i class="ri-play-fill text-3xl text-gray-700 dark:text-gray-300"></i>
-            </div>
+               class="max-w-full max-h-full object-contain">
+        {% else %}
+          <div class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500">
+            <i class="ri-video-line text-6xl mb-2"></i>
+            <p>暂无预览</p>
           </div>
+        {% endif %}
+      </div>
+
+      <div class="flex items-start gap-2 border-b border-gray-100 pb-4 mb-4">
+        <div class="flex flex-col gap-2">
+          <div class="font-medium text-2xl leading-tight">{{ page.settings.title }}</div>
         </div>
-      {% else %}
-        <div class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 min-h-[400px] p-8">
-          <i class="ri-video-line text-6xl mb-2"></i>
-          <p class="text-lg">暂无预览</p>
-          {% if entity and entity.metadata.filename %}
-            <p class="text-sm mt-2 text-gray-500 dark:text-gray-400">{{ entity.metadata.filename }}</p>
-          {% endif %}
-        </div>
-      {% endif %}
+      </div>
     </div>
   </div>
 
   <!-- Right Column - Resource Details Card (1/3 width) -->
-  <div class="lg:col-span-1">
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sticky top-6">
-      <!-- Title Section -->
-      <div class="flex items-start gap-3 mb-6">
-        <div class="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/20 flex items-center justify-center flex-shrink-0">
-          <i class="ri-video-line text-purple-600 dark:text-purple-400 text-xl"></i>
+  <div class="lg:col-span-4">
+    <div class="space-y-4">
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+        <!-- Title Section -->
+        <div class="flex items-center gap-2 border-b border-gray-100 pb-4 mb-4">
+          <i class="ri-price-tag-3-line text-primary"></i>
+          <span class="font-medium">文件元数据</span>
         </div>
-        <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100 leading-tight">{{ page.settings.title }}</h1>
+
+        <!-- Metadata Section -->
+        <div class="grid grid-cols-2 gap-4 mb-6">
+          <div class="flex items-center gap-2">
+            <div class="w-[36px] h-[36px] rounded-sm bg-gray-100 flex justify-center items-center">
+              <i class="ri-hard-drive-line"></i>
+            </div>
+            <div class="flex flex-col space-y-0.1">
+              <span class="text-[12px] text-base-content/50">文件大小</span>
+              <span class="font-bold">
+                {{ entity.metadata.human_size }}
+              </span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-[36px] h-[36px] rounded-sm bg-gray-100 flex justify-center items-center">
+              <i class="ri-video-line"></i>
+            </div>
+            <div class="flex flex-col space-y-0.1">
+              <span class="text-[12px] text-base-content/50">文件类型</span>
+              <span class="font-bold">
+                {% if entity.metadata.kind %}
+                  {{ entity.metadata.kind }}
+                {% elsif entity.metadata.content_type %}
+                  {{ entity.metadata.content_type | split: '/' | last }}
+                {% endif %}
+              </span>
+            </div>
+          </div>
+          {% if entity and entity.metadata.duration %}
+            <div class="flex items-center gap-2">
+              <div class="w-[36px] h-[36px] rounded-sm bg-gray-100 flex justify-center items-center">
+                <i class="ri-time-line"></i>
+              </div>
+              <div class="flex flex-col space-y-0.1">
+                <span class="text-[12px] text-base-content/50">时长</span>
+                <span class="font-bold">
+                  {{ entity.metadata.duration }}
+                </span>
+              </div>
+            </div>
+          {% endif %}
+          <div class="flex items-center gap-2">
+            <div class="w-[36px] h-[36px] rounded-sm bg-gray-100 flex justify-center items-center">
+              <i class="ri-calendar-check-line"></i>
+            </div>
+            <div class="flex flex-col space-y-0.1">
+              <span class="text-[12px] text-base-content/50">上传时间</span>
+              <span class="font-bold">{{ page.published_at | date:
+              "%Y-%m-%d" }}</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-[36px] h-[36px] rounded-sm bg-gray-100 flex justify-center items-center">
+              <i class="ri-eye-line"></i>
+            </div>
+            <div class="flex flex-col space-y-0.1">
+              <span class="text-[12px] text-base-content/50">浏览次数</span>
+              <span class="font-bold">
+                {{ page.visits_count }}
+              </span>
+            </div>
+          </div>
+          {% if page.author and page.author.name %}
+            <div class="flex items-center gap-2">
+              <div class="w-[36px] h-[36px] rounded-sm bg-gray-100 flex justify-center items-center">
+                <i class="ri-user-line"></i>
+              </div>
+              <div class="flex flex-col space-y-0.1">
+                <span class="text-[12px] text-base-content/50">创建者</span>
+                <span class="font-bold">{{ page.author.name }}</span>
+              </div>
+            </div>
+          {% elsif page.settings.creator %}
+            <div class="flex items-center gap-2">
+              <div class="w-[36px] h-[36px] rounded-sm bg-gray-100 flex justify-center items-center">
+                <i class="ri-user-line"></i>
+              </div>
+              <div class="flex flex-col space-y-0.1">
+                <span class="text-[12px] text-base-content/50">创建者</span>
+                <span class="font-bold">{{ page.settings.creator }}</span>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="text-center max-w-[200px] block">
+          <a href="{{ entity.url[site.settings.resource_download_expiry_time] }}" download class="w-full btn btn-primary btn-lg bg-blue-600 hover:bg-blue-700 text-white border-none rounded-lg space-x-2 hover:translate-y-[-2px] transition-all duration-300 hover:shadow">
+            <i class="ri-download-cloud-2-line"></i>
+            <span class="text-sm">立即下载</span>
+          </a>
+        </div>
       </div>
 
-      <!-- Metadata Section -->
-      <div class="space-y-4 mb-6">
-        {% if page.author and page.author.name %}
-          <div class="flex items-center gap-3 text-gray-600 dark:text-gray-400">
-            <i class="ri-user-line text-gray-400 dark:text-gray-500"></i>
-            <span class="text-sm">作者：<span class="text-gray-800 dark:text-gray-100 font-medium">{{ page.author.name }}</span></span>
-          </div>
-        {% elsif page.settings.creator %}
-          <div class="flex items-center gap-3 text-gray-600 dark:text-gray-400">
-            <i class="ri-user-line text-gray-400 dark:text-gray-500"></i>
-            <span class="text-sm">创建者：<span class="text-gray-800 dark:text-gray-100 font-medium">{{ page.settings.creator }}</span></span>
-          </div>
-        {% endif %}
-        {% if page.published_at %}
-          <div class="flex items-center gap-3 text-gray-600 dark:text-gray-400">
-            <i class="ri-calendar-line text-gray-400 dark:text-gray-500"></i>
-            <span class="text-sm">上传日期：<span class="text-gray-800 dark:text-gray-100 font-medium">{{ page.published_at | date: "%Y-%m-%d" }}</span></span>
-          </div>
-        {% endif %}
-        {% if entity and entity.metadata.human_size %}
-          <div class="flex items-center gap-3 text-gray-600 dark:text-gray-400">
-            <i class="ri-file-size-line text-gray-400 dark:text-gray-500"></i>
-            <span class="text-sm">文件大小：<span class="text-gray-800 dark:text-gray-100 font-medium">{{ entity.metadata.human_size }}</span></span>
-          </div>
-        {% endif %}
-        {% if entity and entity.metadata.duration %}
-          <div class="flex items-center gap-3 text-gray-600 dark:text-gray-400">
-            <i class="ri-time-line text-gray-400 dark:text-gray-500"></i>
-            <span class="text-sm">时长：<span class="text-gray-800 dark:text-gray-100 font-medium">{{ entity.metadata.duration }}</span></span>
-          </div>
-        {% endif %}
-        <div class="flex items-center gap-3 text-gray-600 dark:text-gray-400">
-          <i class="ri-folder-line text-gray-400 dark:text-gray-500"></i>
-          <span class="text-sm">分类：<span class="text-gray-800 dark:text-gray-100 font-medium">
-            {% if entity.metadata.content_type %}
-              {{ entity.metadata.content_type | split: '/' | last | upcase }}
-            {% elsif entity.metadata.kind %}
-              {{ entity.metadata.kind | upcase }}
-            {% else %}
-              VIDEO
-            {% endif %}
-          </span></span>
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+        <div class="flex items-center gap-2 border-b border-gray-100 pb-4 mb-4">
+          <i class="ri-price-tag-3-line text-primary"></i>
+          <span class="font-medium">文件标签</span>
         </div>
-      </div>
-
-      <!-- Tags -->
-      {% if page.settings.resource_tags.size > 0 %}
-        <div class="flex flex-wrap gap-2 mb-6">
+        <div class="flex flex-wrap gap-2 min-h-[36px]">
           {% for tag in page.settings.resource_tags %}
-            <span class="inline-flex items-center px-3 py-1 bg-indigo-100 dark:bg-indigo-900/20 text-blue-600 dark:text-blue-400 rounded-md text-sm font-medium">{{ tag.name }}</span>
+            <span class="inline-flex items-center px-3 py-1 bg-primary/10 text-primary/80 rounded text-sm">{{ tag.name }}</span>
           {% endfor %}
         </div>
-      {% endif %}
-
-      <!-- Action Buttons -->
-      <div class="flex flex-col gap-3">
-        <a href="{{ entity.url[site.settings.resource_download_expiry_time] }}" download class="btn btn-primary w-full bg-blue-600 hover:bg-blue-700 text-white border-none">
-          <i class="ri-download-line"></i>
-          下载
-        </a>
-        {% if entity and entity.url %}
-          <button class="btn btn-outline w-full border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
-            <i class="ri-play-fill"></i>
-            播放
-          </button>
-        {% endif %}
       </div>
+
+      <!-- Resource Description -->
+      {% assign has_content = page.settings.content | replace: '<p></p>', '' | present? %}
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+          <div class="flex items-center gap-2 border-b border-gray-100 pb-4 mb-4">
+            <i class="ri-article-line text-primary"></i>
+            <span class="font-medium">文件描述</span>
+          </div>
+          <section
+            class="ProseMirror prose prose-sm max-w-none dark:prose-invert prose-headings:mt-4 prose-headings:mb-2 prose-p:my-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-1 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg prose-img:my-4 min-h-[36px]"
+            data-controller="link-target images-viewer">
+            {{ page.settings.content }}
+          </section>
+        </div>
     </div>
   </div>
 </div>
-
-<!-- Resource Description -->
-{% assign has_content = page.settings.content | replace: '<p></p>', '' | present? %}
-{% if has_content %}
-  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
-    <h2 class="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4">资源描述</h2>
-    <section class="ProseMirror prose prose-sm max-w-none dark:prose-invert prose-headings:mt-4 prose-headings:mb-2 prose-p:my-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-1 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg prose-img:my-4" data-controller="link-target images-viewer">
-      {{ page.settings.content }}
-    </section>
-  </div>
-{% endif %}
-

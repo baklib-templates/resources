@@ -24,6 +24,9 @@
 {% else %}
   {% assign base_pages = site.pages_in_list %}
 {% endif %}
+{% comment %} params.date_start = '2026-01-28' => "2026-01-28 00:00:00" {% endcomment %}
+{% assign date_start = params.date_start | date: '%Y-%m-%d 00:00:00' %}
+{% assign date_end = params.date_end | date: '%Y-%m-%d 23:59:59' %}
 
 {% query filtered_pages from base_pages %}
   {
@@ -32,7 +35,9 @@
       "settings.asset.metadata.kind_in": file_type,
       "settings.asset.metadata.size_gteq": size_min_bytes,
       "settings.asset.metadata.size_lteq": size_max_bytes,
-      "settings.resource_tags_array_cont_any": params.resource_tags
+      "settings.resource_tags_array_cont_any": params.resource_tags,
+      "created_at_gteq": date_start,
+      "created_at_lteq": date_end
     }
   }
 {% endquery %}

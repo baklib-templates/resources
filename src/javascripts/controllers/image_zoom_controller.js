@@ -22,23 +22,37 @@ export default class extends Controller {
     const windowWidth = window.innerWidth
     const space = 16
     if (!this.hasViewTarget) return 0
+    console.log('calculateBaseItemSize', windowWidth)
 
     const containerWidth = this.viewTarget.getBoundingClientRect().width
     const containerPadding = parseFloat(getComputedStyle(this.viewTarget).paddingLeft) * 2
 
+    if (windowWidth < 480) {
+      return containerWidth - containerPadding
+    }
     // 移动设备 (< 768px): 较小的基础尺寸
     if (windowWidth < 768) {
       return (containerWidth - containerPadding - space) / 2
     }
     // 平板设备 (768px - 1024px): 中等基础尺寸
     else if (windowWidth < 1024) {
-      return (containerWidth - containerPadding - (space * 2)) / 3
+      console.log('768-1024')
+      return (containerWidth - containerPadding - (space * 3)) / 4
     }
-    // 桌面设备 (> 1024px)
+    // 桌面设备 (1024px - 1366px)
     else if (windowWidth >= 1024 && windowWidth < 1366) {
-      return (containerWidth - containerPadding - (space * 4)) / 3
+      console.log('1024-1366')
+      return (containerWidth - containerPadding - (space * 3)) / 4
     }
-    // 桌面设备 (> 1280px)
+    else if (windowWidth >= 1366 && windowWidth < 1920) {
+      console.log('1366-1920')
+      return (containerWidth - containerPadding - (space * 3)) / 4
+    }
+    // 桌面设备 (> 1920px)
+    else if (windowWidth >= 1920 && windowWidth < 2560) {
+      console.log('1920-2560')
+      return (containerWidth - containerPadding - (space * 3)) / 4
+    }
     else {
       return 400
     }

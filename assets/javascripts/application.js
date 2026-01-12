@@ -14634,14 +14634,26 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
       const windowWidth = window.innerWidth;
       const space = 16;
       if (!this.hasViewTarget) return 0;
+      console.log("calculateBaseItemSize", windowWidth);
       const containerWidth = this.viewTarget.getBoundingClientRect().width;
       const containerPadding = parseFloat(getComputedStyle(this.viewTarget).paddingLeft) * 2;
+      if (windowWidth < 480) {
+        return containerWidth - containerPadding;
+      }
       if (windowWidth < 768) {
         return (containerWidth - containerPadding - space) / 2;
       } else if (windowWidth < 1024) {
-        return (containerWidth - containerPadding - space * 2) / 3;
+        console.log("768-1024");
+        return (containerWidth - containerPadding - space * 3) / 4;
       } else if (windowWidth >= 1024 && windowWidth < 1366) {
-        return (containerWidth - containerPadding - space * 4) / 3;
+        console.log("1024-1366");
+        return (containerWidth - containerPadding - space * 3) / 4;
+      } else if (windowWidth >= 1366 && windowWidth < 1920) {
+        console.log("1366-1920");
+        return (containerWidth - containerPadding - space * 3) / 4;
+      } else if (windowWidth >= 1920 && windowWidth < 2560) {
+        console.log("1920-2560");
+        return (containerWidth - containerPadding - space * 3) / 4;
       } else {
         return 400;
       }

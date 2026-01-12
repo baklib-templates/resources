@@ -27,8 +27,8 @@
     searchKeyword: '',
     sizeMin: '',
     sizeMax: '',
-    selectedYear: 'all',
-    selectedMonth: 'all',
+    dateStart: '',
+    dateEnd: '',
     tagInput: '',
     showAdvancedFilters: false,
     fileTypes: [
@@ -75,13 +75,13 @@
       // 初始化 channel 参数
       this.channel = this.attachmentsQuery.channel || '';
 
-      // 初始化年月筛选
-      this.selectedYear = this.attachmentsQuery.year || 'all';
-      this.selectedMonth = this.attachmentsQuery.month || 'all';
+      // 初始化时间范围筛选
+      this.dateStart = this.attachmentsQuery.date_start || '';
+      this.dateEnd = this.attachmentsQuery.date_end || '';
 
       // 检查是否有筛选参数，如果有则自动展开高级筛选
-      const hasFilters = this.attachmentsQuery.year ||
-                        this.attachmentsQuery.month ||
+      const hasFilters = this.attachmentsQuery.date_start ||
+                        this.attachmentsQuery.date_end ||
                         (this.attachmentsQuery.file_type && this.attachmentsQuery.file_type.length > 0) ||
                         this.attachmentsQuery.size_min ||
                         this.attachmentsQuery.size_max ||
@@ -150,12 +150,12 @@
         this.sizeMax = this.attachmentsQuery.size_max || '';
         // 同步 channel 参数
         this.channel = this.attachmentsQuery.channel || '';
-        // 同步年月
-        this.selectedYear = this.attachmentsQuery.year || 'all';
-        this.selectedMonth = this.attachmentsQuery.month || 'all';
+        // 同步时间范围
+        this.dateStart = this.attachmentsQuery.date_start || '';
+        this.dateEnd = this.attachmentsQuery.date_end || '';
         // 同步高级筛选展开状态
-        const hasFilters = this.attachmentsQuery.year ||
-                          this.attachmentsQuery.month ||
+        const hasFilters = this.attachmentsQuery.date_start ||
+                          this.attachmentsQuery.date_end ||
                           (this.attachmentsQuery.file_type && this.attachmentsQuery.file_type.length > 0) ||
                           this.attachmentsQuery.size_min ||
                           this.attachmentsQuery.size_max ||
@@ -339,29 +339,61 @@
       }
       this.updateAttachmentsSrc(true);
     },
-    setYearFilter(year) {
-      this.selectedYear = year;
-      if (year === 'all') {
-        delete this.attachmentsQuery.year;
+    setDateRange(startDate, endDate) {
+      this.skipNextWatch = true;
+      this.dateStart = startDate || '';
+      this.dateEnd = endDate || '';
+      if (startDate && startDate.trim() !== '') {
+        this.attachmentsQuery.date_start = startDate.trim();
       } else {
-        this.attachmentsQuery.year = year;
+        delete this.attachmentsQuery.date_start;
+      }
+      if (endDate && endDate.trim() !== '') {
+        this.attachmentsQuery.date_end = endDate.trim();
+      } else {
+        delete this.attachmentsQuery.date_end;
       }
       this.updateAttachmentsSrc(true);
     },
-    isYearSelected(year) {
-      return (this.attachmentsQuery.year || 'all') === year;
-    },
-    setMonthFilter(month) {
-      this.selectedMonth = month;
-      if (month === 'all') {
-        delete this.attachmentsQuery.month;
+    updateDateStart(value) {
+      this.skipNextWatch = true;
+      this.dateStart = value || '';
+      if (value && value.trim() !== '') {
+        this.attachmentsQuery.date_start = value.trim();
       } else {
-        this.attachmentsQuery.month = month;
+        delete this.attachmentsQuery.date_start;
       }
       this.updateAttachmentsSrc(true);
     },
-    isMonthSelected(month) {
-      return (this.attachmentsQuery.month || 'all') === month;
+    updateDateEnd(value) {
+      this.skipNextWatch = true;
+      this.dateEnd = value || '';
+      if (value && value.trim() !== '') {
+        this.attachmentsQuery.date_end = value.trim();
+      } else {
+        delete this.attachmentsQuery.date_end;
+      }
+      this.updateAttachmentsSrc(true);
+    },
+    clearDateRange() {
+      this.skipNextWatch = true;
+      this.dateStart = '';
+      this.dateEnd = '';
+      delete this.attachmentsQuery.date_start;
+      delete this.attachmentsQuery.date_end;
+      this.updateAttachmentsSrc(true);
+    },
+    clearDateStart() {
+      this.skipNextWatch = true;
+      this.dateStart = '';
+      delete this.attachmentsQuery.date_start;
+      this.updateAttachmentsSrc(true);
+    },
+    clearDateEnd() {
+      this.skipNextWatch = true;
+      this.dateEnd = '';
+      delete this.attachmentsQuery.date_end;
+      this.updateAttachmentsSrc(true);
     },
     applySizeRange(min, max) {
       this.skipNextWatch = true;
@@ -447,56 +479,43 @@
 
         <!-- 高级筛选区域 -->
         <div x-show="showAdvancedFilters" x-cloak x-transition class="space-y-4">
-            <!-- 年份筛选 -->
+          <!-- 时间范围筛选 -->
           <div class="flex items-start">
-            <span class="w-24 shrink-0 text-gray-500 pt-1.5 ">年份</span>
+            <span class="w-24 shrink-0 text-gray-500 pt-1.5 ">时间范围</span>
             <div class="flex-1 flex flex-wrap gap-3 items-center ">
-              <button
-                class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
-                :class="isYearSelected('all') ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
-                @click="setYearFilter('all')">全部</button>
-              <button
-                class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
-                :class="isYearSelected('2025') ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
-                @click="setYearFilter('2025')">2025</button>
-              <button
-                class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
-                :class="isYearSelected('2024') ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
-                @click="setYearFilter('2024')">2024</button>
-              <button
-                class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
-                :class="isYearSelected('2023') ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
-                @click="setYearFilter('2023')">2023</button>
-              <button
-                class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
-                :class="isYearSelected('2022') ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
-                @click="setYearFilter('2022')">2022</button>
-              <button
-                class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
-                :class="isYearSelected('2021') ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
-                @click="setYearFilter('2021')">2021</button>
-              <button
-                class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
-                :class="isYearSelected('2020') ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
-                @click="setYearFilter('2020')">2020</button>
-            </div>
-          </div>
-
-          <!-- 月份筛选 -->
-          <div class="flex items-start">
-            <span class="w-24 shrink-0 text-gray-500 pt-1.5 ">月份</span>
-            <div class="flex-1 flex flex-wrap gap-3 items-center ">
-              <button
-                class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
-                :class="isMonthSelected('all') ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
-                @click="setMonthFilter('all')">全部</button>
-              <template x-for="month in [1,2,3,4,5,6,7,8,9,10,11,12]" :key="month">
-                <button
-                  class="px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border"
-                  :class="isMonthSelected(`${month}`) ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
-                  @click="setMonthFilter(`${month}`)"
-                  x-text="`${month}月`"></button>
-              </template>
+              <div class="flex items-center gap-2">
+                <div class="relative">
+                  <input type="date"
+                    class="min-w-[110px] input input-bordered input-sm bg-gray-50 h-9 pr-9"
+                    x-model="dateStart"
+                    @change="updateDateStart(dateStart)"
+                    placeholder="开始日期">
+                  <button
+                    class="absolute right-7 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-gray-200 rounded-full cursor-pointer transition-colors z-10"
+                    @click.stop="clearDateStart"
+                    x-show="dateStart"
+                    type="button"
+                    title="清除开始日期">
+                    <i class="ri-close-line text-xs"></i>
+                  </button>
+                </div>
+                <span class="text-gray-400">-</span>
+                <div class="relative">
+                  <input type="date"
+                    class="min-w-[110px] input input-bordered input-sm bg-gray-50 h-9 pr-9"
+                    x-model="dateEnd"
+                    @change="updateDateEnd(dateEnd)"
+                    placeholder="结束日期">
+                  <button
+                    class="absolute right-7 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-gray-200 rounded-full cursor-pointer transition-colors z-10"
+                    @click.stop="clearDateEnd"
+                    x-show="dateEnd"
+                    type="button"
+                    title="清除结束日期">
+                    <i class="ri-close-line text-xs"></i>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 

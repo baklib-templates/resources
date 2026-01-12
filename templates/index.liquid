@@ -414,7 +414,18 @@
     isSizeRangeActive(min, max) {
       const currentMin = this.attachmentsQuery.size_min || '';
       const currentMax = this.attachmentsQuery.size_max || '';
-      return `${min || ''}` === `${currentMin}` && `${max || ''}` === `${currentMax}`;
+
+      // 处理 min 的比较：当 min 是 0 或空时，如果 currentMin 也是空或 '0'，认为匹配
+      const minMatch = (min === 0 || min === '' || min === null || min === undefined)
+        ? (currentMin === '' || currentMin === '0' || currentMin === null || currentMin === undefined)
+        : `${min}` === `${currentMin}`;
+
+      // 处理 max 的比较
+      const maxMatch = (max === '' || max === null || max === undefined)
+        ? (currentMax === '' || currentMax === null || currentMax === undefined)
+        : `${max}` === `${currentMax}`;
+
+      return minMatch && maxMatch;
     },
     resetFilters() {
       window.location.href = '/';

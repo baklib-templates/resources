@@ -44,7 +44,26 @@
     <div class="mb-6">
       {% render 'breadcrumb', breadcrumb: page.breadcrumb %}
     </div>
+
+    {% if entity and entity.image? %}
       {% render 'attachment/image', page: page, entity: entity %}
+    {% elsif entity and entity.video? %}
+      {% render 'attachment/video', page: page, entity: entity %}
+    {% elsif entity and entity.audio? %}
+      {% render 'attachment/audio', page: page, entity: entity %}
+    {% elsif entity and entity.pdf? %}
+      {% render 'attachment/pdf', page: page, entity: entity %}
+    {% elsif entity and entity.metadata.kind == 'word' %}
+      {% render 'attachment/word', page: page, entity: entity %}
+    {% elsif entity and entity.metadata.kind == 'excel' %}
+      {% render 'attachment/excel', page: page, entity: entity %}
+    {% elsif entity and entity.metadata.kind == 'ppt' %}
+      {% render 'attachment/ppt', page: page, entity: entity %}
+    {% elsif entity and entity.metadata.kind == 'archive' %}
+      {% render 'attachment/archive', page: page, entity: entity %}
+    {% else %}
+      {% render 'attachment/other', page: page, entity: entity %}
+    {% endif %}
 
   </div>
 

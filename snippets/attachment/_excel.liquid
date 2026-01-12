@@ -3,15 +3,9 @@
   <!-- Left Column - Excel Preview (2/3 width) -->
   <div class="lg:col-span-3">
     <div class="space-y-4 sticky top-6">
-      <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow flex items-center justify-center min-h-[400px] h-[calc(100vh-300px)]">
-        {% if entity and entity.previewable? and entity.preview.cover %}
-          <img src="{{ entity.preview.cover }}"
-               alt="{{ page.link_text }}"
-               class="max-w-full max-h-full object-contain">
-        {% elsif page.settings.cover %}
-          <img src="{{ page.settings.cover }}"
-               alt="{{ page.link_text }}"
-               class="max-w-full max-h-full object-contain">
+      <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow flex items-center justify-center min-h-[400px] h-[calc(100vh-300px)] relative">
+        {% if entity.previewable? and entity.preview.preview_file_url %}
+          <iframe src="{{ entity.preview_file_url }}" width="100%" height="100%" style="border: none;" title="Preview File"></iframe>
         {% else %}
           <div class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500">
             <i class="ri-file-excel-line text-6xl mb-2"></i>

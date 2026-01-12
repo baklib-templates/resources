@@ -3,13 +3,14 @@
   <!-- Left Column - Image Preview (2/3 width) -->
   <div class="lg:col-span-3">
     <div class="space-y-4 sticky top-6">
-      <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow flex items-center justify-center min-h-[400px] h-[calc(100vh-300px)] relative" data-controller="images-viewer">
+      <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow flex items-center justify-center min-h-[400px] h-[calc(100vh-300px)] relative" data-controller="images-viewer" x-data="{ openViewer: function() { this.$refs['images-viewer']?.click() } }">
         {% if entity and entity.previewable? %}
           <img src="{{ entity.preview.cover }}"
               alt="{{ page.link_text }}"
+              x-ref="images-viewer"
               class="max-w-full max-h-full object-contain">
         {% elsif entity.metadata.content_type == 'image/svg+xml' %}
-          <img src="{{ entity.url[site.settings.resource_download_expiry_time] }}" alt="{{ page.link_text }}" class="max-w-full max-h-full object-contain">
+          <img src="{{ entity.url[site.settings.resource_download_expiry_time] }}" x-ref="images-viewer" alt="{{ page.link_text }}" class="max-w-full max-h-full object-contain">
         {% else %}
           <div class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500">
             <i class="ri-image-line text-6xl mb-2"></i>
@@ -17,7 +18,7 @@
           </div>
         {% endif %}
 
-        <div class="absolute bottom-2 right-2 rounded flex items-center justify-center cursor-pointer bg-black/80 text-white px-2 py-1 space-x-1 text-xs hover:bg-black/90 transition-all duration-300" data-action="click->images-viewer#openViewer">
+        <div class="absolute bottom-2 right-2 rounded flex items-center justify-center cursor-pointer bg-black/80 text-white px-2 py-1 space-x-1 text-xs hover:bg-black/90 transition-all duration-300" @click="openViewer()">
           <i class="ri-fullscreen-line"></i>
           <span class="text-white">预览大图</span>
         </div>
@@ -161,6 +162,3 @@
     </div>
   </div>
 </div>
-
-
-

@@ -20,6 +20,7 @@ import TurboNavTreeController from "./controllers/turbo_nav_tree_controller"
 import BreadcrumbController from "./controllers/breadcrumb_controller"
 import LinkTargetController from "./controllers/link_target_controller"
 import ImagesViewerController from "./controllers/images_viewer_controller"
+// import PdfPreviewController from "./controllers/pdf_preview_controller"
 
 // Import utils
 import { buildUrl, updateQuery, getQueryParams, getFilenameWithExtension } from "./utils/index"
@@ -43,6 +44,7 @@ application.register("turbo-nav-tree", TurboNavTreeController)
 application.register("breadcrumb", BreadcrumbController)
 application.register("link-target", LinkTargetController)
 application.register("images-viewer", ImagesViewerController)
+// application.register("pdf-preview", PdfPreviewController)
 
 Alpine.magic("buildUrl", () => buildUrl);
 Alpine.magic("updateQuery", () => updateQuery);

@@ -547,7 +547,7 @@
           <!-- 文件类型 -->
           <div class="flex flex-col md:flex-row md:items-start gap-2 md:gap-0">
             <span class="hidden md:inline-block w-18 md:w-24 shrink-0 text-gray-500 pt-1.5">文件类型</span>
-            <div class="flex-1 flex flex-wrap gap-2 md:gap-3 items-center">
+            <div class="flex-1 grid grid-cols-4 md:flex flex-wrap gap-2 md:gap-3 items-center">
               <button class="px-3 md:px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border text-xs md:text-sm"
                 :class="!attachmentsQuery.file_type || attachmentsQuery.file_type.length === 0 ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
                 @click="clearAllFileTypes()">全部</button>
@@ -566,7 +566,7 @@
           <!-- 文件大小 -->
           <div class="flex flex-col md:flex-row md:items-start gap-2 md:gap-0">
             <span class="hidden md:inline-block w-18 md:w-24 shrink-0 text-gray-500 pt-1.5">文件大小</span>
-            <div class="flex-1 flex flex-wrap gap-2 md:gap-3 items-center">
+            <div class="flex-1 grid grid-cols-4 md:flex flex-wrap gap-2 md:gap-3 items-center">
               <button
                 class="px-3 md:px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border text-xs md:text-sm"
                 :class="isSizeRangeActive('', '') ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"

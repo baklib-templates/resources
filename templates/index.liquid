@@ -17,6 +17,12 @@
   data-breadcrumb-default-breadcrumb-value='{{ defaultBreadcrumb | to_json }}'
   @open-detail="openDetail($event.detail)"
   x-data="{
+    isCollapsed: false,
+    toggleSidebar(v) {
+      this.isCollapsed = v;
+      localStorage.setItem('sidebar-collapsed-status', this.isCollapsed);
+      window.dispatchEvent(new CustomEvent('sidebar-collapsed-status-changed', { detail: this.isCollapsed }));
+    },
     attachmentsBaseSrc: '/s/attachments',
     attachmentsQuery: {},
     attachmentsSrc: '',
@@ -43,6 +49,7 @@
       { value: 'other', label: '其他', icon: 'ri-file-line', icon_color: 'text-gray-500' },
     ],
     init() {
+      this.isCollapsed = localStorage.getItem('sidebar-collapsed-status') === 'true';
       this.attachmentsQuery = this.$getQueryParams(window.location.href)
 
       // 初始化 resource_tags 为数组
@@ -621,14 +628,14 @@
             class="px-5 py-2 rounded-md text-sm cursor-pointer transition-all duration-200 border-none flex items-center gap-1.5"
             :class="isSortByEditedAt() ? 'bg-blue-600 text-white' : 'bg-white text-gray-500 hover:text-blue-600'">
             <i class="ri-time-line"></i>
-            <span>最新</span>
+            <span>最新上传</span>
           </button>
           <button
             @click="setSortByVisitsCount()"
             class="px-5 py-2 rounded-md text-sm cursor-pointer transition-all duration-200 border-none flex items-center gap-1.5"
             :class="isSortByVisitsCount() ? 'bg-blue-600 text-white' : 'bg-white text-gray-500 hover:text-blue-600'">
             <i class="ri-fire-line"></i>
-            <span>最热</span>
+            <span>最热浏览</span>
           </button>
         </div>
 

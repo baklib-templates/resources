@@ -51,7 +51,7 @@ export default class extends Controller {
     // 桌面设备 (> 1920px)
     else if (windowWidth >= 1920 && windowWidth < 2560) {
       console.log('1920-2560')
-      return (containerWidth - containerPadding - (space * 3)) / 4
+      return (containerWidth - containerPadding - (space * 4)) / 5
     }
     else {
       return 400
@@ -83,6 +83,7 @@ export default class extends Controller {
     }, 150)
 
     window.addEventListener('resize', this.handleResize)
+    window.addEventListener('sidebar-collapsed-status-changed', this.handleResize)
   }
 
   viewTargetConnected() {

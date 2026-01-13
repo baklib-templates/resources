@@ -7,7 +7,7 @@
     {% assign entity = item.settings.asset %}
     <a
       id="item-{{ item.full_slug | replace: '/', '-' | replace: '.', '-' }}"
-      class="block bg-white rounded-lg overflow-hidden transition-all duration-300 ease-in-out group hover:-translate-y-0.5 hover:shadow-lg cursor-pointer"
+      class="block bg-white rounded-lg overflow-hidden transition-all duration-300 ease-in-out group hover:-translate-y-0.5 hover:shadow-lg cursor-pointer shadow-sm shadow-primary/4"
       data-image-zoom-target="item"
       style="width: 0;"
       href="{{ item.url }}"

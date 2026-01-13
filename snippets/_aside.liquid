@@ -2,13 +2,23 @@
   <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
   <div class="drawer-side">
     <label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label>
-    <div class="min-h-0 h-full lg:h-[calc(100vh-80px)] w-64 bg-white border-r border-gray-200 dark:border-gray-700 flex flex-col overflow-hidden">
+    <div class="min-h-0 h-full lg:h-[calc(100vh-80px)] w-64 bg-white border-r border-gray-200 dark:border-gray-700 flex flex-col overflow-hidden transition-all duration-300" x-cloak :class="!isCollapsed ? 'lg:hidden' : ''">
       {% comment %} 工作区 {% endcomment %}
       <div class="flex-1 min-h-0 p-4 custom-menu">
         <!-- Sidebar Header -->
-        <div class="flex items-center gap-2 mb-4 px-2">
-          <i class="ri-folder-search-line text-lg text-gray-600"></i>
-          <h2 class="text-base font-semibold text-gray-800">资源目录</h2>
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2 px-2">
+            <i class="ri-folders-fill text-lg text-gray-600"></i>
+            <h2 class="text-base font-semibold text-gray-800">资源目录</h2>
+          </div>
+          <button
+            type="button"
+            class="hidden lg:flex items-center justify-center w-8 h-8 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-gray-600 dark:text-gray-400 transition-colors"
+            @click="toggleSidebar(false)"
+            title="折叠侧边栏"
+          >
+            <i class="ri-menu-fold-line text-lg"></i>
+          </button>
         </div>
 
         <div class="overflow-auto w-full flex-1" data-breadcrumb-target="navTreeContainer">
@@ -45,4 +55,15 @@
   </div>
 </div>
 
-
+{% comment %} 展开按钮（折叠后显示，仅桌面端） {% endcomment %}
+<button
+  type="button"
+  x-cloak
+  class="hidden fixed items-center justify-center w-9 h-8 rounded-r-md hover:bg-primary/80 hover:text-white bg-white shadow cursor-pointer
+  transition-colors duration-75 left-0 z-40 top-[96px]"
+  :class="isCollapsed ? 'lg:hidden' : 'lg:flex'"
+  @click="toggleSidebar(true)"
+  title="展开侧边栏"
+>
+  <i class="ri-menu-unfold-line text-lg"></i>
+</button>

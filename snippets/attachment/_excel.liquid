@@ -3,7 +3,7 @@
   <!-- Left Column - Excel Preview (2/3 width) -->
   <div class="lg:col-span-3">
     <div class="space-y-4 sticky top-6">
-      <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow flex items-center justify-center min-h-[400px] h-[calc(100vh-300px)] relative">
+      <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow flex items-center justify-center h-[20vh] md:min-h-[400px] md:h-[calc(100vh-300px)] relative">
         {% if entity.previewable? and entity.preview_file_url %}
           {% comment %} 如果有预览文件 URL，尝试使用 PDF 预览（如果文件是 PDF 格式） {% endcomment %}
           {% render 'pdf_viewer', pdf_url: entity.preview_file_url, scale: 1.5, class: 'w-full h-full' %}
@@ -18,7 +18,7 @@
         {% endif %}
       </div>
 
-      <div class="flex items-start gap-2 border-b border-gray-100 pb-4 mb-4">
+      <div class="flex items-start gap-2 border-b border-gray-100 pb-4 md:mb-4">
         <div class="flex flex-col gap-2">
           <div class="font-medium text-2xl leading-tight">{{ page.settings.title }}</div>
         </div>

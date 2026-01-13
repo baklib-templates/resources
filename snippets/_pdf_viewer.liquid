@@ -42,49 +42,50 @@
   </div>
 
   <!-- PDF Preview Container -->
-  <div data-pdf-preview-target="container" class="w-full h-full overflow-auto flex items-start justify-center p-4">
+  <div data-pdf-preview-target="container" class="w-full h-full overflow-auto flex items-start justify-center p-2 md:p-4 touch-pan-x touch-pan-y">
     <!-- Canvas will be inserted here by the controller -->
   </div>
 
   <!-- PDF Controls -->
-  <div data-pdf-preview-target="controls" class="hidden absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white dark:bg-gray-800 rounded-lg shadow-lg px-4 py-2 flex items-center gap-2 z-20">
+  <div data-pdf-preview-target="controls" class="hidden absolute bottom-2 md:bottom-4 left-1/2 transform -translate-x-1/2 bg-white dark:bg-gray-800 rounded-lg shadow-lg px-2 md:px-4 py-1.5 md:py-2 flex items-center gap-1 md:gap-2 z-20 text-xs md:text-sm">
     <button type="button"
             data-action="click->pdf-preview#previousPage"
-            class="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            class="px-2 md:px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 active:bg-gray-300 dark:active:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
             title="上一页">
       <i class="ri-arrow-left-line"></i>
     </button>
 
-    <div data-pdf-preview-target="pageInfo" class="px-3 py-1 text-sm text-gray-700 dark:text-gray-300">
+    <div data-pdf-preview-target="pageInfo" class="px-2 md:px-3 py-1 text-xs md:text-sm text-gray-700 dark:text-gray-300 whitespace-nowrap">
       1 / 1
     </div>
 
     <button type="button"
             data-action="click->pdf-preview#nextPage"
-            class="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            class="px-2 md:px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 active:bg-gray-300 dark:active:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
             title="下一页">
       <i class="ri-arrow-right-line"></i>
     </button>
 
-    <div class="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1"></div>
+    <div class="w-px h-4 md:h-6 bg-gray-300 dark:bg-gray-600 mx-0.5 md:mx-1"></div>
 
     <button type="button"
             data-action="click->pdf-preview#zoomOut"
-            class="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
+            class="px-2 md:px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 active:bg-gray-300 dark:active:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors touch-manipulation"
             title="缩小">
       <i class="ri-zoom-out-line"></i>
     </button>
 
     <button type="button"
             data-action="click->pdf-preview#resetZoom"
-            class="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
+            class="px-1.5 md:px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 active:bg-gray-300 dark:active:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors touch-manipulation"
             title="重置缩放">
-      重置
+      <span class="hidden md:inline whitespace-nowrap">重置</span>
+      <span class="md:hidden">0</span>
     </button>
 
     <button type="button"
             data-action="click->pdf-preview#zoomIn"
-            class="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
+            class="px-2 md:px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 active:bg-gray-300 dark:active:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors touch-manipulation"
             title="放大">
       <i class="ri-zoom-in-line"></i>
     </button>

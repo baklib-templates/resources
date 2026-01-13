@@ -70,7 +70,7 @@
     {{ site.settings.head_html }}
   </head>
   <body class="flex w-screen flex-col bg-gray-50 h-screen overflow-hidden">
-    {% render 'header' %}
+    {% render 'header', page: page %}
     {{ content_for_layout }}
   </body>
 </html>

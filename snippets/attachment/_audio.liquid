@@ -3,7 +3,7 @@
   <!-- Left Column - Audio Preview (2/3 width) -->
   <div class="lg:col-span-3">
     <div class="space-y-4 sticky top-6">
-      <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow flex items-center justify-center min-h-[400px] h-[calc(100vh-300px)] relative" data-controller="images-viewer" x-data="{ openViewer: function() { this.$refs['images-viewer']?.click() } }">
+      <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow flex items-center justify-center h-[20vh] md:min-h-[400px] md:h-[calc(100vh-300px)] relative" data-controller="images-viewer" x-data="{ openViewer: function() { this.$refs['images-viewer']?.click() } }">
         {% if entity and entity.url %}
           <div class="w-full p-8 flex flex-col items-center justify-center">
             <i class="ri-music-2-line text-6xl text-gray-400 dark:text-gray-500 mb-4"></i>
@@ -19,7 +19,7 @@
         {% endif %}
       </div>
 
-      <div class="flex items-start gap-2 border-b border-gray-100 pb-4 mb-4">
+      <div class="flex items-start gap-2 border-b border-gray-100 pb-4 md:mb-4">
         <div class="flex flex-col gap-2">
           <div class="font-medium text-2xl leading-tight">{{ page.settings.title }}</div>
         </div>

@@ -39,17 +39,45 @@ export default class extends Controller {
     this.isRendering = false
     this.renderQueue = null
 
-    // 绑定键盘事件
+    // 移动端触摸相关状态
+    this.touchStartX = 0
+    this.touchStartY = 0
+    this.touchStartTime = 0
+    this.lastTouchDistance = 0
+    this.isPinching = false
+    this.initialScale = this.scaleValue
+
+    // 检测是否为移动设备
+    this.isMobile = this.detectMobile()
+
+    // 绑定事件
     this.boundHandleKeydown = this.handleKeydown.bind(this)
+    this.boundHandleTouchStart = this.handleTouchStart.bind(this)
+    this.boundHandleTouchMove = this.handleTouchMove.bind(this)
+    this.boundHandleTouchEnd = this.handleTouchEnd.bind(this)
+    this.boundHandleWheel = this.handleWheel.bind(this)
 
     if (this.hasUrlValue && this.urlValue) {
       this.loadPDF()
     }
   }
 
+  // 检测是否为移动设备
+  detectMobile() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+           (window.matchMedia && window.matchMedia('(max-width: 768px)').matches)
+  }
+
   disconnect() {
     // 移除事件监听
     document.removeEventListener('keydown', this.boundHandleKeydown)
+
+    if (this.hasContainerTarget) {
+      this.containerTarget.removeEventListener('touchstart', this.boundHandleTouchStart)
+      this.containerTarget.removeEventListener('touchmove', this.boundHandleTouchMove)
+      this.containerTarget.removeEventListener('touchend', this.boundHandleTouchEnd)
+      this.containerTarget.removeEventListener('wheel', this.boundHandleWheel)
+    }
 
     // 清理资源
     this.cleanup()
@@ -219,8 +247,16 @@ export default class extends Controller {
       this.updateControls()
       this.hideLoading()
 
-      // 添加键盘事件监听
+      // 添加事件监听
       document.addEventListener('keydown', this.boundHandleKeydown)
+
+      // 添加触摸事件监听（移动端）
+      if (this.hasContainerTarget) {
+        this.containerTarget.addEventListener('touchstart', this.boundHandleTouchStart, { passive: false })
+        this.containerTarget.addEventListener('touchmove', this.boundHandleTouchMove, { passive: false })
+        this.containerTarget.addEventListener('touchend', this.boundHandleTouchEnd, { passive: false })
+        this.containerTarget.addEventListener('wheel', this.boundHandleWheel, { passive: false })
+      }
     } catch (error) {
       console.error("PDF 加载失败:", error)
       this.showError(error.message || "PDF 加载失败，请稍后重试")
@@ -369,11 +405,17 @@ export default class extends Controller {
           // 计算适合的缩放比例
           const scaleX = containerWidth / pageWidth
           const scaleY = containerHeight / pageHeight
-          const fitScale = Math.min(scaleX, scaleY, MAX_SCALE)
+          let fitScale = Math.min(scaleX, scaleY, MAX_SCALE)
+
+          // 移动端使用更小的初始缩放，留出更多空间
+          if (this.isMobile) {
+            fitScale = Math.min(fitScale * 0.9, MAX_SCALE)
+          }
 
           // 如果计算出的缩放比例合理，则使用它
           if (fitScale >= MIN_SCALE && fitScale <= MAX_SCALE) {
             this.scaleValue = fitScale
+            this.initialScale = fitScale
           }
         }
       } finally {
@@ -384,11 +426,100 @@ export default class extends Controller {
     }
   }
 
+  // 触摸开始
+  handleTouchStart(event) {
+    if (event.touches.length === 1) {
+      // 单指触摸
+      this.touchStartX = event.touches[0].clientX
+      this.touchStartY = event.touches[0].clientY
+      this.touchStartTime = Date.now()
+      this.isPinching = false
+    } else if (event.touches.length === 2) {
+      // 双指触摸（缩放）
+      event.preventDefault()
+      this.isPinching = true
+      const touch1 = event.touches[0]
+      const touch2 = event.touches[1]
+      this.lastTouchDistance = Math.hypot(
+        touch2.clientX - touch1.clientX,
+        touch2.clientY - touch1.clientY
+      )
+      this.initialScale = this.scaleValue
+    }
+  }
+
+  // 触摸移动
+  handleTouchMove(event) {
+    if (this.isPinching && event.touches.length === 2) {
+      // 双指缩放
+      event.preventDefault()
+      const touch1 = event.touches[0]
+      const touch2 = event.touches[1]
+      const currentDistance = Math.hypot(
+        touch2.clientX - touch1.clientX,
+        touch2.clientY - touch1.clientY
+      )
+
+      if (this.lastTouchDistance > 0) {
+        const scaleChange = currentDistance / this.lastTouchDistance
+        const newScale = this.initialScale * scaleChange
+        this.scaleValue = Math.max(MIN_SCALE, Math.min(MAX_SCALE, newScale))
+        this.renderPage(this.currentPage)
+      }
+
+      this.lastTouchDistance = currentDistance
+    }
+  }
+
+  // 触摸结束
+  handleTouchEnd(event) {
+    if (!this.isPinching && event.changedTouches.length === 1) {
+      // 单指滑动翻页
+      const touch = event.changedTouches[0]
+      const deltaX = touch.clientX - this.touchStartX
+      const deltaY = touch.clientY - this.touchStartY
+      const deltaTime = Date.now() - this.touchStartTime
+      const distance = Math.hypot(deltaX, deltaY)
+
+      // 判断是否为有效的滑动（距离 > 50px，时间 < 300ms，主要是水平滑动）
+      if (distance > 50 && deltaTime < 300 && Math.abs(deltaX) > Math.abs(deltaY)) {
+        if (deltaX > 0) {
+          // 向右滑动，上一页
+          this.previousPage()
+        } else {
+          // 向左滑动，下一页
+          this.nextPage()
+        }
+      }
+    }
+
+    this.isPinching = false
+    this.lastTouchDistance = 0
+  }
+
+  // 鼠标滚轮缩放（桌面端）
+  handleWheel(event) {
+    // 只在桌面端且按住 Ctrl/Cmd 键时缩放
+    if (!this.isMobile && (event.ctrlKey || event.metaKey)) {
+      event.preventDefault()
+      const delta = event.deltaY > 0 ? -SCALE_STEP : SCALE_STEP
+      this.scaleValue = Math.max(MIN_SCALE, Math.min(MAX_SCALE, this.scaleValue + delta))
+      this.renderPage(this.currentPage)
+    }
+  }
+
   createCanvas() {
     const canvas = document.createElement('canvas')
     canvas.className = 'max-w-full h-auto'
     canvas.style.display = 'block'
     canvas.style.margin = '0 auto'
+
+    // 移动端优化：防止双击缩放
+    if (this.isMobile) {
+      canvas.style.touchAction = 'pan-x pan-y'
+      canvas.style.userSelect = 'none'
+      canvas.style.webkitUserSelect = 'none'
+    }
 
     if (this.hasContainerTarget) {
       this.containerTarget.innerHTML = ''
@@ -439,7 +570,12 @@ export default class extends Controller {
   }
 
   async resetZoom() {
-    this.scaleValue = DEFAULT_SCALE
+    // 移动端重置到初始适配缩放，桌面端重置到默认值
+    if (this.isMobile && this.initialScale > 0) {
+      this.scaleValue = this.initialScale
+    } else {
+      this.scaleValue = DEFAULT_SCALE
+    }
     await this.renderPage(this.currentPage)
   }
 

@@ -2,9 +2,11 @@
   {% comment %} 左侧区域 {% endcomment %}
   <div class="flex items-center gap-2 md:gap-3">
     {% comment %} 展开/折叠左侧菜单 - 移动端显示 {% endcomment %}
-    <label for="my-drawer-3" class="btn btn-sm drawer-button lg:hidden btn-ghost p-2 min-h-0 h-auto">
-      <i class="ri-menu-line text-lg"></i>
-    </label>
+    {% if page.full_slug == '/' %}
+      <label for="my-drawer-3" class="btn btn-sm drawer-button lg:hidden btn-ghost p-2 min-h-0 h-auto">
+        <i class="ri-menu-line text-lg"></i>
+      </label>
+    {% endif %}
 
     {% comment %} Logo {% endcomment %}
     {% if site.settings.logo_url %}

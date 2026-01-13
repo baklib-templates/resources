@@ -26,6 +26,7 @@
           data-node-name="全部资源"
           @click="
             updateChannel('');
+            handleSidebarClick();
             const turboFrame = $el.closest('turbo-frame');
             if (turboFrame) {
               turboFrame.querySelectorAll('[active]').forEach(el => el.removeAttribute('active'));
@@ -77,7 +78,7 @@
               data-breadcrumb-target="navNode"
               data-node-path="{{path}}"
               data-node-name="{{link_text}}"
-              @click="updateChannel('{{path}}')"
+              @click="updateChannel('{{path}}'); handleSidebarClick()"
               class="flex py-3 space-x-2 items-center cursor-pointer"
             >
               <!-- 文件夹图标 -->
@@ -110,7 +111,7 @@
               data-breadcrumb-target="navNode"
               data-node-path="{{path}}"
               data-node-name="{{link_text}}"
-              @click="updateChannel('{{path}}')"
+              @click="updateChannel('{{path}}'); handleSidebarClick()"
               class="flex py-3 space-x-2 items-center cursor-pointer"
             >
               <!-- 文件夹图标 -->

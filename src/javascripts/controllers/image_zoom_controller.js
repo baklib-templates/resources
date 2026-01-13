@@ -28,7 +28,7 @@ export default class extends Controller {
     const containerPadding = parseFloat(getComputedStyle(this.viewTarget).paddingLeft) * 2
 
     if (windowWidth < 480) {
-      return containerWidth - containerPadding
+      return (containerWidth - containerPadding - space) / 2
     }
     // 移动设备 (< 768px): 较小的基础尺寸
     if (windowWidth < 768) {

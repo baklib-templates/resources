@@ -34,35 +34,14 @@
 
   {% comment %} 右侧区域 {% endcomment %}
   <div class="flex items-center gap-2 md:gap-4">
-    {% comment %} 更多导航菜单 - 桌面端显示 {% endcomment %}
-    <div class="hidden lg:block relative"
-          data-controller="more-menu">
-      <button type="button"
-              class="p-2 rounded-md hover:bg-gray-100 transition-colors text-gray-600"
-              data-action="click->more-menu#toggle"
-              title="更多导航菜单">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                <path d="M11.644 1.59a.75.75 0 0 1 .712 0l9.75 5.25a.75.75 0 0 1 0 1.32l-9.75 5.25a.75.75 0 0 1-.712 0l-9.75-5.25a.75.75 0 0 1 0-1.32l9.75-5.25Z" />
-                <path d="m3.265 10.602 7.668 4.129a2.25 2.25 0 0 0 2.134 0l7.668-4.13 1.37.739a.75.75 0 0 1 0 1.32l-9.75 5.25a.75.75 0 0 1-.71 0l-9.75-5.25a.75.75 0 0 1 0-1.32l1.37-.738Z" />
-                <path d="m10.933 19.231-7.668-4.13-1.37.739a.75.75 0 0 0 0 1.32l9.75 5.25c.221.12.489.12.71 0l9.75-5.25a.75.75 0 0 0 0-1.32l-1.37-.738-7.668 4.13a2.25 2.25 0 0 1-2.134-.001Z" />
-              </svg>
-      </button>
-      <div class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50"
-            data-more-menu-target="menu">
-        <div class="py-1">
-          {% assign header_menus = site.settings.header_menu | newline_to_br | split: '<br />' %}
-          {% for menu_line in header_menus %}
-            {% assign menu_parts = menu_line | split: '[' %}
-            {% assign menu_name = menu_parts[0] %}
-            {% assign menu_url = menu_parts[1] | split: ']' | first %}
-            <a href="{{ menu_url }}" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-              <i class="ri-link"></i>
-              <span>{{ menu_name }}</span>
-            </a>
-          {% endfor %}
-        </div>
+    {% assign header_menu_html = site.settings.header_menu_html | presence %}
+    {% if header_menu_html %}
+      {% comment %} 分割线 {% endcomment %}
+      <div class="hidden lg:block w-px h-4 bg-base-300"></div>
+      <div class="hidden lg:flex flex-1 justify-center min-w-0">
+        <div class="flex items-center gap-6">{{ header_menu_html }}</div>
       </div>
-    </div>
+    {% endif %}
 
     {% comment %} 个人中心 {% endcomment %}
     {% if current_user %}

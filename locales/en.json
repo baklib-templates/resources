@@ -1,8 +1,30 @@
 {
-  "sections": {
-    "header": {
-      "title": "Site Title"
+  "snippets": {
+    "footer": {
+      "copyright": ""
     }
+  },
+  "generic": {
+    "signout": ""
+  },
+  "paginate": {
+    "previous": "",
+    "next": "",
+    "showing": "",
+    "records": ""
+  },
+  "shared": {
+    "templates": {
+      "403": {
+        "page_restricted_text": ""
+      }
+    }
+  },
+  "prompts": {
+    "page_restricted": ""
+  },
+  "buttons": {
+    "login": "",
+    "authorize": ""
   }
 }
-

@@ -1,8 +1,30 @@
 {
-  "sections": {
-    "header": {
-      "title": "网站标题"
+  "snippets": {
+    "footer": {
+      "copyright": "版权所有"
     }
+  },
+  "generic": {
+    "signout": "退出登录"
+  },
+  "paginate": {
+    "previous": "上一页",
+    "next": "下一页",
+    "showing": "当前显示第",
+    "records": "条记录"
+  },
+  "shared": {
+    "templates": {
+      "403": {
+        "page_restricted_text": ""
+      }
+    }
+  },
+  "prompts": {
+    "page_restricted": "该页面已限制访问"
+  },
+  "buttons": {
+    "login": "登录",
+    "authorize": "需要登录/授权"
   }
 }
-

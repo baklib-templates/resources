@@ -1,0 +1,47 @@
+{
+  "theme_label": "资源门户",
+  "theme_description": "专业的资源管理门户模板，专为数字资产和媒体资源管理而设计。支持多级栏目分类导航、标签分类、多条件查询筛选等功能，具备完善的权限管理体系和资源安全保护。",
+  "generic": {
+    "name": "通用设置",
+    "settings": {
+      "logo_url": {
+        "label": "Logo 图片",
+        "info": "若设置了logo，则页头显示 logo，否则显示：网站图标+站点名称"
+      },
+      "company_name": {
+        "label": "公司名称",
+        "default": "Baklib.cn",
+        "info": "显示在页面底部页脚位置"
+      },
+      "copyright_info": {
+        "label": "备案/版权信息",
+        "default": "蜀ICP备xxxx号"
+      }
+    }
+  },
+  "custom_html": {
+    "name": "自定义 HTML 代码",
+    "settings": {
+      "head_html": {
+        "label": "自定义 <head></head> 标签中的 HTML",
+        "info": "支持HTML标签和有限的TailwindCSS样式代码",
+        "placeholder": "通常在这里插入访问统计、客服机器人等嵌入代码"
+      },
+      "header_menu_html": {
+        "label": "顶部导航区域插入 HTML 代码",
+        "info": "支持HTML标签和有限的TailwindCSS样式代码",
+        "placeholder": "通常在这里插入公司其他网站的导航链接"
+      },
+      "footer_html": {
+        "label": "页脚区域插入 HTML 代码",
+        "info": "支持HTML标签和有限的TailwindCSS样式代码; 将完全替换默认页脚内容",
+        "placeholder": "若需要保留默认页脚内容，请在 footer_menu_html 中插入 HTML 代码"
+      },
+      "footer_menu_html": {
+        "label": "底部区域插入 HTML 代码(footer 内，footer_menu_html)",
+        "info": "支持HTML标签和有限的TailwindCSS样式代码",
+        "placeholder": "通常在这里插入公司其他网站的外部导航链接、友情链接、SEO 优化链接等"
+      }
+    }
+  }
+}

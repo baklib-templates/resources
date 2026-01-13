@@ -2,8 +2,8 @@
   {
     "name": "theme_info",
     "theme_name": "resource_hub",
-    "theme_label": "",
-    "theme_description": "",
+    "theme_label": "t:schema.theme_label",
+    "theme_description": "t:schema.theme_description",
     "theme_version": "0.0.1",
     "theme_syntax_version": "v2",
     "theme_scope": "cms",
@@ -62,35 +62,65 @@
     }
   },
   {
-    "name": "品牌设置",
+    "name": "t:schema.generic.name",
     "settings": [
       {
         "id": "logo_url",
         "type": "image_picker",
-        "width": 300,
-        "height": 80,
-        "label": "Logo",
-        "info": "网站 Logo"
+        "ratio": "3:1",
+        "width": 240,
+        "label": "t:schema.generic.settings.logo_url.label",
+        "info": "t:schema.generic.settings.logo_url.info"
+      },
+      {
+        "id": "company_name",
+        "label": "t:schema.generic.settings.company_name.label",
+        "type": "text",
+        "default": "t:schema.generic.settings.company_name.default",
+        "info": "t:schema.generic.settings.company_name.info"
+      },
+      {
+        "id": "copyright_info",
+        "type": "text",
+        "label": "t:schema.generic.settings.copyright_info.label",
+        "default": "t:schema.generic.settings.copyright_info.default"
       }
     ]
   },
   {
-    "name": "导航菜单设置",
+    "name": "t:schema.custom_html.name",
     "settings": [
       {
         "id": "head_html",
-        "type": "code",
-        "language": "html",
-        "label": "<head>标签内 HTML 代码",
-        "rows": 10
+        "type": "html",
+        "label": "t:schema.custom_html.settings.head_html.label",
+        "info": "t:schema.custom_html.settings.head_html.info",
+        "rows": 10,
+        "placeholder": "t:schema.custom_html.settings.head_html.placeholder"
       },
       {
-        "id": "header_menu",
-        "type": "textarea",
-        "label": "导航菜单",
-        "rows": 10,
-        "info": "格式：menu_name[url]，每行一个链接。",
-        "default": ""
+        "id": "header_menu_html",
+        "type": "html",
+        "label": "t:schema.custom_html.settings.header_menu_html.label",
+        "info": "t:schema.custom_html.settings.header_menu_html.info",
+        "rows": 6,
+        "placeholder": "t:schema.custom_html.settings.header_menu_html.placeholder"
+      },
+      {
+        "id": "footer_html",
+        "type": "html",
+        "label": "t:schema.custom_html.settings.footer_html.label",
+        "info": "t:schema.custom_html.settings.footer_html.info",
+        "rows": 6,
+        "placeholder": "t:schema.custom_html.settings.footer_html.placeholder"
+      },
+      {
+        "id": "footer_menu_html",
+        "type": "html",
+        "label": "t:schema.custom_html.settings.footer_menu_html.label",
+        "info": "t:schema.custom_html.settings.footer_menu_html.info",
+        "rows": 6,
+        "placeholder": "t:schema.custom_html.settings.footer_menu_html.placeholder"
       }
     ]
   },

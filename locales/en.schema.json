@@ -1,0 +1,47 @@
+{
+  "theme_label": "",
+  "theme_description": "",
+  "generic": {
+    "name": "",
+    "settings": {
+      "logo_url": {
+        "label": "",
+        "info": ""
+      },
+      "company_name": {
+        "label": "",
+        "default": "",
+        "info": ""
+      },
+      "copyright_info": {
+        "label": "",
+        "default": ""
+      }
+    }
+  },
+  "custom_html": {
+    "name": "",
+    "settings": {
+      "head_html": {
+        "label": "",
+        "info": "",
+        "placeholder": ""
+      },
+      "header_menu_html": {
+        "label": "",
+        "info": "",
+        "placeholder": ""
+      },
+      "footer_html": {
+        "label": "",
+        "info": "",
+        "placeholder": ""
+      },
+      "footer_menu_html": {
+        "label": "",
+        "info": "",
+        "placeholder": ""
+      }
+    }
+  }
+}

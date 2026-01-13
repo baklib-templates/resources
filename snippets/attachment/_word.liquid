@@ -4,7 +4,10 @@
   <div class="lg:col-span-3">
     <div class="space-y-4 sticky top-6">
       <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow flex items-center justify-center min-h-[400px] h-[calc(100vh-300px)] relative" data-controller="images-viewer" x-data="{ openViewer: function() { this.$refs['images-viewer']?.click() } }">
-        {% if entity and entity.previewable? and entity.preview.cover %}
+        {% if entity.previewable? and entity.preview_file_url %}
+          {% render 'pdf_viewer', pdf_url: entity.preview_file_url, scale: 1.5, class: 'bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow flex items-center
+          justify-center min-h-[400px] h-[calc(100vh-300px)] relative' %}
+        {% elsif entity and entity.previewable? and entity.preview.cover %}
           <img src="{{ entity.preview.cover }}"
                alt="{{ page.link_text }}"
                x-ref="images-viewer"

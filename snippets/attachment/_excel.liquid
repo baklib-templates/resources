@@ -3,16 +3,19 @@
   <!-- Left Column - Excel Preview (2/3 width) -->
   <div class="lg:col-span-3">
     <div class="space-y-4 sticky top-6">
-      <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow flex items-center justify-center min-h-[400px] h-[calc(100vh-300px)] relative">
-        {% if entity.previewable? and entity.preview.preview_file_url %}
-          <iframe src="{{ entity.preview_file_url }}" width="100%" height="100%" style="border: none;" title="Preview File"></iframe>
-        {% else %}
+      {% if entity.previewable? and entity.preview_file_url %}
+        {% comment %} 如果有预览文件 URL，尝试使用 PDF 预览（如果文件是 PDF 格式） {% endcomment %}
+        {% render 'pdf_viewer', pdf_url: entity.preview_file_url, scale: 1.5, class: 'bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow flex items-center
+          justify-center min-h-[400px] h-[calc(100vh-300px)] relative' %}
+      {% else %}
+        {% comment %} 如果没有预览文件，显示占位符 {% endcomment %}
+        <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow flex items-center justify-center min-h-[400px] h-[calc(100vh-300px)]">
           <div class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500">
             <i class="ri-file-excel-line text-6xl mb-2"></i>
             <p>暂无预览</p>
           </div>
-        {% endif %}
-      </div>
+        </div>
+      {% endif %}
 
       <div class="flex items-start gap-2 border-b border-gray-100 pb-4 mb-4">
         <div class="flex flex-col gap-2">

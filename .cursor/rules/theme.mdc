@@ -1,0 +1,8 @@
+---
+alwaysApply: true
+---
+
+- js 使用stimulus js、 alpinejs、turbo js
+- 样式使用 tailwindcss 4，主要使用 daisyui
+  - daisyui doc: https://daisyui.com/docs
+- 使用Mustache js在liquid文件中构建模板是，template html标签内第一层应使用 {% raw %} {% endraw %}进行包裹，因为Mustache的解析模版中变量与liquid都是使用{{}}格式，所以需要使用raw来进行处理

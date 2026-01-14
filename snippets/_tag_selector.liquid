@@ -1,0 +1,228 @@
+{% comment %}
+  标签选择器组件
+
+  参数说明：
+  - label: 标签文本（可选，默认为"标签筛选"）
+{% endcomment %}
+
+{% assign label = label | default: "标签筛选" %}
+
+<!-- 标签筛选 -->
+<div class="flex flex-col md:flex-row md:items-start gap-2 md:gap-0">
+  <span class="hidden md:inline-block w-18 md:w-24 shrink-0 text-gray-500 pt-1.5">{{ label }}</span>
+  <div class="flex-1 flex flex-col gap-3">
+    <div class="relative w-full md:w-64">
+      <button type="button"
+        class="input input-bordered input-sm w-full pl-8 pr-8 bg-gray-50 text-sm text-left cursor-pointer"
+        data-action="click->tag-selector#openModal">
+        <i class="ri-search-line absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+        <span class="text-gray-500 pointer-events-none"
+              x-text="attachmentsQuery.resource_tags?.length ? `已选择 ${attachmentsQuery.resource_tags.length} 个标签` : '点击选择标签'"></span>
+        <i class="ri-arrow-down-s-line absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+      </button>
+    </div>
+
+    <!-- 已选标签显示 -->
+    <div class="flex items-center text-xs gap-2 flex-wrap">
+      <template x-for="tag in attachmentsQuery.resource_tags || []" :key="tag">
+        <span class="inline-flex items-center gap-1.5 px-2 py-1 bg-indigo-100 text-primary/90 rounded-md max-w-full md:max-w-xs"
+              :title="tag">
+          <span class="truncate block" x-text="tag"></span>
+          <i class="ri-close-line cursor-pointer opacity-70 hover:opacity-100 text-sm shrink-0"
+             @click.stop="removeTag(tag)"></i>
+        </span>
+      </template>
+      <span x-show="!attachmentsQuery.resource_tags || attachmentsQuery.resource_tags.length === 0"
+            class="text-gray-400">暂无已选标签，点击上方按钮选择标签</span>
+    </div>
+  </div>
+</div>
+
+<!-- 标签选择 Dialog Modal -->
+<dialog class="modal"
+        data-tag-selector-target="modal"
+        @click.self="this.close()">
+  <div class="modal-box w-full max-w-3xl max-h-[90vh] md:max-h-[85vh] flex flex-col p-4 md:p-6 gap-3 md:gap-4 overflow-hidden">
+    <!-- Modal 标题 -->
+    <div class="flex items-center justify-between shrink-0 pb-2 border-b border-gray-200">
+      <h3 class="font-bold text-base md:text-lg lg:text-xl mb-0">选择标签</h3>
+      <button type="button"
+              class="btn btn-sm btn-circle btn-ghost"
+              data-action="click->tag-selector#closeModal"
+              aria-label="关闭">
+        <i class="ri-close-line text-lg"></i>
+      </button>
+    </div>
+
+    <!-- 搜索输入框 -->
+    <div class="shrink-0">
+      <div class="relative flex gap-2">
+        <div class="relative flex-1">
+          <input type="text"
+            class="input input-bordered w-full pl-9 md:pl-10 pr-9 md:pr-10 text-sm md:text-base h-9 md:h-10"
+            placeholder="搜索标签..."
+            data-tag-selector-target="searchInput"
+            data-action="input->tag-selector#search keydown.enter->tag-selector#performSearch compositionstart->tag-selector#handleCompositionStart compositionend->tag-selector#handleCompositionEnd">
+          <i class="ri-search-line absolute left-2.5 md:left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-sm md:text-base"></i>
+          <button type="button"
+                  data-action="click->tag-selector#clearSearch"
+                  class="absolute right-2.5 md:right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 cursor-pointer hidden"
+                  data-tag-selector-target="clearSearchBtn"
+                  aria-label="清除搜索">
+            <i class="ri-close-line text-sm md:text-base"></i>
+          </button>
+        </div>
+        <button type="button"
+                class="btn btn-primary btn-sm md:btn-md h-9 md:h-10 px-4 md:px-6"
+                data-tag-selector-target="searchBtn"
+                data-action="click->tag-selector#searchButtonClick"
+                aria-label="搜索">
+          <i class="ri-search-2-line text-sm md:text-base"></i>
+          <span class="hidden sm:inline ml-1">搜索</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 已选标签列表 -->
+    <div class="shrink-0">
+      <div class="text-xs md:text-sm text-gray-500 font-medium mb-1.5 md:mb-2">
+        已选择的标签（<span data-tag-selector-target="selectedCount">0</span>）：
+      </div>
+      <div class="border border-gray-200 rounded-lg p-2 md:p-3 bg-gray-50 min-h-14 md:min-h-20 max-h-24 md:max-h-32 overflow-y-auto"
+           data-tag-selector-target="selectedTagsContainer"
+           style="scrollbar-width: thin; scrollbar-color: #d1d5db transparent;">
+        <div data-tag-selector-target="selectedTagsList" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1.5 md:gap-2">
+          <div class="text-gray-400 text-xs md:text-sm py-1 md:py-2 text-center col-span-full">暂无已选标签</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 检索结果列表 -->
+    <div class="flex-1 min-h-0 flex flex-col overflow-hidden">
+      <div class="text-xs md:text-sm text-gray-500 font-medium mb-1.5 md:mb-2 shrink-0">标签列表：</div>
+      <div class="flex-1 border border-gray-200 rounded-lg p-2 md:p-3 bg-white overflow-y-auto min-h-0"
+           data-tag-selector-target="resultsContainer"
+           data-action="scroll->tag-selector#handleScroll"
+           style="scrollbar-width: thin; scrollbar-color: #d1d5db transparent;">
+        <div class="flex flex-col gap-2 md:gap-2.5"
+             data-tag-selector-target="resultsList">
+          <div class="w-full flex items-center justify-center py-8 md:py-12 gap-2">
+            <span class="loading loading-spinner loading-md"></span>
+            <span class="text-sm md:text-base text-gray-500">加载中...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 操作按钮 -->
+    <div class="modal-action shrink-0 pt-3 md:pt-4 border-t border-gray-200 gap-2 md:gap-3 mt-0">
+      <button type="button"
+              class="btn btn-ghost btn-sm md:btn-md flex-1 md:flex-none"
+              data-action="click->tag-selector#closeModal">
+        取消
+      </button>
+      <button type="button"
+              class="btn btn-primary btn-sm md:btn-md flex-1 md:flex-none"
+              data-action="click->tag-selector#confirmSelection">
+        确定
+      </button>
+    </div>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button type="submit"></button>
+  </form>
+</dialog>
+
+<!-- Mustache 模板：标签项 -->
+<template data-tag-selector-target="tagItemTemplate">
+  {% raw %}
+    <button
+      type="button"
+      data-tag-name="{{name}}"
+      data-action="click->tag-selector#toggleTag"
+      class="w-full flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 rounded-lg text-sm md:text-base border transition-all duration-200 group relative cursor-pointer hover:shadow-md {{#isSelected}}border-primary bg-primary/5{{/isSelected}}{{^isSelected}}border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50{{/isSelected}}"
+      title="{{name}}">
+      <!-- 标签图标 -->
+      <i class="ri-price-tag-3-line text-lg md:text-xl {{#isSelected}}text-primary{{/isSelected}}{{^isSelected}}text-gray-400 group-hover:text-gray-600{{/isSelected}} shrink-0"></i>
+
+      <!-- 标签名称 -->
+      <span class="flex-1 text-left truncate {{#isSelected}}text-primary font-medium{{/isSelected}}{{^isSelected}}text-gray-700{{/isSelected}}">
+        {{name}}
+      </span>
+
+      <!-- 选中状态图标 -->
+      {{#isSelected}}
+        <i class="ri-checkbox-circle-fill text-primary text-xl shrink-0"></i>
+      {{/isSelected}}
+      {{^isSelected}}
+        <i class="ri-checkbox-blank-circle-line text-gray-300 group-hover:text-gray-400 text-xl shrink-0"></i>
+      {{/isSelected}}
+    </button>
+  {% endraw %}
+</template>
+
+<!-- Mustache 模板：已选标签项 -->
+<template data-tag-selector-target="selectedTagItemTemplate">
+  {% raw %}
+    <button
+      type="button"
+      data-remove-tag="{{name}}"
+      data-action="click->tag-selector#removeTag"
+      class="inline-flex items-center justify-between gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-indigo-100 text-blue-600 rounded-md text-xs md:text-sm max-w-full group relative hover:bg-indigo-200 transition-colors cursor-pointer"
+      title="{{name}}"
+      style="font-weight: 500;">
+      <span class="truncate block max-w-[150px] md:max-w-[200px]">
+        {{name}}
+      </span>
+      <i class="ri-close-line opacity-70 hover:opacity-100 text-xs md:text-sm shrink-0"></i>
+    </button>
+  {% endraw %}
+</template>
+
+<!-- Mustache 模板：已选标签空状态 -->
+<template data-tag-selector-target="emptySelectedTagsTemplate">
+  {% raw %}
+    <div class="text-gray-400 text-xs md:text-sm py-1 md:py-2 text-center col-span-full">暂无已选标签</div>
+  {% endraw %}
+</template>
+
+<!-- Mustache 模板：加载中状态 -->
+<template data-tag-selector-target="loadingTemplate">
+  {% raw %}
+    <div class="w-full flex items-center justify-center py-8 md:py-12 gap-2">
+      <span class="loading loading-spinner loading-md"></span>
+      <span class="text-sm md:text-base text-gray-500">{{message}}</span>
+    </div>
+  {% endraw %}
+</template>
+
+<!-- Mustache 模板：空状态 -->
+<template data-tag-selector-target="emptyTemplate">
+  {% raw %}
+    <div class="w-full py-8 md:py-12 text-center">
+      <i class="{{icon}} text-3xl md:text-4xl text-gray-300 block mb-3 md:mb-4"></i>
+      <p class="text-sm md:text-base text-gray-500 mb-1">{{message}}</p>
+      {{#hasHint}}<p class="text-xs md:text-sm text-gray-400">{{hint}}</p>{{/hasHint}}
+    </div>
+  {% endraw %}
+</template>
+
+<!-- Mustache 模板：加载更多指示器 -->
+<template data-tag-selector-target="loadMoreTemplate">
+  {% raw %}
+    <div class="w-full flex items-center justify-center py-2 md:py-3 gap-2">
+      <span class="loading loading-spinner loading-sm md:loading-md"></span>
+      <span class="text-xs md:text-sm text-gray-500">{{message}}</span>
+    </div>
+  {% endraw %}
+</template>
+
+<!-- Mustache 模板：错误状态 -->
+<template data-tag-selector-target="errorTemplate">
+  {% raw %}
+    <div class="w-full py-8 md:py-12 text-center">
+      <i class="{{icon}} text-3xl md:text-4xl text-red-300 block mb-3 md:mb-4"></i>
+      <p class="text-sm md:text-base text-gray-500">{{message}}</p>
+    </div>
+  {% endraw %}
+</template>

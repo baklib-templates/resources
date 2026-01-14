@@ -87,6 +87,8 @@
 }
 
 /* 移除input focus outline */
-input:focus, input:focus-within {
-  outline: none;
+input, .input {
+  &:focus, &:focus-within {
+    outline: none;
+  }
 }

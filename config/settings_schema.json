@@ -12,6 +12,8 @@
     "theme_support_url": "https://www.baklib.com/",
     "theme_thumb_url": "images/theme/thumb.webp",
     "theme_preview_images": [
+      "images/theme/index.png",
+      "images/theme/page.png"
     ],
     "theme_languages": [
       {

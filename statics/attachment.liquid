@@ -16,7 +16,7 @@
 <turbo-frame id="attachment_frame">
   {% if page %}
     {% comment %} 权限检查 {% endcomment %}
-     {% assign can_access = page | can_access? %}
+    {% assign can_access = page | can_access? %}
     {% if can_access %}
       {% assign entity = page.settings.asset %}
 

@@ -5,6 +5,7 @@
 <div class="flex flex-wrap gap-2 md:gap-4">
   {% for item in filtered_pages %}
     {% assign entity = item.settings.asset %}
+    {% assign can_access = item | can_access? %}
     <a
       id="item-{{ item.full_slug | replace: '/', '-' | replace: '.', '-' }}"
       class="block bg-white rounded-lg overflow-hidden transition-all duration-300 ease-in-out group hover:-translate-y-0.5 hover:shadow-lg cursor-pointer shadow-sm shadow-primary/4"
@@ -15,23 +16,23 @@
     >
       {% comment %} 根据文件类型加载对应的模板 {% endcomment %}
       {% if entity and entity.image? %}
-        {% render 'attachments/grid/image', entity: entity, item: item %}
+        {% render 'attachments/grid/image', entity: entity, item: item, can_access: can_access %}
       {% elsif entity and entity.video? %}
-        {% render 'attachments/grid/video', entity: entity, item: item %}
+        {% render 'attachments/grid/video', entity: entity, item: item, can_access: can_access %}
       {% elsif entity and entity.audio? %}
-        {% render 'attachments/grid/audio', entity: entity, item: item %}
+        {% render 'attachments/grid/audio', entity: entity, item: item, can_access: can_access %}
       {% elsif entity and entity.pdf? %}
-        {% render 'attachments/grid/pdf', entity: entity, item: item %}
+        {% render 'attachments/grid/pdf', entity: entity, item: item, can_access: can_access %}
       {% elsif entity and entity.metadata.kind == 'word' %}
-        {% render 'attachments/grid/word', entity: entity, item: item %}
+        {% render 'attachments/grid/word', entity: entity, item: item, can_access: can_access %}
       {% elsif entity and entity.metadata.kind == 'excel' %}
-        {% render 'attachments/grid/excel', entity: entity, item: item %}
+        {% render 'attachments/grid/excel', entity: entity, item: item, can_access: can_access %}
       {% elsif entity and entity.metadata.kind == 'ppt' %}
-        {% render 'attachments/grid/ppt', entity: entity, item: item %}
+        {% render 'attachments/grid/ppt', entity: entity, item: item, can_access: can_access %}
       {% elsif entity and entity.metadata.kind == 'archive' %}
-        {% render 'attachments/grid/archive', entity: entity, item: item %}
+        {% render 'attachments/grid/archive', entity: entity, item: item, can_access: can_access %}
       {% else %}
-        {% render 'attachments/grid/other', entity: entity, item: item %}
+        {% render 'attachments/grid/other', entity: entity, item: item, can_access: can_access %}
       {% endif %}
     </a>
   {% else %}

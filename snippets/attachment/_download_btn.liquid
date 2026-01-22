@@ -1,0 +1,19 @@
+{% comment %}
+ 下载按钮: 使用 file-download controller 访问指定 URL，获取真实下载链接并下载文件，支持下载进度显示
+ 参数：
+  - entity: 实体对象
+  - page
+{% endcomment %}
+{% if entity %}
+  <button
+    data-controller="file-download"
+    data-file-download-url-value="/s/download?slug={{ page.full_slug }}"
+    data-file-download-filename-value="{{ entity.metadata.filename }}"
+    data-file-download-content-type-value="{{ entity.metadata.content_type }}"
+    data-action="click->file-download#download"
+    class="w-full btn btn-primary btn-lg bg-blue-600 hover:bg-blue-700 text-white border-none rounded-lg space-x-2 hover:translate-y-0.5 transition-all duration-300 hover:shadow"
+  >
+    <i class="ri-download-cloud-2-line"></i>
+    <span class="text-sm">立即下载</span>
+  </button>
+{% endif %}

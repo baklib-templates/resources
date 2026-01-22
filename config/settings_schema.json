@@ -25,6 +25,12 @@
         "value": "en"
       }
     ],
+    "track_events": {
+      "resource_download": {
+        "name": "资源下载",
+        "description": "资源下载事件"
+      }
+    },
     "recommendations": {
       "color_schemas": {
         "default": {

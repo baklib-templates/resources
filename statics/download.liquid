@@ -1,0 +1,35 @@
+{% layout none %}
+{% response_type 'json' %}
+
+{% if params.path %}
+  {% assign page = site.pages[params.slug] %}
+  {% assign can_access = page | can_access? %}
+  {% assign entity = page.settings.asset %}
+
+  {% if can_access %}
+    {% if entity %}
+      {% assign event_name = 'resource_download' %}
+      {% track_event event_name, page: page %}
+
+      {
+        "success": true,
+        "download_url": "{{ entity.url[site.settings.resource_download_expiry_time] }}"
+      }
+    {% else %}
+      {
+        "success": false,
+        "error": "资源不存在"
+      }
+    {% endif %}
+  {% else %}
+    {
+      "success": false,
+      "error": "无权访问该资源"
+    }
+  {% endif %}
+{% else %}
+  {
+    "success": false,
+    "error": "缺少参数"
+  }
+{% endif %}

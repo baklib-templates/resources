@@ -123,11 +123,8 @@
         </div>
 
         <!-- Action Buttons -->
-        <div class="text-center max-w-[200px] block">
-          <a href="{{ entity.url[site.settings.resource_download_expiry_time] }}" download class="w-full btn btn-primary btn-lg bg-blue-600 hover:bg-blue-700 text-white border-none rounded-lg space-x-2 hover:translate-y-[-2px] transition-all duration-300 hover:shadow">
-            <i class="ri-download-cloud-2-line"></i>
-            <span class="text-sm">立即下载</span>
-          </a>
+        <div class="text-center max-w-50 block">
+          {% render 'attachment/download_btn', entity: entity, page: page %}
         </div>
       </div>
 
@@ -136,7 +133,7 @@
           <i class="ri-price-tag-3-line text-primary"></i>
           <span class="font-medium">文件标签</span>
         </div>
-        <div class="flex flex-wrap gap-2 min-h-[36px]">
+        <div class="flex flex-wrap gap-2 min-h-9">
           {% for tag in page.settings.resource_tags %}
             <span class="inline-flex items-center px-3 py-1 bg-primary/10 text-primary/80 rounded text-sm">{{ tag.name }}</span>
           {% endfor %}
@@ -151,7 +148,7 @@
             <span class="font-medium">文件描述</span>
           </div>
           <section
-            class="ProseMirror prose prose-sm max-w-none dark:prose-invert prose-headings:mt-4 prose-headings:mb-2 prose-p:my-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-1 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg prose-img:my-4 min-h-[36px]"
+            class="ProseMirror prose prose-sm max-w-none dark:prose-invert prose-headings:mt-4 prose-headings:mb-2 prose-p:my-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-1 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg prose-img:my-4 min-h-9"
             data-controller="link-target images-viewer">
             {{ page.settings.content }}
           </section>

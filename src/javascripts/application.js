@@ -22,6 +22,7 @@ import LinkTargetController from "./controllers/link_target_controller"
 import ImagesViewerController from "./controllers/images_viewer_controller"
 import PdfPreviewController from "./controllers/pdf_preview_controller"
 import TagSelectorController from "./controllers/tag_selector_controller"
+import FileDownloadController from "./controllers/file_download_controller"
 
 // Import utils
 import { buildUrl, updateQuery, getQueryParams, getFilenameWithExtension } from "./utils/index"
@@ -47,6 +48,7 @@ application.register("link-target", LinkTargetController)
 application.register("images-viewer", ImagesViewerController)
 application.register("pdf-preview", PdfPreviewController)
 application.register("tag-selector", TagSelectorController)
+application.register("file-download", FileDownloadController)
 
 Alpine.magic("buildUrl", () => buildUrl);
 Alpine.magic("updateQuery", () => updateQuery);

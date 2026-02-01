@@ -22,7 +22,7 @@
         </div>
 
         <div class="overflow-auto w-full flex-1" data-breadcrumb-target="navTreeContainer">
-          <turbo-frame id="index_nav_tree_frame__" src="/s/index/nav_tree?channel={{ params.channel }}&root=true" loading="lazy">
+          <turbo-frame id="index_nav_tree_frame__" src="{{ statics['index/nav_tree'] }}?channel={{ params.channel }}&root=true" loading="lazy">
             <div class="flex items-center justify-center h-20 text-base-content/60">
               <span class="loading loading-spinner loading-md"></span>
             </div>

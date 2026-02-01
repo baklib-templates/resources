@@ -1,5 +1,6 @@
 import { Controller } from '@hotwired/stimulus';
 import Mustache from 'mustache';
+import { buildUrl } from "../utils/index"
 
 /**
  * Tag Selector Controller
@@ -11,10 +12,7 @@ import Mustache from 'mustache';
 export default class extends Controller {
   static targets = ['searchInput', 'resultsContainer', 'resultsList', 'selectedTagsContainer', 'selectedTagsList', 'modal', 'clearSearchBtn', 'selectedCount', 'searchBtn', 'tagItemTemplate', 'selectedTagItemTemplate', 'loadingTemplate', 'emptyTemplate', 'loadMoreTemplate', 'errorTemplate', 'emptySelectedTagsTemplate'];
   static values = {
-    currentPage: { type: Number, default: 1 },
-    totalPages: { type: Number, default: 0 },
-    isLoading: { type: Boolean, default: false },
-    searchKeyword: { type: String, default: '' },
+    url: { type: String }
   };
 
   connect() {
@@ -86,10 +84,10 @@ export default class extends Controller {
     // 如果还没有初始化加载过数据，或者标签列表为空，加载第一页
     if (!this.isInitialized || this.availableTags.length === 0) {
       // 重置分页状态
-      this.currentPageValue = 1;
+      this.currentPage = 1;
       this.hasMore = true;
       this.availableTags = [];
-      this.searchKeywordValue = '';
+      this.searchKeyword = '';
       // 清空搜索输入框
       if (this.hasSearchInputTarget) {
         this.searchInputTarget.value = '';
@@ -121,12 +119,12 @@ export default class extends Controller {
   clearSearch() {
     if (this.hasSearchInputTarget) {
       this.searchInputTarget.value = '';
-      this.currentPageValue = 1;
-      this.searchKeywordValue = '';
+      this.currentPage = 1;
+      this.searchKeyword = '';
       this.availableTags = [];
       this.hasMore = true;
       this.updateClearButtonVisibility();
-      this.isLoadingValue = false;
+      this.isLoading = false;
       this.loadTags(true);
     }
   }
@@ -154,13 +152,13 @@ export default class extends Controller {
     }
 
     const keyword = this.hasSearchInputTarget ? this.searchInputTarget.value.trim() : '';
-    this.currentPageValue = 1;
-    this.searchKeywordValue = keyword;
+    this.currentPage = 1;
+    this.searchKeyword = keyword;
     this.availableTags = [];
     this.hasMore = true;
     this.updateClearButtonVisibility();
     // 重置加载状态并加载数据
-    this.isLoadingValue = false;
+    this.isLoading = false;
     this.loadTags(true);
   }
 
@@ -190,22 +188,22 @@ export default class extends Controller {
    */
   async loadTags(initLoad = false) {
     // 如果是初始化加载，允许加载；否则检查是否正在加载或没有更多数据
-    if (!initLoad && (this.isLoadingValue || !this.hasMore)) {
+    if (!initLoad && (this.isLoading || !this.hasMore)) {
       return;
     }
 
-    this.isLoadingValue = true;
+    this.isLoading = true;
     this.renderLoading();
 
     try {
-      const params = new URLSearchParams();
-      params.set('page', this.currentPageValue);
+      let params = { page: this.currentPage };
 
-      if (this.searchKeywordValue) {
-        params.set('keywords', this.searchKeywordValue);
+      if (this.searchKeyword) {
+        params['keywords'] = this.searchKeyword
       }
 
-      const response = await fetch(`/s/tag_search?${params.toString()}`);
+      const url = buildUrl(this.urlValue, params, true);
+      const response = await fetch(url);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -217,7 +215,7 @@ export default class extends Controller {
       const newTags = Array.isArray(data.data) ? data.data : [];
 
       // 如果是初始化加载或搜索，重置数组；否则追加
-      if (initLoad || this.currentPageValue === 1) {
+      if (initLoad || this.currentPage === 1) {
         this.availableTags = newTags;
       } else {
         // 追加新的标签
@@ -225,13 +223,13 @@ export default class extends Controller {
       }
 
       // 更新分页信息
-      this.currentPageValue++;
-      this.totalPagesValue = data.paginate?.total_pages || 0;
-      this.hasMore = this.currentPageValue <= this.totalPagesValue;
+      this.currentPage++;
+      this.totalPages = data.paginate?.total_pages || 0;
+      this.hasMore = this.currentPage <= this.totalPages;
 
       // 数据加载完成，先设置加载状态为 false，再渲染
       // 这样 renderTags() 就能正确判断是否显示空状态
-      this.isLoadingValue = false;
+      this.isLoading = false;
 
       // 渲染标签列表（即使结果为空也会正确显示空状态）
       this.renderTags();
@@ -243,7 +241,7 @@ export default class extends Controller {
       }
     } finally {
       // 确保加载状态被重置
-      this.isLoadingValue = false;
+      this.isLoading = false;
     }
   }
 
@@ -262,7 +260,7 @@ export default class extends Controller {
       const threshold = 50;
       if (
         scrollTop + clientHeight >= scrollHeight - threshold &&
-        !this.isLoadingValue &&
+        !this.isLoading &&
         this.hasMore &&
         !this.isScrolling
       ) {
@@ -421,7 +419,7 @@ export default class extends Controller {
     // 如果没有标签，根据加载状态显示不同内容
     if (this.availableTags.length === 0) {
       // 如果正在加载，显示加载状态
-      if (this.isLoadingValue) {
+      if (this.isLoading) {
         if (this.hasLoadingTemplateTarget) {
           const template = this.loadingTemplateTarget.innerHTML.trim();
           container.innerHTML = Mustache.render(template, {
@@ -434,17 +432,17 @@ export default class extends Controller {
       // 如果不在加载，显示空状态
       if (this.hasEmptyTemplateTarget) {
         const template = this.emptyTemplateTarget.innerHTML.trim();
-        const emptyMessage = this.searchKeywordValue
+        const emptyMessage = this.searchKeyword
           ? '未找到匹配的标签'
           : '暂无标签';
-        const emptyIcon = this.searchKeywordValue
+        const emptyIcon = this.searchKeyword
           ? 'ri-search-line'
           : 'ri-inbox-line';
 
         container.innerHTML = Mustache.render(template, {
           icon: emptyIcon,
           message: emptyMessage,
-          hasHint: !!this.searchKeywordValue,
+          hasHint: !!this.searchKeyword,
           hint: '请尝试其他关键词',
         });
       }
@@ -453,7 +451,7 @@ export default class extends Controller {
 
     // 添加加载指示器（加载更多时）
     let loadingIndicator = '';
-    if (this.isLoadingValue && this.availableTags.length > 0) {
+    if (this.isLoading && this.availableTags.length > 0) {
       if (this.hasLoadMoreTemplateTarget) {
         const template = this.loadMoreTemplateTarget.innerHTML.trim();
         loadingIndicator = Mustache.render(template, {

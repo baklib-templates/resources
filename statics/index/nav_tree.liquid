@@ -63,7 +63,7 @@
     data-turbo-nav-tree-current-path-value='{{ params.channel }}'
     data-turbo-nav-tree-root-container-value=".custom-menu"
     data-turbo-nav-tree-parent-path-value='{{ parent_path }}'
-    data-turbo-nav-tree-url-value='/s/index/nav_tree?channel={{ params.channel }}'
+    data-turbo-nav-tree-url-value='{{ statics['index/nav_tree'] }}?channel={{ params.channel }}'
     data-turbo-nav-tree-id-prefix-value='index_nav_tree_frame_'
   >
     <template data-turbo-nav-tree-target="itemTemplate">

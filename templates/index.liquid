@@ -29,10 +29,10 @@
 
       document.querySelector('#my-drawer-3').click()
     },
-    attachmentsBaseSrc: '/s/attachments',
+    attachmentsBaseSrc: '{{ statics['attachments'] }}',
     attachmentsQuery: {},
     attachmentsSrc: '',
-    attachmentSrc: '/s/attachment',
+    attachmentSrc: '{{ statics['attachments'] }}',
     skipNextWatch: false,
     showDetail: false,
     attachmentTitle: '',
@@ -230,7 +230,7 @@
     },
     openDetail(item) {
       this.attachmentTitle = item.title;
-      this.attachmentSrc = this.$buildUrl('/s/attachment', { full_slug: item.full_slug });
+      this.attachmentSrc = this.$buildUrl(this.attachmentsBaseSrc, { full_slug: item.full_slug });
       this.showDetail = true;
       // 移动端打开 modal
       if (window.innerWidth < 768) {
@@ -611,7 +611,7 @@
           </div>
 
           <!-- 标签筛选 -->
-          <div data-controller="tag-selector" @tags-changed="updateResourceTags($event)">
+          <div data-controller="tag-selector" data-tag-selector-url-value="{{ statics['tag_search'] }}" @tags-changed="updateResourceTags($event)">
             {% render 'tag_selector', label: '标签筛选' %}
           </div>
         </div>

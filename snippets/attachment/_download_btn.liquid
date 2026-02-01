@@ -7,7 +7,7 @@
 {% if entity %}
   <button
     data-controller="file-download"
-    data-file-download-url-value="/s/download?slug={{ page.full_slug }}"
+    data-file-download-url-value="{{ statics['download'] }}?slug={{ page.full_slug }}"
     data-file-download-filename-value="{{ entity.metadata.filename }}"
     data-file-download-content-type-value="{{ entity.metadata.content_type }}"
     data-action="click->file-download#download"

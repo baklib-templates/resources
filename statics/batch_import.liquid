@@ -1,0 +1,124 @@
+{% layout "batch_import" %}
+{% comment %}
+  通过地址访问此页面: "http://site-erj1w3y5.free.baklib.localhost:3000/s/batch_import?full_path=%2F80ec12&site_id=34&token=JWT+eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE3NzAyOTY1NTh9.wBf0jv8B_6OUgvqH_Tks9GWAcoIn5Q5OfFbe_10g2Sw&template_name=page&template_style=style"
+  传入参数: { full_path, token, site_id, template_name, template_style }
+  可以通过liquid（params.full_path） 或 js 获取参数
+{% endcomment %}
+
+<div class="min-h-screen bg-gray-50 text-gray-900 font-sans pb-20"
+     data-controller="batch-import"
+     data-batch-import-api-url-value="{{ site.settings.api_host }}"
+     data-batch-import-token-value="{{ params.token }}"
+     data-batch-import-site-id-value="{{ params.site_id }}"
+     data-batch-import-template-name-value="{{ params.template_name }}"
+     data-batch-import-template-style-value="{{ params.template_style }}"
+     data-batch-import-full-path-value="{{ params.full_path }}">
+
+  <main class="mx-auto">
+    <div data-batch-import-target="pageInfo" class="flex items-center gap-2 text-sm text-gray-600 sticky py-4 top-0 bg-gray-50 px-6" style="display: none;"></div>
+
+    <!-- Error Alert -->
+    <div data-batch-import-target="errorAlert" class="mb-6 p-4 bg-red-50 text-red-700 border border-red-200 rounded-lg flex items-start gap-3" style="display: none;">
+      <i class="ri-alert-circle-line mt-0.5 flex-shrink-0 text-xl"></i>
+      <div>
+        <h3 class="font-medium">错误</h3>
+        <p class="text-sm mt-1"></p>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div data-batch-import-target="loadingState" class="p-6 mb-6 text-center">
+      <span class="block animate-spin">
+        <i class="ri-loader-4-line text-2xl text-blue-500 mb-2"></i>
+      </span>
+      <p class="text-gray-600">正在加载目录信息...</p>
+    </div>
+
+    <!-- Main Content -->
+    <div data-batch-import-target="mainContent" class="space-y-6 flex mx-6" style="display: none;">
+      <!-- 选择文件区域 -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div class="mb-4">
+          <h2 class="text-lg font-semibold text-gray-900 mb-1">上传文件</h2>
+          <p class="text-sm text-gray-500">支持格式: csv, xls, xlsx, pdf, doc, docx, 图片, 视频, 音频等</p>
+        </div>
+
+        <!-- Drag and Drop Zone -->
+        <div
+          data-batch-import-target="dropzone"
+          class="border-2 border-dashed border-blue-300 rounded-lg p-6 text-center bg-blue-50/30 transition-colors">
+            <div class="flex-1 flex flex-col items-center gap-2">
+              <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+                <i class="ri-upload-cloud-2-line text-blue-500 text-3xl"></i>
+              </div>
+              <div>
+                <p class="text-base text-gray-500 mb-1">拖拽文件或文件夹到此处</p>
+              </div>
+            </div>
+
+            <!-- Selection Buttons -->
+            <div class="flex-1 flex justify-center mt-2 gap-4">
+              <button type="button" data-action="click->batch-import#selectFiles"
+                class="px-6 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+                <i class="ri-file-line"></i>
+                <span>选择文件</span>
+              </button>
+              <button type="button" data-action="click->batch-import#selectFolder"
+                class="px-6 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+                <i class="ri-folder-line"></i>
+                <span>选择文件夹</span>
+              </button>
+            </div>
+        </div>
+
+
+        <!-- Hidden File Inputs -->
+        <input
+          type="file"
+          data-batch-import-target="fileInput"
+          multiple
+          class="hidden"
+          data-action="change->batch-import#handleFileInputChange">
+        <input
+          type="file"
+          data-batch-import-target="folderInput"
+          webkitdirectory
+          class="hidden"
+          data-action="change->batch-import#handleFolderInputChange">
+
+        <!-- File Count -->
+        <div class="mt-4 flex items-center justify-end">
+          <div class="text-sm text-gray-500">
+            已选择 <span class="font-medium text-gray-700" data-batch-import-target="fileCount">0</span> 个文件
+          </div>
+        </div>
+      </div>
+
+      <!-- 上传区域 -->
+      <div data-batch-import-target="fileListContainer" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6" style="display: none;">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">已选择的文件</h3>
+        <div data-batch-import-target="fileList" class="space-y-3">
+          <div class="text-center text-gray-400 py-8">未选择文件</div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-6 flex justify-end gap-3">
+          <button
+            type="button"
+            data-action="click->batch-import#clearItems"
+            class="px-6 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            取消
+          </button>
+          <button
+            type="button"
+            data-action="click->batch-import#startProcessing"
+            class="px-6 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+          >
+            <span>上传文件</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

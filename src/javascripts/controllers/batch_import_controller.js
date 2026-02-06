@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
-import { getFileTypeInfo, formatFileSize, isImage } from "../utils/file_type"
-import { getPageByPath, uploadFile, createPage } from "../services/batch_import_api"
+import { getFileTypeInfo, formatFileSize, isImage, getFileExtension } from "../utils/file_type"
+import { getPageByPath, uploadFile, createPage, getTagIdsByNames } from "../services/batch_import_api"
 
 /**
  * 批量上传控制器
@@ -264,21 +264,25 @@ export default class extends Controller {
 
     for (const item of queue) {
       try {
-        const fileNameWithoutExt = item.name
+        let file_name = item.file.name
 
         // 1. Upload File
         item.status = 'uploading'
         item.progress = 0
         this.renderFileList()
 
-        const resource = await this.uploadFileWithProgress(item, fileNameWithoutExt)
+        // name如果没有扩展名，可以根据 content_type 生成扩展名
+        if (!file_name.includes('.')) {
+          file_name = [file_name, getFileExtension(item.file)].filter(Boolean).join('.')
+        }
+        const resource = await this.uploadFileWithProgress(item, file_name)
 
         // 2. Create Page
         item.status = 'creating_page'
         item.progress = 100
         this.renderFileList()
 
-        const page = await this.createResourcePage(fileNameWithoutExt, resource)
+        const page = await this.createResourcePage(file_name, resource)
 
         // 3. Complete
         let pageUrl = ''
@@ -324,22 +328,37 @@ export default class extends Controller {
     )
   }
 
+  /**
+   * 将 ID 格式化为 slug（至少两个字符，用 0 补全）
+   * @param {number|string} idValue - ID 值
+   * @returns {string} 格式化后的 slug（至少两位）
+   */
+  formatSlugFromId(idValue) {
+    if (idValue == null || idValue === undefined || idValue === '') {
+      return null
+    }
+
+    return String(idValue ?? 0).padStart(2, '0')
+  }
+
   async createResourcePage(fileName, resourceEntity) {
     const signedId = resourceEntity.attributes.signed_id
+    const entity_id = resourceEntity.id != null ? resourceEntity.id : resourceEntity.attributes?.id
+    const slug_from_entity_id = this.formatSlugFromId(entity_id)
 
     const templateVariables = {
-      title: fileName,
-      asset: signedId
+      asset: signedId,
+      resource_tags: this.currentPagePathTagIds ?? []
     }
 
     const pageData = {
+      slug: slug_from_entity_id, // 由于slug采用的是entity的id，那么在一个栏目下是不允许多个相同slug的页面即一个目录下不能重复上传文件
       name: fileName,
       parent_id: this.currentPage.id,
       template_name: this.templateNameValue,
       template_style: this.templateStyleValue,
       template_variables: templateVariables,
-      published: true,
-      published_at: new Date().toISOString()
+      published: true
     }
 
     return await createPage(
@@ -364,12 +383,33 @@ export default class extends Controller {
     this.updateUI()
 
     try {
+      this.currentPagePathTagIds = []
       const page = await getPageByPath(
         this.apiUrlValue,
         this.tokenValue,
         this.siteIdValue,
         this.fullPathValue
       )
+      // published
+
+      // 使用上级目录名称 + 本目录名称 作为标签名称
+      this.currentPagePathTags = []
+      page.attributes.ancestors.forEach(ancestor => {
+        if (ancestor.full_path !== '/') {
+          this.currentPagePathTags.push(ancestor.calculated_link_text || ancestor.name)
+        }
+      })
+      this.currentPagePathTags.push(page.attributes.calculated_link_text || page.attributes.name)
+      // 去重
+      this.currentPagePathTags = [...new Set(this.currentPagePathTags)]
+      // 通过 API 按名称查询标签，得到标签 id 列表（优先 iid），供创建页面时写入 resource_tags
+      this.currentPagePathTagIds = await getTagIdsByNames(
+        this.apiUrlValue,
+        this.tokenValue,
+        this.siteIdValue,
+        this.currentPagePathTags
+      )
+
       this.currentPage = page
       this.updatePageInfo()
     } catch (err) {
@@ -456,9 +496,11 @@ export default class extends Controller {
         `
       }
 
-      // 如果是图片且有预览URL，显示预览图；否则显示图标
+      // 如果是图片且有预览URL，显示预览图；否则显示图标（SVG 用 object-contain 避免裁切）
+      const isSvg = item.file.name.toLowerCase().endsWith('.svg')
+      const objectFitClass = isSvg ? 'object-contain' : 'object-cover'
       const thumbnailHtml = item.previewUrl
-        ? `<img src="${item.previewUrl}" alt="${this.escapeHtml(item.file.name)}" class="w-full h-full object-cover rounded-lg" />`
+        ? `<img src="${item.previewUrl}" alt="${this.escapeHtml(item.file.name)}" class="w-full h-full ${objectFitClass} rounded-lg" />`
         : `<i class="${fileTypeInfo.icon} ${fileTypeInfo.iconColor} text-xl"></i>`
 
       return `

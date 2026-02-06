@@ -33,11 +33,61 @@ export async function getPageByPath(apiUrl, token, siteId, fullPath) {
 }
 
 /**
+ * 按名称精确匹配查询站点标签（用于获取标签 id/iid）
+ * @param {string} apiUrl - API 地址
+ * @param {string} token - API token
+ * @param {string} siteId - 站点 ID
+ * @param {string} name - 标签名称
+ * @returns {Promise<Object|null>} 标签数据（含 id、attributes.id、attributes.iid），未找到返回 null
+ */
+export async function getTagByName(apiUrl, token, siteId, name) {
+  const params = new URLSearchParams({ 'q[name_eq]': name, 'page[number]': '1', 'page[size]': '1' })
+  const response = await fetch(
+    `${apiUrl}/api/v1/sites/${siteId}/tags?${params}`,
+    {
+      headers: {
+        'Authorization': token,
+        'Content-Type': 'application/json'
+      }
+    }
+  )
+
+  if (!response.ok) {
+    const errorText = await response.text()
+    throw new Error(`获取标签失败: ${errorText}`)
+  }
+
+  const json = await response.json()
+  const list = json.data && Array.isArray(json.data) ? json.data : []
+  const tag = list[0] || null
+  return tag
+}
+
+/**
+ * 批量按名称查询标签，返回标签 id 列表（优先使用 iid，否则 id）
+ * @param {string} apiUrl - API 地址
+ * @param {string} token - API token
+ * @param {string} siteId - 站点 ID
+ * @param {string[]} names - 标签名称列表
+ * @returns {Promise<number[]>} 标签 id 列表（未匹配到的名称会跳过）
+ */
+export async function getTagIdsByNames(apiUrl, token, siteId, names) {
+  if (!names || names.length === 0) return []
+  const tags = await Promise.all(
+    names.map((name) => getTagByName(apiUrl, token, siteId, name))
+  )
+  return tags
+    .filter(Boolean)
+    .map((tag) => tag.attributes?.iid ?? tag.attributes?.id ?? tag.id)
+    .filter((id) => id != null)
+}
+
+/**
  * 上传文件到 DAM（带进度回调）
  * @param {string} apiUrl - API 地址
  * @param {string} token - API token
  * @param {File} file - 文件对象
- * @param {string} name - 文件名（不含扩展名）
+ * @param {string} name - 文件名（含扩展名）
  * @param {string} description - 文件描述
  * @param {Function} onProgress - 进度回调函数 (progress: number) => void
  * @returns {Promise<Object>} 上传结果

@@ -7,13 +7,19 @@ import mime from "mime";
 
 /**
  * 获取文件扩展名
- * @param {string} filename - 文件名
+ * @param {File} file - 文件对象
  * @returns {string} 扩展名（不含点号）
  */
-export function getFileExtension(filename) {
-  if (!filename) return '';
+export function getFileExtension(file) {
+  if (!file) return '';
+  const filename = file.name;
+
   const match = filename.match(/\.([^.]+)$/);
-  return match ? match[1].toLowerCase() : '';
+  if (match) {
+    return match ? match[1].toLowerCase() : '';
+  } else {
+    return mime.getExtension(file.type) || '';
+  }
 }
 
 /**
@@ -27,8 +33,9 @@ export function getMimeType(file) {
   if (file.type) {
     return file.type;
   }
+
   // 如果没有，使用 mime 库根据扩展名获取
-  const ext = getFileExtension(file.name);
+  const ext = getFileExtension(file);
   if (ext) {
     return mime.getType(ext) || '';
   }
@@ -36,12 +43,14 @@ export function getMimeType(file) {
 }
 
 /**
- * 判断文件是否为图片
+ * 判断文件是否为图片（含 SVG，部分浏览器对 .svg 的 MIME 不可靠）
  * @param {File} file - 文件对象
  * @returns {boolean}
  */
 export function isImage(file) {
   if (!file) return false;
+  const ext = getFileExtension(file);
+  if (ext === 'svg') return true;
   const mimeType = getMimeType(file);
   return mimeType.startsWith('image/');
 }
@@ -87,8 +96,8 @@ export function isPDF(file) {
 export function isWord(file) {
   if (!file) return false;
   const mimeType = getMimeType(file);
-  const ext = getFileExtension(file.name);
-  return mimeType.includes('word') || 
+  const ext = getFileExtension(file);
+  return mimeType.includes('word') ||
          mimeType.includes('msword') ||
          mimeType.includes('document') ||
          ['doc', 'docx'].includes(ext);
@@ -102,8 +111,8 @@ export function isWord(file) {
 export function isExcel(file) {
   if (!file) return false;
   const mimeType = getMimeType(file);
-  const ext = getFileExtension(file.name);
-  return mimeType.includes('excel') || 
+  const ext = getFileExtension(file);
+  return mimeType.includes('excel') ||
          mimeType.includes('spreadsheet') ||
          mimeType.includes('ms-excel') ||
          ['xls', 'xlsx'].includes(ext);
@@ -117,7 +126,7 @@ export function isExcel(file) {
 export function isPPT(file) {
   if (!file) return false;
   const mimeType = getMimeType(file);
-  const ext = getFileExtension(file.name);
+  const ext = getFileExtension(file);
   return mimeType.includes('presentation') ||
          mimeType.includes('ms-powerpoint') ||
          ['ppt', 'pptx'].includes(ext);
@@ -131,8 +140,8 @@ export function isPPT(file) {
 export function isArchive(file) {
   if (!file) return false;
   const mimeType = getMimeType(file);
-  const ext = getFileExtension(file.name);
-  return mimeType.includes('zip') || 
+  const ext = getFileExtension(file);
+  return mimeType.includes('zip') ||
          mimeType.includes('archive') ||
          mimeType.includes('compressed') ||
          ['zip', 'rar', '7z', 'tar', 'gz', 'bz2', 'xz'].includes(ext);

@@ -47,7 +47,7 @@ export default class extends Controller {
         }
 
         // 重置进度条
-        this.resetProgress()
+        // this.resetProgress()
 
         // 开始文件下载
         this.downloadFile(downloadUrl)
@@ -70,67 +70,16 @@ export default class extends Controller {
   }
 
   downloadFile(downloadUrl) {
-    const xhr = new XMLHttpRequest()
+    const link = document.createElement('a')
+    link.href = downloadUrl
 
-    // 监听文件下载进度
-    xhr.addEventListener('progress', (e) => {
-      if (e.lengthComputable) {
-        const percentComplete = (e.loaded / e.total) * 100
-        this.updateProgress(percentComplete)
-      }
-    })
+    const fullFilename = getFilenameWithExtension(this.filenameValue, this.contentTypeValue)
+    link.download = fullFilename || ''
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
 
-    xhr.onload = () => {
-      try {
-        if (xhr.status !== 200) {
-          throw new Error(`HTTP error! status: ${xhr.status}`)
-        }
-
-        // 获取 blob 对象
-        const blob = xhr.response
-
-        // 构造完整的文件名
-        const fullFilename = getFilenameWithExtension(
-          this.filenameValue,
-          this.contentTypeValue
-        )
-
-        // 创建 blob URL
-        const blobUrl = window.URL.createObjectURL(blob)
-
-        // 创建下载链接
-        const link = document.createElement('a')
-        link.href = blobUrl
-        link.download = fullFilename
-        link.style.display = 'none'
-        document.body.appendChild(link)
-
-        // 触发下载
-        link.click()
-
-        // 清理
-        document.body.removeChild(link)
-        window.URL.revokeObjectURL(blobUrl)
-
-        // 隐藏进度条
-        this.hideProgress()
-      } catch (error) {
-        console.error('下载失败:', error)
-        this.hideProgress()
-        alert('下载失败，请稍后重试')
-      }
-    }
-
-    xhr.onerror = () => {
-      console.error('下载失败: 网络请求错误')
-      this.hideProgress()
-      alert('下载失败，请稍后重试')
-    }
-
-    // 发送请求下载文件
-    xhr.open('GET', downloadUrl, true)
-    xhr.responseType = 'blob'
-    xhr.send()
+    this.hideProgress()
   }
 
   showProgress() {

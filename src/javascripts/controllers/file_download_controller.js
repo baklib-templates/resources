@@ -48,6 +48,7 @@ export default class extends Controller {
 
         // 重置进度条
         // this.resetProgress()
+        this.updateProgress(100)
 
         // 开始文件下载
         this.downloadFile(downloadUrl)

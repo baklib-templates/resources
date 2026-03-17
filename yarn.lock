@@ -424,6 +424,11 @@
   dependencies:
     tslib "^2.4.0"
 
+"@types/tippy.js@^6.3.0":
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/@types/tippy.js/-/tippy.js-6.3.0.tgz#5aeabe8a1f48adcb3fe8a1bb1f572b95af954e1a"
+  integrity sha512-OYontJ7KwB9ijDusNOk3r1uArk35J5lOZ6Mq85L6Y9LTkiLi+GX49Q6Y8bI6DKfSE70Z+B54nUirBpudCkO+Dw==
+
 "@vue/reactivity@~3.1.1":
   version "3.1.5"
   resolved "https://registry.npmjs.org/@vue/reactivity/-/reactivity-3.1.5.tgz"

@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @plugin "daisyui";
 @import 'viewerjs/dist/viewer.css';
+@import "toastify-js/src/toastify.css";
 
 /* 视图缩放相关样式 */
 :root {
@@ -91,4 +92,46 @@ input, .input {
   &:focus, &:focus-within {
     outline: none;
   }
+}
+
+
+
+.toastify {
+    @apply rounded bg-none font-medium shadow-none bg-slate-200 text-slate-800
+}
+
+.toastify.html{
+    @apply p-0 cursor-auto bg-transparent shadow-none border-none
+}
+
+.toastify.primary{
+    @apply bg-primary text-white
+}
+
+.toastify.secondary{
+    @apply bg-secondary text-white
+}
+
+.toastify.info{
+    @apply bg-info text-white
+}
+
+.toastify.warning{
+    @apply bg-warning text-white
+}
+
+.toastify.success{
+    @apply bg-success text-white
+}
+
+.toastify.error{
+    @apply bg-error text-white
+}
+
+.toastify.light{
+    @apply bg-slate-200 text-slate-800
+}
+
+.toastify.dark{
+    @apply bg-slate-800 text-slate-200
 }

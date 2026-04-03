@@ -8,7 +8,8 @@
 
   {% if can_access %}
     {% if entity %}
-      {% comment %} track_event 会导致模板导入失败(Unknown tag)，导入成功后可在平台恢复:  {% endcomment %}
+      {% assign event_name = 'resource_download' %}
+      {% track_event event_name, page: page %}
 
       {
         "success": true,

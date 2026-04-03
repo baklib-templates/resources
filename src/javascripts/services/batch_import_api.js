@@ -12,8 +12,9 @@
  * @returns {Promise<Object>} 页面数据
  */
 export async function getPageByPath(apiUrl, token, siteId, fullPath) {
+  const pagePath = encodeURIComponent(fullPath)
   const response = await fetch(
-    `${apiUrl}/api/v1/sites/${siteId}/pages/by_path/${fullPath}`,
+    `${apiUrl}/api/v1/sites/${siteId}/pages/by_path/${pagePath}`,
     {
       headers: {
         'Authorization': token,

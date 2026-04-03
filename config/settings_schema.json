@@ -149,7 +149,8 @@
         "id": "api_host",
         "type": "text",
         "label": "API 地址",
-        "info": "批量上传功能使用的 API 地址"
+        "info": "批量上传功能使用的 API 地址",
+        "default": "https://open.baklib.com"
       }
     ]
   }

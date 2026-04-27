@@ -1,0 +1,2614 @@
+{
+  "cache": {
+    "zh-CN_zh-TW_亮色": {
+      "source_lang": "zh-CN",
+      "target_lang": "zh-TW",
+      "source_text": "亮色",
+      "translated_text": "亮色"
+    },
+    "zh-CN_zh-TW_自动": {
+      "source_lang": "zh-CN",
+      "target_lang": "zh-TW",
+      "source_text": "自动",
+      "translated_text": "自動"
+    },
+    "zh-CN_zh-TW_查看更多": {
+      "source_lang": "zh-CN",
+      "target_lang": "zh-TW",
+      "source_text": "查看更多",
+      "translated_text": "查看更多"
+    },
+    "zh-CN_ko_亮色": {
+      "source_lang": "zh-CN",
+      "target_lang": "ko",
+      "source_text": "亮色",
+      "translated_text": "밝은 색"
+    },
+    "zh-CN_ko_暗色": {
+      "source_lang": "zh-CN",
+      "target_lang": "ko",
+      "source_text": "暗色",
+      "translated_text": "어두운 색"
+    },
+    "zh-CN_ko_自动": {
+      "source_lang": "zh-CN",
+      "target_lang": "ko",
+      "source_text": "自动",
+      "translated_text": "자동"
+    },
+    "zh-CN_ko_查看更多": {
+      "source_lang": "zh-CN",
+      "target_lang": "ko",
+      "source_text": "查看更多",
+      "translated_text": "자세히 보기"
+    },
+    "zh-CN_ko_搜索...": {
+      "source_lang": "zh-CN",
+      "target_lang": "ko",
+      "source_text": "搜索...",
+      "translated_text": "검색..."
+    },
+    "zh-CN_en_亮色": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "亮色",
+      "translated_text": "light color"
+    },
+    "zh-CN_en_自动": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "自动",
+      "translated_text": "automatic"
+    },
+    "zh-CN_en_查看更多": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "查看更多",
+      "translated_text": "View more"
+    },
+    "zh-CN_en_搜索...": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "搜索...",
+      "translated_text": "Search .."
+    },
+    "zh-CN_ja_亮色": {
+      "source_lang": "zh-CN",
+      "target_lang": "ja",
+      "source_text": "亮色",
+      "translated_text": "明るい色"
+    },
+    "zh-CN_ja_暗色": {
+      "source_lang": "zh-CN",
+      "target_lang": "ja",
+      "source_text": "暗色",
+      "translated_text": "ダークカラー"
+    },
+    "zh-CN_ja_自动": {
+      "source_lang": "zh-CN",
+      "target_lang": "ja",
+      "source_text": "自动",
+      "translated_text": "自動"
+    },
+    "zh-CN_ja_查看更多": {
+      "source_lang": "zh-CN",
+      "target_lang": "ja",
+      "source_text": "查看更多",
+      "translated_text": "詳細を表示"
+    },
+    "zh-CN_ja_搜索...": {
+      "source_lang": "zh-CN",
+      "target_lang": "ja",
+      "source_text": "搜索...",
+      "translated_text": "検索.."
+    },
+    "zh-CN_zh-TW_微信配置": {
+      "source_lang": "zh-CN",
+      "target_lang": "zh-TW",
+      "source_text": "微信配置",
+      "translated_text": "微信配寘"
+    },
+    "zh-CN_zh-TW_开发者ID(AppID)": {
+      "source_lang": "zh-CN",
+      "target_lang": "zh-TW",
+      "source_text": "开发者ID(AppID)",
+      "translated_text": "開發者ID（AppID）"
+    },
+    "zh-CN_zh-TW_<a href='https://mp.weixin.qq.com/cgi-bin/frame'>微信公众号/设置与开发/开发接口管理</a>中获取 ": {
+      "source_lang": "zh-CN",
+      "target_lang": "zh-TW",
+      "source_text": "<a href='https://mp.weixin.qq.com/cgi-bin/frame'>微信公众号/设置与开发/开发接口管理</a>中获取 ",
+      "translated_text": "<a href=' https://mp.weixin.qq.com/cgi-bin/frame '>微信公眾號/設定與開發/開發介面管理</a>中獲取"
+    },
+    "zh-CN_zh-TW_开发者密码(AppSecret)": {
+      "source_lang": "zh-CN",
+      "target_lang": "zh-TW",
+      "source_text": "开发者密码(AppSecret)",
+      "translated_text": "開發者密碼（AppSecret）"
+    },
+    "zh-CN_zh-TW_是否启用微信分享": {
+      "source_lang": "zh-CN",
+      "target_lang": "zh-TW",
+      "source_text": "是否启用微信分享",
+      "translated_text": "是否啟用微信分享"
+    },
+    "zh-CN_zh-TW_提供站点页面微信分享的能力</br>1. 请在微信公众号中配置ip白名单（ip: ${service_ip}）, 配置后将有一段时间的生效延迟。</br>2. 检查是否开启微信分享权限，微信公众号/设置与开发/开发接口管理: <a href='https://mp.weixin.qq.com/cgi-bin/frame'>网页服务/分享接口</a>。</br>3. 分享链接是否为卡片：从卡片形式进入分享卡片形式，链接形式进入分享链接形式；网页初始链接分享可由公司的服务号中或收藏后进行卡片分享（此规则为微信分享限制）。": {
+      "source_lang": "zh-CN",
+      "target_lang": "zh-TW",
+      "source_text": "提供站点页面微信分享的能力</br>1. 请在微信公众号中配置ip白名单（ip: ${service_ip}）, 配置后将有一段时间的生效延迟。</br>2. 检查是否开启微信分享权限，微信公众号/设置与开发/开发接口管理: <a href='https://mp.weixin.qq.com/cgi-bin/frame'>网页服务/分享接口</a>。</br>3. 分享链接是否为卡片：从卡片形式进入分享卡片形式，链接形式进入分享链接形式；网页初始链接分享可由公司的服务号中或收藏后进行卡片分享（此规则为微信分享限制）。",
+      "translated_text": "提供網站頁面微信分享的能力</br>1.請在微信公眾號中配寘ip白名單（ip: ${service_ip}），配寘後將有一段時間的生效延遲。 </br>2.檢查是否開啟微信分享許可權，微信公眾號/設定與開發/開發介面管理：<a href=' https://mp.weixin.qq.com/cgi-bin/frame '>網頁服務/分享介面</a>。</br>3.分享連結是否為卡片：從卡片形式進入分享卡片形式，連結形式進入分享連結形式； 網頁初始連結分享可由公司的服務號中或收藏後進行卡片分享（此規則為微信分享限制）。"
+    },
+    "zh-CN_zh-TW_是否开启debug提示": {
+      "source_lang": "zh-CN",
+      "target_lang": "zh-TW",
+      "source_text": "是否开启debug提示",
+      "translated_text": "是否開啟debug提示"
+    },
+    "zh-CN_zh-TW_请仅在配置阶段开启此选项；开启后在访问前端站点时若未正确配置微信分享将自动提示错误信息": {
+      "source_lang": "zh-CN",
+      "target_lang": "zh-TW",
+      "source_text": "请仅在配置阶段开启此选项；开启后在访问前端站点时若未正确配置微信分享将自动提示错误信息",
+      "translated_text": "請僅在配寘階段開啟此選項； 開啟後在訪問前端網站時若未正確配寘微信分享將自動提示錯誤資訊"
+    },
+    "zh-CN_ko_微信配置": {
+      "source_lang": "zh-CN",
+      "target_lang": "ko",
+      "source_text": "微信配置",
+      "translated_text": "위챗 설정"
+    },
+    "zh-CN_ko_开发者ID(AppID)": {
+      "source_lang": "zh-CN",
+      "target_lang": "ko",
+      "source_text": "开发者ID(AppID)",
+      "translated_text": "개발자 ID(AppID)"
+    },
+    "zh-CN_ko_<a href='https://mp.weixin.qq.com/cgi-bin/frame'>微信公众号/设置与开发/开发接口管理</a>中获取 ": {
+      "source_lang": "zh-CN",
+      "target_lang": "ko",
+      "source_text": "<a href='https://mp.weixin.qq.com/cgi-bin/frame'>微信公众号/设置与开发/开发接口管理</a>中获取 ",
+      "translated_text": "<a href='https://mp.weixin.qq.com/cgi-bin/frame'> 위챗 대중번호/설정 및 개발/개발 인터페이스 관리 </a> 에서 획득"
+    },
+    "zh-CN_ko_开发者密码(AppSecret)": {
+      "source_lang": "zh-CN",
+      "target_lang": "ko",
+      "source_text": "开发者密码(AppSecret)",
+      "translated_text": "개발자 암호(AppSecret)"
+    },
+    "zh-CN_ko_是否启用微信分享": {
+      "source_lang": "zh-CN",
+      "target_lang": "ko",
+      "source_text": "是否启用微信分享",
+      "translated_text": "위챗 공유 사용 여부"
+    },
+    "zh-CN_ko_提供站点页面微信分享的能力</br>1. 请在微信公众号中配置ip白名单（ip: ${service_ip}）, 配置后将有一段时间的生效延迟。</br>2. 检查是否开启微信分享权限，微信公众号/设置与开发/开发接口管理: <a href='https://mp.weixin.qq.com/cgi-bin/frame'>网页服务/分享接口</a>。</br>3. 分享链接是否为卡片：从卡片形式进入分享卡片形式，链接形式进入分享链接形式；网页初始链接分享可由公司的服务号中或收藏后进行卡片分享（此规则为微信分享限制）。": {
+      "source_lang": "zh-CN",
+      "target_lang": "ko",
+      "source_text": "提供站点页面微信分享的能力</br>1. 请在微信公众号中配置ip白名单（ip: ${service_ip}）, 配置后将有一段时间的生效延迟。</br>2. 检查是否开启微信分享权限，微信公众号/设置与开发/开发接口管理: <a href='https://mp.weixin.qq.com/cgi-bin/frame'>网页服务/分享接口</a>。</br>3. 分享链接是否为卡片：从卡片形式进入分享卡片形式，链接形式进入分享链接形式；网页初始链接分享可由公司的服务号中或收藏后进行卡片分享（此规则为微信分享限制）。",
+      "translated_text": "사이트 페이지 위챗 공유 능력 제공 </br>1. 위챗 대중번호에 ip 화이트리스트 (ip: ${service_ip}) 를 설정하십시오. 설정 후 일정 기간 효력이 지연됩니다.</br>2.위챗 공유 권한 설정 여부, 위챗 대중번호/설정 및 개발/개발 인터페이스 관리: <a href=\"https://mp.weixin.qq.com/cgi-bin/frame'> 웹 서비스 / 공유 인터페이스 </a>. </br>3. 공유 링크가 카드인지 여부: 카드 형식에서 공유 카드 형식으로, 링크 형식에서 공유 링크 형식으로,웹 페이지의 초기 링크 공유는 회사의 서비스 번호나 소장 후에 카드 공유를 진행할 수 있습니다 (이 규칙은 위챗 공유 제한입니다)."
+    },
+    "zh-CN_ko_是否开启debug提示": {
+      "source_lang": "zh-CN",
+      "target_lang": "ko",
+      "source_text": "是否开启debug提示",
+      "translated_text": "debug 프롬프트 설정 여부"
+    },
+    "zh-CN_en_微信配置": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "微信配置",
+      "translated_text": "WeChat configuration"
+    },
+    "zh-CN_en_开发者ID(AppID)": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "开发者ID(AppID)",
+      "translated_text": "Developer ID (AppID)"
+    },
+    "zh-CN_en_开发者密码(AppSecret)": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "开发者密码(AppSecret)",
+      "translated_text": "Developer Password (AppSecret)"
+    },
+    "zh-CN_en_是否启用微信分享": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "是否启用微信分享",
+      "translated_text": "Do you want to enable WeChat sharing"
+    },
+    "zh-CN_en_提供站点页面微信分享的能力</br>1. 请在微信公众号中配置ip白名单（ip: ${service_ip}）, 配置后将有一段时间的生效延迟。</br>2. 检查是否开启微信分享权限，微信公众号/设置与开发/开发接口管理: <a href='https://mp.weixin.qq.com/cgi-bin/frame'>网页服务/分享接口</a>。</br>3. 分享链接是否为卡片：从卡片形式进入分享卡片形式，链接形式进入分享链接形式；网页初始链接分享可由公司的服务号中或收藏后进行卡片分享（此规则为微信分享限制）。": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "提供站点页面微信分享的能力</br>1. 请在微信公众号中配置ip白名单（ip: ${service_ip}）, 配置后将有一段时间的生效延迟。</br>2. 检查是否开启微信分享权限，微信公众号/设置与开发/开发接口管理: <a href='https://mp.weixin.qq.com/cgi-bin/frame'>网页服务/分享接口</a>。</br>3. 分享链接是否为卡片：从卡片形式进入分享卡片形式，链接形式进入分享链接形式；网页初始链接分享可由公司的服务号中或收藏后进行卡片分享（此规则为微信分享限制）。",
+      "translated_text": "Provide the ability to share site pages on WeChat</br>1. Please configure the IP whitelist (ip: ${service_ip}) in the WeChat official account. After configuration, there will be a period of delay in effectiveness. </br>2. Check whether WeChat sharing permission is enabled, WeChat official account/setting and development/development interface management:<a href=' https://mp.weixin.qq.com/cgi-bin/frame Web service/sharing interface</a>.</br>3. Whether the sharing link is a card: enter the sharing card form from the card form, and enter the sharing link form from the link form; The initial link sharing on the webpage can be done through the company's service account or by bookmarking and sharing cards (this rule is a WeChat sharing restriction)."
+    },
+    "zh-CN_en_是否开启debug提示": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "是否开启debug提示",
+      "translated_text": "Do you want to enable debug prompt"
+    },
+    "zh-CN_en_请仅在配置阶段开启此选项；开启后在访问前端站点时若未正确配置微信分享将自动提示错误信息": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "请仅在配置阶段开启此选项；开启后在访问前端站点时若未正确配置微信分享将自动提示错误信息",
+      "translated_text": "Please only enable this option during the configuration phase; If WeChat sharing is not configured correctly when accessing the front-end site after activation, an error message will be automatically prompted"
+    },
+    "zh-CN_ja_微信配置": {
+      "source_lang": "zh-CN",
+      "target_lang": "ja",
+      "source_text": "微信配置",
+      "translated_text": "ウィーチャット構成"
+    },
+    "zh-CN_ja_开发者ID(AppID)": {
+      "source_lang": "zh-CN",
+      "target_lang": "ja",
+      "source_text": "开发者ID(AppID)",
+      "translated_text": "開発者ID（AppID）"
+    },
+    "zh-CN_ja_<a href='https://mp.weixin.qq.com/cgi-bin/frame'>微信公众号/设置与开发/开发接口管理</a>中获取 ": {
+      "source_lang": "zh-CN",
+      "target_lang": "ja",
+      "source_text": "<a href='https://mp.weixin.qq.com/cgi-bin/frame'>微信公众号/设置与开发/开发接口管理</a>中获取 ",
+      "translated_text": "<a href='https://mp.weixin.qq.com/cgi-bin/frame'>WeChat公衆番号/設定と開発/開発インタフェース管理</a>で取得"
+    },
+    "zh-CN_ja_开发者密码(AppSecret)": {
+      "source_lang": "zh-CN",
+      "target_lang": "ja",
+      "source_text": "开发者密码(AppSecret)",
+      "translated_text": "開発者パスワード（AppSecret）"
+    },
+    "zh-CN_ja_是否启用微信分享": {
+      "source_lang": "zh-CN",
+      "target_lang": "ja",
+      "source_text": "是否启用微信分享",
+      "translated_text": "ウィチャット共有を有効にするかどうか"
+    },
+    "zh-CN_ja_提供站点页面微信分享的能力</br>1. 请在微信公众号中配置ip白名单（ip: ${service_ip}）, 配置后将有一段时间的生效延迟。</br>2. 检查是否开启微信分享权限，微信公众号/设置与开发/开发接口管理: <a href='https://mp.weixin.qq.com/cgi-bin/frame'>网页服务/分享接口</a>。</br>3. 分享链接是否为卡片：从卡片形式进入分享卡片形式，链接形式进入分享链接形式；网页初始链接分享可由公司的服务号中或收藏后进行卡片分享（此规则为微信分享限制）。": {
+      "source_lang": "zh-CN",
+      "target_lang": "ja",
+      "source_text": "提供站点页面微信分享的能力</br>1. 请在微信公众号中配置ip白名单（ip: ${service_ip}）, 配置后将有一段时间的生效延迟。</br>2. 检查是否开启微信分享权限，微信公众号/设置与开发/开发接口管理: <a href='https://mp.weixin.qq.com/cgi-bin/frame'>网页服务/分享接口</a>。</br>3. 分享链接是否为卡片：从卡片形式进入分享卡片形式，链接形式进入分享链接形式；网页初始链接分享可由公司的服务号中或收藏后进行卡片分享（此规则为微信分享限制）。",
+      "translated_text": "サイトページの微信共有を提供する能力</br>1.微信公衆番号にipホワイトリスト（ip:${service _ ip}）を設定してください。設定後に有効化が遅れる時間があります。</br>2.ウィーチャット共有権限がオンになっているかどうかをチェックし、ウィーチャット公式アカウント/設定と開発/開発インタフェース管理：<a href='https://mp.weixin.qq.com/cgi-bin/frame'>ウェブサービス/共有インターフェース</a>。</br>3.共有リンクがカードかどうか：カード形式から共有カード形式に入り、リンク形式から共有リンク形式に入る、ウェブページの初期リンク共有は、会社のサービス番号またはコレクション後にカード共有することができます（この規則は微信共有制限です）。"
+    },
+    "zh-CN_ja_是否开启debug提示": {
+      "source_lang": "zh-CN",
+      "target_lang": "ja",
+      "source_text": "是否开启debug提示",
+      "translated_text": "debugプロンプトをオンにするかどうか"
+    },
+    "zh-CN_ja_请仅在配置阶段开启此选项；开启后在访问前端站点时若未正确配置微信分享将自动提示错误信息": {
+      "source_lang": "zh-CN",
+      "target_lang": "ja",
+      "source_text": "请仅在配置阶段开启此选项；开启后在访问前端站点时若未正确配置微信分享将自动提示错误信息",
+      "translated_text": "このオプションは構成段階でのみ有効にしてください。オンにすると、フロントエンドサイトにアクセスする際に微信共有が正しく構成されていない場合、エラーメッセージが自動的に表示されます"
+    },
+    "zh-CN_zh-TW_暗色": {
+      "source_lang": "zh-CN",
+      "target_lang": "zh-TW",
+      "source_text": "暗色",
+      "translated_text": "暗色"
+    },
+    "zh-CN_en_暗色": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "暗色",
+      "translated_text": "dark color"
+    },
+    "zh-CN_ko_请仅在配置阶段开启此选项；开启后在访问前端站点时若未正确配置微信分享将自动提示错误信息": {
+      "source_lang": "zh-CN",
+      "target_lang": "ko",
+      "source_text": "请仅在配置阶段开启此选项；开启后在访问前端站点时若未正确配置微信分享将自动提示错误信息",
+      "translated_text": "구성 단계에서만 이 옵션을 켜십시오.오픈 후 프런트엔드 사이트에 액세스할 때 위챗 공유를 제대로 구성하지 않으면 오류 메시지가 자동으로 표시됩니다."
+    },
+    "zh-CN_en_<a href='https://mp.weixin.qq.com/cgi-bin/frame'>微信公众号/设置与开发/开发接口管理</a>中获取 ": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "<a href='https://mp.weixin.qq.com/cgi-bin/frame'>微信公众号/设置与开发/开发接口管理</a>中获取 ",
+      "translated_text": "<a href=' https://mp.weixin.qq.com/cgi-bin/frame '>WeChat official account/setting and development/development interface management</a>"
+    },
+    "zh-CN_zh-TW_搜索...": {
+      "source_lang": "zh-CN",
+      "target_lang": "zh-TW",
+      "source_text": "搜索...",
+      "translated_text": "搜尋 .."
+    },
+    "zh-CN_en-US_主题": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "主题",
+      "translated_text": "Theme"
+    },
+    "zh-CN_en-US_热门搜索": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "热门搜索",
+      "translated_text": "Trending searches"
+    },
+    "zh-CN_en-US_阅读更多": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "阅读更多",
+      "translated_text": "Read more"
+    },
+    "zh-CN_en-US_内容为空": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "内容为空",
+      "translated_text": "The content is empty."
+    },
+    "zh-CN_en-US_版权所有": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "版权所有",
+      "translated_text": "Copyright"
+    },
+    "zh-CN_en-US_发布于": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "发布于",
+      "translated_text": "Posted on"
+    },
+    "zh-CN_en-US_上次反馈于": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "上次反馈于",
+      "translated_text": "Last feedback on"
+    },
+    "zh-CN_en-US_在站内搜索": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "在站内搜索",
+      "translated_text": "Search within the website"
+    },
+    "zh-CN_en-US_链接已复制": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "链接已复制",
+      "translated_text": "Link copied"
+    },
+    "zh-CN_en-US_提交反馈": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "提交反馈",
+      "translated_text": "Submit feedback"
+    },
+    "zh-CN_en-US_留言": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "留言",
+      "translated_text": "message"
+    },
+    "zh-CN_en-US_请输入反馈内容": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "请输入反馈内容",
+      "translated_text": "Please enter feedback content"
+    },
+    "zh-CN_en-US_反馈内容不能为空": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "反馈内容不能为空",
+      "translated_text": "The feedback content cannot be empty"
+    },
+    "zh-CN_en-US_提交": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "提交",
+      "translated_text": "submit"
+    },
+    "zh-CN_en-US_取消": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "取消",
+      "translated_text": "Cancel"
+    },
+    "zh-CN_en-US_感谢您的反馈": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "感谢您的反馈",
+      "translated_text": "Thank you for your feedback"
+    },
+    "zh-CN_en-US_上一页": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "上一页",
+      "translated_text": "Previous Page"
+    },
+    "zh-CN_en-US_下一页": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "下一页",
+      "translated_text": "Next page"
+    },
+    "zh-CN_de_主题": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "主题",
+      "translated_text": "Thema"
+    },
+    "zh-CN_de_返回": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "返回",
+      "translated_text": "zurückkehren"
+    },
+    "zh-CN_de_热门搜索": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "热门搜索",
+      "translated_text": "Beliebte Suche"
+    },
+    "zh-CN_de_阅读更多": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "阅读更多",
+      "translated_text": "Weiterlesen"
+    },
+    "zh-CN_de_内容为空": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "内容为空",
+      "translated_text": "Inhalt ist leer"
+    },
+    "zh-CN_de_版权所有": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "版权所有",
+      "translated_text": "Alle Rechte vorbehalten"
+    },
+    "zh-CN_de_发布于": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "发布于",
+      "translated_text": "Veröffentlicht am"
+    },
+    "zh-CN_de_热门话题": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "热门话题",
+      "translated_text": "Beliebte Themen"
+    },
+    "zh-CN_de_上次反馈于": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "上次反馈于",
+      "translated_text": "Letztes Feedback"
+    },
+    "zh-CN_de_在站内搜索": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "在站内搜索",
+      "translated_text": "Auf der Website suchen"
+    },
+    "zh-CN_de_链接已复制": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "链接已复制",
+      "translated_text": "Link kopiert"
+    },
+    "zh-CN_de_提交反馈": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "提交反馈",
+      "translated_text": "Feedback senden"
+    },
+    "zh-CN_de_留言": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "留言",
+      "translated_text": "Nachricht hinterlassen"
+    },
+    "zh-CN_de_请输入反馈内容": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "请输入反馈内容",
+      "translated_text": "Bitte geben Sie Ihr Feedback ein"
+    },
+    "zh-CN_de_反馈内容不能为空": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "反馈内容不能为空",
+      "translated_text": "Feedback darf nicht leer sein"
+    },
+    "zh-CN_de_提交": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "提交",
+      "translated_text": "einreichen"
+    },
+    "zh-CN_de_取消": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "取消",
+      "translated_text": "stornieren"
+    },
+    "zh-CN_de_感谢您的反馈": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "感谢您的反馈",
+      "translated_text": "Vielen Dank für Ihr Feedback"
+    },
+    "zh-CN_de_上一页": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "上一页",
+      "translated_text": "Vorherige Seite"
+    },
+    "zh-CN_de_下一页": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "下一页",
+      "translated_text": "Nächste Seite"
+    },
+    "zh-CN_fr_主题": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "主题",
+      "translated_text": "thème"
+    },
+    "zh-CN_fr_返回": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "返回",
+      "translated_text": "retourner"
+    },
+    "zh-CN_fr_热门搜索": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "热门搜索",
+      "translated_text": "Recherches populaires"
+    },
+    "zh-CN_fr_内容为空": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "内容为空",
+      "translated_text": "Le contenu est vide"
+    },
+    "zh-CN_fr_版权所有": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "版权所有",
+      "translated_text": "Tous droits réservés"
+    },
+    "zh-CN_fr_发布于": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "发布于",
+      "translated_text": "Publié dans"
+    },
+    "zh-CN_fr_热门话题": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "热门话题",
+      "translated_text": "Sujets populaires"
+    },
+    "zh-CN_fr_上次反馈于": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "上次反馈于",
+      "translated_text": "Dernier Feedback en"
+    },
+    "zh-CN_fr_在站内搜索": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "在站内搜索",
+      "translated_text": "Rechercher dans la station"
+    },
+    "zh-CN_fr_链接已复制": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "链接已复制",
+      "translated_text": "Le lien a été copié"
+    },
+    "zh-CN_fr_提交反馈": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "提交反馈",
+      "translated_text": "Soumettre un feedback"
+    },
+    "zh-CN_fr_留言": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "留言",
+      "translated_text": "Message"
+    },
+    "zh-CN_fr_请输入反馈内容": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "请输入反馈内容",
+      "translated_text": "Veuillez entrer le contenu du feedback"
+    },
+    "zh-CN_fr_反馈内容不能为空": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "反馈内容不能为空",
+      "translated_text": "Le contenu du feedback ne peut pas être vide"
+    },
+    "zh-CN_fr_提交": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "提交",
+      "translated_text": "soumettre"
+    },
+    "zh-CN_fr_取消": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "取消",
+      "translated_text": "Annuler"
+    },
+    "zh-CN_fr_感谢您的反馈": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "感谢您的反馈",
+      "translated_text": "Merci pour votre feedback"
+    },
+    "zh-CN_fr_上一页": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "上一页",
+      "translated_text": "Page précédente"
+    },
+    "zh-CN_fr_下一页": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "下一页",
+      "translated_text": "Page suivante"
+    },
+    "zh-CN_en-US_Daisy Wiki": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "Daisy Wiki",
+      "translated_text": "Daisy Wiki"
+    },
+    "zh-CN_en-US_基于DaisyUI构建的内容驱动型知识库门户。多主题风格，多组件样式，适合定制化系统。": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "基于DaisyUI构建的内容驱动型知识库门户。多主题风格，多组件样式，适合定制化系统。",
+      "translated_text": "A content driven knowledge base portal built on DaisyUI. Multi theme style, multi component style, suitable for customized systems."
+    },
+    "zh-CN_en-US_站点基本信息设置": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "站点基本信息设置",
+      "translated_text": "Basic information settings for the site"
+    },
+    "zh-CN_en-US_公司名称": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "公司名称",
+      "translated_text": "Company Name"
+    },
+    "zh-CN_en-US_Baklib.cn": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "Baklib.cn",
+      "translated_text": "Baklib.cn"
+    },
+    "zh-CN_en-US_备案/版权信息": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "备案/版权信息",
+      "translated_text": "Filing/Copyright Information"
+    },
+    "zh-CN_en-US_蜀ICP备15035023号": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "蜀ICP备15035023号",
+      "translated_text": "Shu ICP No. 15035023"
+    },
+    "zh-CN_en-US_底部区域插入 HTML 代码(footer 内，footer_menu_html)": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "底部区域插入 HTML 代码(footer 内，footer_menu_html)",
+      "translated_text": "Insert HTML code into the bottom area (footer, footer_menu_html)"
+    },
+    "zh-CN_en-US_支持HTML标签和有限的TailwindCSS样式代码": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "支持HTML标签和有限的TailwindCSS样式代码",
+      "translated_text": "Support HTML tags and limited TailwindCSS style code"
+    },
+    "zh-CN_en-US_通常在这里插入公司其他网站的外部导航链接、友情链接、SEO 优化链接等": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "通常在这里插入公司其他网站的外部导航链接、友情链接、SEO 优化链接等",
+      "translated_text": "Usually, external navigation links, friendship links, SEO optimization links, etc. of other company websites are inserted here"
+    },
+    "zh-CN_en-US_顶部导航区域插入 HTML 代码": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "顶部导航区域插入 HTML 代码",
+      "translated_text": "Insert HTML code into the top navigation area"
+    },
+    "zh-CN_en-US_通常在这里插入公司其他网站的导航链接": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "通常在这里插入公司其他网站的导航链接",
+      "translated_text": "Usually insert navigation links from other company websites here"
+    },
+    "zh-CN_en-US_Head Meta HTML代码": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "Head Meta HTML代码",
+      "translated_text": "Head Meta HTML Code"
+    },
+    "zh-CN_en-US_这部分内容会植入到站点的<head>标签内，请使用标准的 HTML 格式": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "这部分内容会植入到站点的<head>标签内，请使用标准的 HTML 格式",
+      "translated_text": "This part of the content will be embedded in the<head>tag of the site, please use standard HTML format"
+    },
+    "zh-CN_en-US_例如: <meta name='author' content='Baklib' />": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "例如: <meta name='author' content='Baklib' />",
+      "translated_text": "For example:<meta name='author 'content=' Baklib '/>"
+    },
+    "zh-CN_en-US_自定义 HTML 代码": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "自定义 HTML 代码",
+      "translated_text": "Customize HTML code"
+    },
+    "zh-CN_en-US_背景图": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "背景图",
+      "translated_text": "background image"
+    },
+    "zh-CN_en-US_背景图会根据页面宽度和背景高度自动裁剪": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "背景图会根据页面宽度和背景高度自动裁剪",
+      "translated_text": "The background image will be automatically cropped based on the page width and background height"
+    },
+    "zh-CN_en-US_标语标题": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "标语标题",
+      "translated_text": "Slogan Title"
+    },
+    "zh-CN_en-US_标语描述": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "标语描述",
+      "translated_text": "Slogan description"
+    },
+    "zh-CN_en-US_热搜关键词（请用英文逗号「,」分隔）": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "热搜关键词（请用英文逗号「,」分隔）",
+      "translated_text": "Hot search keywords (please separate them with commas)"
+    },
+    "zh-CN_en-US_标签": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "标签",
+      "translated_text": "label"
+    },
+    "zh-CN_en-US_内容": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "内容",
+      "translated_text": "content"
+    },
+    "zh-CN_en-US_同步自数据源，不可编辑": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "同步自数据源，不可编辑",
+      "translated_text": "Synchronize from data source, non editable"
+    },
+    "zh-CN_en-US_标题": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "标题",
+      "translated_text": "Title"
+    },
+    "zh-CN_en-US_OpenAPI文档": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "OpenAPI文档",
+      "translated_text": "OpenAPI documentation"
+    },
+    "zh-CN_en-US_OpenAPI文档URL": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "OpenAPI文档URL",
+      "translated_text": "OpenAPI document URL"
+    },
+    "zh-CN_de_Daisy Wiki": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "Daisy Wiki",
+      "translated_text": "Daisy Wiki"
+    },
+    "zh-CN_de_基于DaisyUI构建的内容驱动型知识库门户。多主题风格，多组件样式，适合定制化系统。": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "基于DaisyUI构建的内容驱动型知识库门户。多主题风格，多组件样式，适合定制化系统。",
+      "translated_text": "Ein content-driven Knowledgebase-Portal, das auf DaisyUI basiert. Multi-Themen-Stil, Multi-Komponenten-Stil, geeignet für kundenspezifische Systeme."
+    },
+    "zh-CN_de_站点基本信息设置": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "站点基本信息设置",
+      "translated_text": "Grundlagen der Website"
+    },
+    "zh-CN_de_公司名称": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "公司名称",
+      "translated_text": "Firmenname"
+    },
+    "zh-CN_de_Baklib.cn": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "Baklib.cn",
+      "translated_text": "Baklib.cn"
+    },
+    "zh-CN_de_备案/版权信息": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "备案/版权信息",
+      "translated_text": "Archivierung/Urheberrechtsinformationen"
+    },
+    "zh-CN_de_蜀ICP备15035023号": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "蜀ICP备15035023号",
+      "translated_text": "ICP Nr. 15035023"
+    },
+    "zh-CN_de_底部区域插入 HTML 代码(footer 内，footer_menu_html)": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "底部区域插入 HTML 代码(footer 内，footer_menu_html)",
+      "translated_text": "Fügen Sie den HTML-Code in den unteren Bereich ein (Footer, footer_menu_html)"
+    },
+    "zh-CN_de_支持HTML标签和有限的TailwindCSS样式代码": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "支持HTML标签和有限的TailwindCSS样式代码",
+      "translated_text": "Unterstützung für HTML-Tags und begrenzten TailwindCSS-Style-Code"
+    },
+    "zh-CN_de_顶部导航区域插入 HTML 代码": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "顶部导航区域插入 HTML 代码",
+      "translated_text": "HTML-Code im oberen Navigationsbereich einfügen"
+    },
+    "zh-CN_de_通常在这里插入公司其他网站的导航链接": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "通常在这里插入公司其他网站的导航链接",
+      "translated_text": "In der Regel werden hier Navigationslinks zu anderen Websites des Unternehmens eingefügt"
+    },
+    "zh-CN_de_Head Meta HTML代码": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "Head Meta HTML代码",
+      "translated_text": "Head Meta HTML-Code"
+    },
+    "zh-CN_de_这部分内容会植入到站点的<head>标签内，请使用标准的 HTML 格式": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "这部分内容会植入到站点的<head>标签内，请使用标准的 HTML 格式",
+      "translated_text": "Dieser Teil wird in das <head>-Tag der Website eingefügt. Verwenden Sie bitte das Standard-HTML-Format."
+    },
+    "zh-CN_de_例如: <meta name='author' content='Baklib' />": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "例如: <meta name='author' content='Baklib' />",
+      "translated_text": "Beispiel: <meta name='author' content='Baklib' />"
+    },
+    "zh-CN_de_自定义 HTML 代码": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "自定义 HTML 代码",
+      "translated_text": "Benutzerdefinierter HTML-Code"
+    },
+    "zh-CN_de_背景图": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "背景图",
+      "translated_text": "Hintergrundbild"
+    },
+    "zh-CN_de_背景图会根据页面宽度和背景高度自动裁剪": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "背景图会根据页面宽度和背景高度自动裁剪",
+      "translated_text": "Hintergrundbild wird automatisch auf Seitenbreite und Hintergrundhöhe geschnitten"
+    },
+    "zh-CN_de_标语标题": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "标语标题",
+      "translated_text": "Schlagworttitel"
+    },
+    "zh-CN_de_标语描述": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "标语描述",
+      "translated_text": "Slogan Beschreibung"
+    },
+    "zh-CN_de_热搜关键词（请用英文逗号「,」分隔）": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "热搜关键词（请用英文逗号「,」分隔）",
+      "translated_text": "Hot Search Keywords (bitte durch ein Komma getrennt)"
+    },
+    "zh-CN_de_标签": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "标签",
+      "translated_text": "Etikett"
+    },
+    "zh-CN_de_内容": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "内容",
+      "translated_text": "Inhalt"
+    },
+    "zh-CN_de_同步自数据源，不可编辑": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "同步自数据源，不可编辑",
+      "translated_text": "Synchronisierung von Datenquellen, nicht bearbeitbar"
+    },
+    "zh-CN_de_标题": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "标题",
+      "translated_text": "Titel"
+    },
+    "zh-CN_de_OpenAPI文档": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "OpenAPI文档",
+      "translated_text": "OpenAPI Dokumentation"
+    },
+    "zh-CN_de_OpenAPI文档URL": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "OpenAPI文档URL",
+      "translated_text": "OpenAPI Dokumentation URL"
+    },
+    "zh-CN_fr_Daisy Wiki": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "Daisy Wiki",
+      "translated_text": "Daisy Wiki"
+    },
+    "zh-CN_fr_基于DaisyUI构建的内容驱动型知识库门户。多主题风格，多组件样式，适合定制化系统。": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "基于DaisyUI构建的内容驱动型知识库门户。多主题风格，多组件样式，适合定制化系统。",
+      "translated_text": "Portail de base de connaissances axé sur le contenu construit sur daisyui. Style Multi - thème, style Multi - composant, adapté aux systèmes personnalisés."
+    },
+    "zh-CN_fr_站点基本信息设置": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "站点基本信息设置",
+      "translated_text": "Paramètres des informations de base du site"
+    },
+    "zh-CN_fr_公司名称": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "公司名称",
+      "translated_text": "Nom de l'entreprise"
+    },
+    "zh-CN_fr_Baklib.cn": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "Baklib.cn",
+      "translated_text": "Baklib.cn"
+    },
+    "zh-CN_fr_备案/版权信息": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "备案/版权信息",
+      "translated_text": "Dépôt / informations de copyright"
+    },
+    "zh-CN_fr_蜀ICP备15035023号": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "蜀ICP备15035023号",
+      "translated_text": "Shu ICP réserve no.15035023"
+    },
+    "zh-CN_fr_底部区域插入 HTML 代码(footer 内，footer_menu_html)": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "底部区域插入 HTML 代码(footer 内，footer_menu_html)",
+      "translated_text": "La zone inférieure insère le code HTML (dans footer, footer_menu_html)"
+    },
+    "zh-CN_fr_支持HTML标签和有限的TailwindCSS样式代码": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "支持HTML标签和有限的TailwindCSS样式代码",
+      "translated_text": "Prise en charge des balises HTML et du Code de style tailwindcss limité"
+    },
+    "zh-CN_fr_通常在这里插入公司其他网站的外部导航链接、友情链接、SEO 优化链接等": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "通常在这里插入公司其他网站的外部导航链接、友情链接、SEO 优化链接等",
+      "translated_text": "Insérez généralement ici des liens de navigation externes vers d'autres sites Web de l'entreprise, des liens amicaux, des liens optimisés pour le référencement, etc."
+    },
+    "zh-CN_fr_通常在这里插入公司其他网站的导航链接": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "通常在这里插入公司其他网站的导航链接",
+      "translated_text": "Insérez généralement ici des liens de navigation vers d'autres sites Web de la société"
+    },
+    "zh-CN_fr_Head Meta HTML代码": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "Head Meta HTML代码",
+      "translated_text": "Head Meta code HTML pour"
+    },
+    "zh-CN_fr_这部分内容会植入到站点的<head>标签内，请使用标准的 HTML 格式": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "这部分内容会植入到站点的<head>标签内，请使用标准的 HTML 格式",
+      "translated_text": "Cette partie du contenu est implantée dans la balise < Head > de votre site, utilisez le format HTML standard."
+    },
+    "zh-CN_fr_例如: <meta name='author' content='Baklib' />": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "例如: <meta name='author' content='Baklib' />",
+      "translated_text": "Par exemple: < META NAME = 'author' Content = 'baklib' / >"
+    },
+    "zh-CN_fr_自定义 HTML 代码": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "自定义 HTML 代码",
+      "translated_text": "Code HTML personnalisé"
+    },
+    "zh-CN_fr_背景图": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "背景图",
+      "translated_text": "Diagramme de fond"
+    },
+    "zh-CN_fr_背景图会根据页面宽度和背景高度自动裁剪": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "背景图会根据页面宽度和背景高度自动裁剪",
+      "translated_text": "Le diagramme d'arrière - plan est automatiquement recadré en fonction de la largeur de la page et de la hauteur de l'arrière - plan"
+    },
+    "zh-CN_fr_标语标题": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "标语标题",
+      "translated_text": "Titre du slogan"
+    },
+    "zh-CN_fr_标语描述": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "标语描述",
+      "translated_text": "Description du slogan"
+    },
+    "zh-CN_fr_热搜关键词（请用英文逗号「,」分隔）": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "热搜关键词（请用英文逗号「,」分隔）",
+      "translated_text": "Mots - clés de recherche chaude (veuillez les séparer par une virgule anglaise «, »)"
+    },
+    "zh-CN_fr_标签": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "标签",
+      "translated_text": "étiquette"
+    },
+    "zh-CN_fr_内容": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "内容",
+      "translated_text": "contenu"
+    },
+    "zh-CN_fr_同步自数据源，不可编辑": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "同步自数据源，不可编辑",
+      "translated_text": "Synchronisation à partir de sources de données, non modifiable"
+    },
+    "zh-CN_fr_标题": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "标题",
+      "translated_text": "Titre"
+    },
+    "zh-CN_fr_OpenAPI文档": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "OpenAPI文档",
+      "translated_text": "Documentation openapi"
+    },
+    "zh-CN_fr_OpenAPI文档URL": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "OpenAPI文档URL",
+      "translated_text": "URL du document openapi"
+    },
+    "zh-CN_en-US_返回": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "返回",
+      "translated_text": "return"
+    },
+    "zh-CN_fr_阅读更多": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "阅读更多",
+      "translated_text": "Lire plus"
+    },
+    "zh-CN_de_通常在这里插入公司其他网站的外部导航链接、友情链接、SEO 优化链接等": {
+      "source_lang": "zh-CN",
+      "target_lang": "de",
+      "source_text": "通常在这里插入公司其他网站的外部导航链接、友情链接、SEO 优化链接等",
+      "translated_text": "In der Regel werden hier externe Navigationslinks, Freundschaftslinks, SEO-Optimierungslinks usw. zu anderen Websites des Unternehmens eingefügt."
+    },
+    "zh-CN_fr_顶部导航区域插入 HTML 代码": {
+      "source_lang": "zh-CN",
+      "target_lang": "fr",
+      "source_text": "顶部导航区域插入 HTML 代码",
+      "translated_text": "Zone de navigation supérieure insérer le code HTML"
+    },
+    "zh-CN_en-US_热门话题": {
+      "source_lang": "zh-CN",
+      "target_lang": "en-US",
+      "source_text": "热门话题",
+      "translated_text": "hot topic"
+    },
+    "zh-CN_en_版权所有": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "版权所有",
+      "translated_text": "All rights reserved"
+    },
+    "zh-CN_en_退出登录": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "退出登录",
+      "translated_text": "Log out"
+    },
+    "zh-CN_en_上一页": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "上一页",
+      "translated_text": "Previous Page"
+    },
+    "zh-CN_en_下一页": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "下一页",
+      "translated_text": "Next page"
+    },
+    "zh-CN_en_当前显示第": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "当前显示第",
+      "translated_text": "Currently displaying"
+    },
+    "zh-CN_en_条记录": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "条记录",
+      "translated_text": "Article record"
+    },
+    "zh-CN_en_该页面已限制访问": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "该页面已限制访问",
+      "translated_text": "This page has restricted access"
+    },
+    "zh-CN_en_登录": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "登录",
+      "translated_text": "log in"
+    },
+    "zh-CN_en_需要登录/授权": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "需要登录/授权",
+      "translated_text": "Login/authorization required"
+    },
+    "zh-CN_en_Image": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Image",
+      "translated_text": "Image"
+    },
+    "zh-CN_en_Video": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Video",
+      "translated_text": "Video"
+    },
+    "zh-CN_en_Audio": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Audio",
+      "translated_text": "Audio"
+    },
+    "zh-CN_en_Archive": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Archive",
+      "translated_text": "Archive"
+    },
+    "zh-CN_en_Other": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Other",
+      "translated_text": "Other"
+    },
+    "zh-CN_en_Keyword": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Keyword",
+      "translated_text": "Keyword"
+    },
+    "zh-CN_en_Search resources by keyword...": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Search resources by keyword...",
+      "translated_text": "Search resources by keyword..."
+    },
+    "zh-CN_en_Advanced filters": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Advanced filters",
+      "translated_text": "Advanced filters"
+    },
+    "zh-CN_en_Filter": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Filter",
+      "translated_text": "Filter"
+    },
+    "zh-CN_en_Date range": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Date range",
+      "translated_text": "Date range"
+    },
+    "zh-CN_en_Start date": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Start date",
+      "translated_text": "Start date"
+    },
+    "zh-CN_en_Clear start date": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Clear start date",
+      "translated_text": "Clear start date"
+    },
+    "zh-CN_en_End date": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "End date",
+      "translated_text": "End date"
+    },
+    "zh-CN_en_Clear end date": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Clear end date",
+      "translated_text": "Clear end date"
+    },
+    "zh-CN_en_Tag filter": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Tag filter",
+      "translated_text": "Tag filter"
+    },
+    "zh-CN_en_Latest uploads": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Latest uploads",
+      "translated_text": "Latest uploads"
+    },
+    "zh-CN_en_Most viewed": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Most viewed",
+      "translated_text": "Most viewed"
+    },
+    "zh-CN_en_Sort": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Sort",
+      "translated_text": "Sort"
+    },
+    "zh-CN_en_By creation time": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "By creation time",
+      "translated_text": "By creation time"
+    },
+    "zh-CN_en_By modified time": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "By modified time",
+      "translated_text": "By modified time"
+    },
+    "zh-CN_en_Ascending": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Ascending",
+      "translated_text": "Ascending"
+    },
+    "zh-CN_en_Descending": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Descending",
+      "translated_text": "Descending"
+    },
+    "zh-CN_en_Search": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Search",
+      "translated_text": "Search"
+    },
+    "zh-CN_en_All": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "All",
+      "translated_text": "All"
+    },
+    "zh-CN_en_Loading...": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Loading...",
+      "translated_text": "Loading..."
+    },
+    "zh-CN_en_Reset": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Reset",
+      "translated_text": "Reset"
+    },
+    "zh-CN_en_Close": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Close",
+      "translated_text": "Close"
+    },
+    "zh-CN_en_File type": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "File type",
+      "translated_text": "File type"
+    },
+    "zh-CN_en_File size": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "File size",
+      "translated_text": "File size"
+    },
+    "zh-CN_en_File metadata": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "File metadata",
+      "translated_text": "File metadata"
+    },
+    "zh-CN_en_Uploaded at": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Uploaded at",
+      "translated_text": "Uploaded at"
+    },
+    "zh-CN_en_Views": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Views",
+      "translated_text": "Views"
+    },
+    "zh-CN_en_Creator": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Creator",
+      "translated_text": "Creator"
+    },
+    "zh-CN_en_File tags": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "File tags",
+      "translated_text": "File tags"
+    },
+    "zh-CN_en_File description": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "File description",
+      "translated_text": "File description"
+    },
+    "zh-CN_en_Duration": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Duration",
+      "translated_text": "Duration"
+    },
+    "zh-CN_en_Resolution": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Resolution",
+      "translated_text": "Resolution"
+    },
+    "zh-CN_en_No preview": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "No preview",
+      "translated_text": "No preview"
+    },
+    "zh-CN_en_Your browser does not support audio playback.": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Your browser does not support audio playback.",
+      "translated_text": "Your browser does not support audio playback."
+    },
+    "zh-CN_en_Download now": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Download now",
+      "translated_text": "Download now"
+    },
+    "zh-CN_en_Preview large image": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Preview large image",
+      "translated_text": "Preview large image"
+    },
+    "zh-CN_en_Your browser does not support video playback.": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Your browser does not support video playback.",
+      "translated_text": "Your browser does not support video playback."
+    },
+    "zh-CN_en_Resource not found": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Resource not found",
+      "translated_text": "Resource not found"
+    },
+    "zh-CN_en_Resource directory": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Resource directory",
+      "translated_text": "Resource directory"
+    },
+    "zh-CN_en_Collapse sidebar": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Collapse sidebar",
+      "translated_text": "Collapse sidebar"
+    },
+    "zh-CN_en_Tools": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Tools",
+      "translated_text": "Tools"
+    },
+    "zh-CN_en_Tags": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Tags",
+      "translated_text": "Tags"
+    },
+    "zh-CN_en_Activities": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Activities",
+      "translated_text": "Activities"
+    },
+    "zh-CN_en_Expand sidebar": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Expand sidebar",
+      "translated_text": "Expand sidebar"
+    },
+    "zh-CN_en_Profile": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Profile",
+      "translated_text": "Profile"
+    },
+    "zh-CN_en_Profile info": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Profile info",
+      "translated_text": "Profile info"
+    },
+    "zh-CN_en_Signing out...": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Signing out...",
+      "translated_text": "Signing out..."
+    },
+    "zh-CN_en_Signing in...": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Signing in...",
+      "translated_text": "Signing in..."
+    },
+    "zh-CN_en_Login": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Login",
+      "translated_text": "Login"
+    },
+    "zh-CN_en_Login / Register": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Login / Register",
+      "translated_text": "Login / Register"
+    },
+    "zh-CN_en_Preview failed to load": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Preview failed to load",
+      "translated_text": "Preview failed to load"
+    },
+    "zh-CN_en_Previous page": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Previous page",
+      "translated_text": "Previous page"
+    },
+    "zh-CN_en_Next page": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Next page",
+      "translated_text": "Next page"
+    },
+    "zh-CN_en_Zoom out": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Zoom out",
+      "translated_text": "Zoom out"
+    },
+    "zh-CN_en_Reset zoom": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Reset zoom",
+      "translated_text": "Reset zoom"
+    },
+    "zh-CN_en_Zoom in": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Zoom in",
+      "translated_text": "Zoom in"
+    },
+    "zh-CN_en_Search image resources...": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Search image resources...",
+      "translated_text": "Search image resources..."
+    },
+    "zh-CN_en_Rating": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Rating",
+      "translated_text": "Rating"
+    },
+    "zh-CN_en_5 stars": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "5 stars",
+      "translated_text": "5 stars"
+    },
+    "zh-CN_en_4 stars & up": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "4 stars & up",
+      "translated_text": "4 stars & up"
+    },
+    "zh-CN_en_3 stars & up": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "3 stars & up",
+      "translated_text": "3 stars & up"
+    },
+    "zh-CN_en_2 stars & up": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "2 stars & up",
+      "translated_text": "2 stars & up"
+    },
+    "zh-CN_en_1 star & up": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "1 star & up",
+      "translated_text": "1 star & up"
+    },
+    "zh-CN_en_Shape": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Shape",
+      "translated_text": "Shape"
+    },
+    "zh-CN_en_Landscape": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Landscape",
+      "translated_text": "Landscape"
+    },
+    "zh-CN_en_Portrait": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Portrait",
+      "translated_text": "Portrait"
+    },
+    "zh-CN_en_Square": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Square",
+      "translated_text": "Square"
+    },
+    "zh-CN_en_Type": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Type",
+      "translated_text": "Type"
+    },
+    "zh-CN_en_Collection": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Collection",
+      "translated_text": "Collection"
+    },
+    "zh-CN_en_Newest created": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Newest created",
+      "translated_text": "Newest created"
+    },
+    "zh-CN_en_Oldest created": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Oldest created",
+      "translated_text": "Oldest created"
+    },
+    "zh-CN_en_Recently updated": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Recently updated",
+      "translated_text": "Recently updated"
+    },
+    "zh-CN_en_Earliest updated": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Earliest updated",
+      "translated_text": "Earliest updated"
+    },
+    "zh-CN_en_Name A-Z": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Name A-Z",
+      "translated_text": "Name A-Z"
+    },
+    "zh-CN_en_Name Z-A": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Name Z-A",
+      "translated_text": "Name Z-A"
+    },
+    "zh-CN_en_Home": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Home",
+      "translated_text": "Home"
+    },
+    "zh-CN_en_Selected": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Selected",
+      "translated_text": "Selected"
+    },
+    "zh-CN_en_tags": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "tags",
+      "translated_text": "tags"
+    },
+    "zh-CN_en_Click to select tags": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Click to select tags",
+      "translated_text": "Click to select tags"
+    },
+    "zh-CN_en_No selected tags, click above to choose": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "No selected tags, click above to choose",
+      "translated_text": "No selected tags, click above to choose"
+    },
+    "zh-CN_en_Select tags": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Select tags",
+      "translated_text": "Select tags"
+    },
+    "zh-CN_en_Search tags...": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Search tags...",
+      "translated_text": "Search tags..."
+    },
+    "zh-CN_en_Clear search": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Clear search",
+      "translated_text": "Clear search"
+    },
+    "zh-CN_en_Selected tags": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Selected tags",
+      "translated_text": "Selected tags"
+    },
+    "zh-CN_en_No selected tags": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "No selected tags",
+      "translated_text": "No selected tags"
+    },
+    "zh-CN_en_Tag list:": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Tag list:",
+      "translated_text": "Tag list:"
+    },
+    "zh-CN_en_No files yet": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "No files yet",
+      "translated_text": "No files yet"
+    },
+    "zh-CN_en_No resources found for current filters": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "No resources found for current filters",
+      "translated_text": "No resources found for current filters"
+    },
+    "zh-CN_en_File name": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "File name",
+      "translated_text": "File name"
+    },
+    "zh-CN_en_Created at": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Created at",
+      "translated_text": "Created at"
+    },
+    "zh-CN_en_Error": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Error",
+      "translated_text": "Error"
+    },
+    "zh-CN_en_Loading directory information...": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Loading directory information...",
+      "translated_text": "Loading directory information..."
+    },
+    "zh-CN_en_Upload files": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Upload files",
+      "translated_text": "Upload files"
+    },
+    "zh-CN_en_Supported formats: csv, xls, xlsx, pdf, doc, docx, images, videos, audio, etc.": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Supported formats: csv, xls, xlsx, pdf, doc, docx, images, videos, audio, etc.",
+      "translated_text": "Supported formats: csv, xls, xlsx, pdf, doc, docx, images, videos, audio, etc."
+    },
+    "zh-CN_en_Drag files or folders here": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Drag files or folders here",
+      "translated_text": "Drag files or folders here"
+    },
+    "zh-CN_en_Select files": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Select files",
+      "translated_text": "Select files"
+    },
+    "zh-CN_en_Select folder": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Select folder",
+      "translated_text": "Select folder"
+    },
+    "zh-CN_en_files": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "files",
+      "translated_text": "files"
+    },
+    "zh-CN_en_Selected files": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Selected files",
+      "translated_text": "Selected files"
+    },
+    "zh-CN_en_No files selected": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "No files selected",
+      "translated_text": "No files selected"
+    },
+    "zh-CN_en_No permission to access this resource": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "No permission to access this resource",
+      "translated_text": "No permission to access this resource"
+    },
+    "zh-CN_en_Missing parameters": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Missing parameters",
+      "translated_text": "Missing parameters"
+    },
+    "zh-CN_en_All resources": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "All resources",
+      "translated_text": "All resources"
+    },
+    "zh-CN_en_资源门户": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "资源门户",
+      "translated_text": "Resource Portal"
+    },
+    "zh-CN_en_专业的资源管理门户模板，专为数字资产和媒体资源管理而设计。支持多级栏目分类导航、标签分类、多条件查询筛选等功能，具备完善的权限管理体系和资源安全保护。": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "专业的资源管理门户模板，专为数字资产和媒体资源管理而设计。支持多级栏目分类导航、标签分类、多条件查询筛选等功能，具备完善的权限管理体系和资源安全保护。",
+      "translated_text": "A professional resource management portal template designed specifically for digital asset and media resource management. Support multi-level column classification navigation, tag classification, multi condition query filtering and other functions, with a complete permission management system and resource security protection."
+    },
+    "zh-CN_en_通用设置": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "通用设置",
+      "translated_text": "General Settings"
+    },
+    "zh-CN_en_Logo 图片": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Logo 图片",
+      "translated_text": "Logo image"
+    },
+    "zh-CN_en_若设置了logo，则页头显示 logo，否则显示：网站图标+站点名称": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "若设置了logo，则页头显示 logo，否则显示：网站图标+站点名称",
+      "translated_text": "If a logo is set, the header will display the logo, otherwise it will display: website icon+site name"
+    },
+    "zh-CN_en_公司名称": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "公司名称",
+      "translated_text": "company name"
+    },
+    "zh-CN_en_Baklib.cn": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "Baklib.cn",
+      "translated_text": "Baklib.cn"
+    },
+    "zh-CN_en_显示在页面底部页脚位置": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "显示在页面底部页脚位置",
+      "translated_text": "Display in the footer position at the bottom of the page"
+    },
+    "zh-CN_en_备案/版权信息": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "备案/版权信息",
+      "translated_text": "Filing/Copyright Information"
+    },
+    "zh-CN_en_蜀ICP备xxxx号": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "蜀ICP备xxxx号",
+      "translated_text": "Shu ICP preparation xxxx number"
+    },
+    "zh-CN_en_自定义 HTML 代码": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "自定义 HTML 代码",
+      "translated_text": "Customize HTML code"
+    },
+    "zh-CN_en_自定义 <head></head> 标签中的 HTML": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "自定义 <head></head> 标签中的 HTML",
+      "translated_text": "Customize HTML in<head></head>tags"
+    },
+    "zh-CN_en_支持HTML标签和有限的TailwindCSS样式代码": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "支持HTML标签和有限的TailwindCSS样式代码",
+      "translated_text": "Support HTML tags and limited TailwindCSS style code"
+    },
+    "zh-CN_en_通常在这里插入访问统计、客服机器人等嵌入代码": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "通常在这里插入访问统计、客服机器人等嵌入代码",
+      "translated_text": "Usually insert embedded code such as access statistics and customer service robots here"
+    },
+    "zh-CN_en_顶部导航区域插入 HTML 代码": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "顶部导航区域插入 HTML 代码",
+      "translated_text": "Insert HTML code into the top navigation area"
+    },
+    "zh-CN_en_通常在这里插入公司其他网站的导航链接": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "通常在这里插入公司其他网站的导航链接",
+      "translated_text": "Usually insert navigation links from other company websites here"
+    },
+    "zh-CN_en_页脚区域插入 HTML 代码": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "页脚区域插入 HTML 代码",
+      "translated_text": "Insert HTML code into footer area"
+    },
+    "zh-CN_en_支持HTML标签和有限的TailwindCSS样式代码; 将完全替换默认页脚内容": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "支持HTML标签和有限的TailwindCSS样式代码; 将完全替换默认页脚内容",
+      "translated_text": "Support HTML tags and limited TailwindCSS style code; Completely replace the default footer content"
+    },
+    "zh-CN_en_若需要保留默认页脚内容，请在 footer_menu_html 中插入 HTML 代码": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "若需要保留默认页脚内容，请在 footer_menu_html 中插入 HTML 代码",
+      "translated_text": "If you need to keep the default footer content, please insert HTML code in footer_cenu_tml"
+    },
+    "zh-CN_en_底部区域插入 HTML 代码(footer 内，footer_menu_html)": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "底部区域插入 HTML 代码(footer 内，footer_menu_html)",
+      "translated_text": "Insert HTML code into the bottom area (footer, footer_menu_html)"
+    },
+    "zh-CN_en_资源不存在": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "资源不存在",
+      "translated_text": "Resource does not exist"
+    },
+    "zh-CN_en_缺少参数": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "缺少参数",
+      "translated_text": "Missing parameter"
+    },
+    "zh-CN_en_全部资源": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "全部资源",
+      "translated_text": "All resources"
+    },
+    "zh-CN_en_通常在这里插入公司其他网站的外部导航链接、友情链接、SEO 优化链接等": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "通常在这里插入公司其他网站的外部导航链接、友情链接、SEO 优化链接等",
+      "translated_text": "Usually, external navigation links, friendship links, SEO optimization links, etc. of other company websites are inserted here"
+    },
+    "zh-CN_en_暂无文件": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "暂无文件",
+      "translated_text": "No documents available"
+    },
+    "zh-CN_en_当前筛选条件下没有找到任何资源": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "当前筛选条件下没有找到任何资源",
+      "translated_text": "No resources were found under the current filtering criteria"
+    },
+    "zh-CN_en_文件名称": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "文件名称",
+      "translated_text": "file name"
+    },
+    "zh-CN_en_文件大小": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "文件大小",
+      "translated_text": "file size"
+    },
+    "zh-CN_en_文件类型": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "文件类型",
+      "translated_text": "file type"
+    },
+    "zh-CN_en_创建时间": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "创建时间",
+      "translated_text": "Creation Time"
+    },
+    "zh-CN_en_图片": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "图片",
+      "translated_text": "picture"
+    },
+    "zh-CN_en_视频": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "视频",
+      "translated_text": "video"
+    },
+    "zh-CN_en_音频": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "音频",
+      "translated_text": "audio"
+    },
+    "zh-CN_en_其他": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "其他",
+      "translated_text": "other"
+    },
+    "zh-CN_en_ZIP": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "ZIP",
+      "translated_text": "ZIP"
+    },
+    "zh-CN_en_XLS": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "XLS",
+      "translated_text": "XLS"
+    },
+    "zh-CN_en_PPT": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "PPT",
+      "translated_text": "PPT"
+    },
+    "zh-CN_en_DOC": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "DOC",
+      "translated_text": "DOC"
+    },
+    "zh-CN_en_无权访问该资源": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "无权访问该资源",
+      "translated_text": "Not authorized to access this resource"
+    },
+    "zh-CN_en_压缩包": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "压缩包",
+      "translated_text": "compressed file"
+    },
+    "zh-CN_en_关键词": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "关键词",
+      "translated_text": "keyword"
+    },
+    "zh-CN_en_输入关键词搜索资源...": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "输入关键词搜索资源...",
+      "translated_text": "Enter keywords to search for resources .."
+    },
+    "zh-CN_en_时间范围": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "时间范围",
+      "translated_text": "time range"
+    },
+    "zh-CN_en_开始日期": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "开始日期",
+      "translated_text": "Start date"
+    },
+    "zh-CN_en_清除开始日期": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "清除开始日期",
+      "translated_text": "Clear start date"
+    },
+    "zh-CN_en_结束日期": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "结束日期",
+      "translated_text": "End Date"
+    },
+    "zh-CN_en_清除结束日期": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "清除结束日期",
+      "translated_text": "Clear End Date"
+    },
+    "zh-CN_en_全部": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "全部",
+      "translated_text": "all"
+    },
+    "zh-CN_en_标签筛选": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "标签筛选",
+      "translated_text": "Tag filtering"
+    },
+    "zh-CN_en_搜索": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "搜索",
+      "translated_text": "search"
+    },
+    "zh-CN_en_重置": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "重置",
+      "translated_text": "reset"
+    },
+    "zh-CN_en_高级筛选": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "高级筛选",
+      "translated_text": "Advanced Filter"
+    },
+    "zh-CN_en_筛选": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "筛选",
+      "translated_text": "filter"
+    },
+    "zh-CN_en_最新上传": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "最新上传",
+      "translated_text": "Latest Upload"
+    },
+    "zh-CN_en_最多浏览": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "最多浏览",
+      "translated_text": "Maximum views"
+    },
+    "zh-CN_en_排序规则": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "排序规则",
+      "translated_text": "collation"
+    },
+    "zh-CN_en_排序": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "排序",
+      "translated_text": "sort"
+    },
+    "zh-CN_en_按修改时间": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "按修改时间",
+      "translated_text": "According to the modification time"
+    },
+    "zh-CN_en_升序": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "升序",
+      "translated_text": "ascending order"
+    },
+    "zh-CN_en_降序": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "降序",
+      "translated_text": "descending order"
+    },
+    "zh-CN_en_暂无预览": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "暂无预览",
+      "translated_text": "No preview available at the moment"
+    },
+    "zh-CN_en_上传时间": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "上传时间",
+      "translated_text": "Upload time"
+    },
+    "zh-CN_en_创建者": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "创建者",
+      "translated_text": "creator"
+    },
+    "zh-CN_en_文件标签": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "文件标签",
+      "translated_text": "file label"
+    },
+    "zh-CN_en_文件描述": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "文件描述",
+      "translated_text": "Document Description"
+    },
+    "zh-CN_en_您的浏览器不支持视频播放。": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "您的浏览器不支持视频播放。",
+      "translated_text": "Your browser does not support video playback."
+    },
+    "zh-CN_en_时长": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "时长",
+      "translated_text": "duration"
+    },
+    "zh-CN_en_按创建时间": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "按创建时间",
+      "translated_text": "By creation time"
+    },
+    "zh-CN_en_文件元数据": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "文件元数据",
+      "translated_text": "file metadata"
+    },
+    "zh-CN_en_您的浏览器不支持音频播放。": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "您的浏览器不支持音频播放。",
+      "translated_text": "Your browser does not support audio playback."
+    },
+    "zh-CN_en_立即下载": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "立即下载",
+      "translated_text": "Download Now"
+    },
+    "zh-CN_en_预览大图": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "预览大图",
+      "translated_text": "Preview large image"
+    },
+    "zh-CN_en_查看详细信息需要登录授权": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "查看详细信息需要登录授权",
+      "translated_text": "Viewing detailed information requires login authorization"
+    },
+    "zh-CN_en_浏览次数": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "浏览次数",
+      "translated_text": "view count"
+    },
+    "zh-CN_en_分辨率": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "分辨率",
+      "translated_text": "resolution"
+    },
+    "zh-CN_en_资源目录": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "资源目录",
+      "translated_text": "Resource Catalog"
+    },
+    "zh-CN_en_折叠侧边栏": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "折叠侧边栏",
+      "translated_text": "Collapse sidebar"
+    },
+    "zh-CN_en_展开侧边栏": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "展开侧边栏",
+      "translated_text": "Expand the sidebar"
+    },
+    "zh-CN_en_个人中心": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "个人中心",
+      "translated_text": "Personal Center"
+    },
+    "zh-CN_en_个人信息": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "个人信息",
+      "translated_text": "Personal Information"
+    },
+    "zh-CN_en_退出中...": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "退出中...",
+      "translated_text": "Exiting .."
+    },
+    "zh-CN_en_登录中...": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "登录中...",
+      "translated_text": "Logging in .."
+    },
+    "zh-CN_en_登录 / 注册": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "登录 / 注册",
+      "translated_text": "Login/Register"
+    },
+    "zh-CN_en_搜索图片资源...": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "搜索图片资源...",
+      "translated_text": "Search for image resources .."
+    },
+    "zh-CN_en_标签": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "标签",
+      "translated_text": "label"
+    },
+    "zh-CN_en_5星": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "5星",
+      "translated_text": "5 stars"
+    },
+    "zh-CN_en_4星及以上": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "4星及以上",
+      "translated_text": "4 stars or above"
+    },
+    "zh-CN_en_3星及以上": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "3星及以上",
+      "translated_text": "3-star or above"
+    },
+    "zh-CN_en_2星及以上": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "2星及以上",
+      "translated_text": "2 stars or above"
+    },
+    "zh-CN_en_1星及以上": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "1星及以上",
+      "translated_text": "1 star or above"
+    },
+    "zh-CN_en_形状": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "形状",
+      "translated_text": "shape"
+    },
+    "zh-CN_en_横图": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "横图",
+      "translated_text": "horizontal image"
+    },
+    "zh-CN_en_竖图": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "竖图",
+      "translated_text": "vertical image"
+    },
+    "zh-CN_en_方图": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "方图",
+      "translated_text": "Square Map"
+    },
+    "zh-CN_en_类型": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "类型",
+      "translated_text": "type"
+    },
+    "zh-CN_en_集合": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "集合",
+      "translated_text": "set"
+    },
+    "zh-CN_en_最新创建": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "最新创建",
+      "translated_text": "Latest Creation"
+    },
+    "zh-CN_en_最早创建": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "最早创建",
+      "translated_text": "earliest creation"
+    },
+    "zh-CN_en_最近更新": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "最近更新",
+      "translated_text": "Recently Updated"
+    },
+    "zh-CN_en_最早更新": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "最早更新",
+      "translated_text": "The earliest update"
+    },
+    "zh-CN_en_名称A-Z": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "名称A-Z",
+      "translated_text": "Name A-Z"
+    },
+    "zh-CN_en_名称Z-A": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "名称Z-A",
+      "translated_text": "Name Z-A"
+    },
+    "zh-CN_en_已选择": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "已选择",
+      "translated_text": "Selected"
+    },
+    "zh-CN_en_个标签": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "个标签",
+      "translated_text": "A label"
+    },
+    "zh-CN_en_点击选择标签": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "点击选择标签",
+      "translated_text": "Click to select tags"
+    },
+    "zh-CN_en_暂无已选标签，点击上方按钮选择标签": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "暂无已选标签，点击上方按钮选择标签",
+      "translated_text": "There are currently no selected tags. Click the button above to select a tag"
+    },
+    "zh-CN_en_选择标签": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "选择标签",
+      "translated_text": "Select tag"
+    },
+    "zh-CN_en_关闭": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "关闭",
+      "translated_text": "close"
+    },
+    "zh-CN_en_搜索标签...": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "搜索标签...",
+      "translated_text": "Search tags .."
+    },
+    "zh-CN_en_清除搜索": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "清除搜索",
+      "translated_text": "Clear search"
+    },
+    "zh-CN_en_已选择的标签": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "已选择的标签",
+      "translated_text": "Selected tags"
+    },
+    "zh-CN_en_暂无已选标签": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "暂无已选标签",
+      "translated_text": "No tags selected at the moment"
+    },
+    "zh-CN_en_标签列表：": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "标签列表：",
+      "translated_text": "Tag List:"
+    },
+    "zh-CN_en_加载中...": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "加载中...",
+      "translated_text": "Loading in progress .."
+    },
+    "zh-CN_en_取消": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "取消",
+      "translated_text": "Cancel"
+    },
+    "zh-CN_en_确定": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "确定",
+      "translated_text": "determine"
+    },
+    "zh-CN_en_错误": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "错误",
+      "translated_text": "error"
+    },
+    "zh-CN_en_正在加载目录信息...": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "正在加载目录信息...",
+      "translated_text": "Loading directory information .."
+    },
+    "zh-CN_en_上传文件": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "上传文件",
+      "translated_text": "Upload file"
+    },
+    "zh-CN_en_支持格式: csv, xls, xlsx, pdf, doc, docx, 图片, 视频, 音频等": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "支持格式: csv, xls, xlsx, pdf, doc, docx, 图片, 视频, 音频等",
+      "translated_text": "Supported formats: csv, xls, xlsx, pdf, doc, docx, images, videos, audio, etc"
+    },
+    "zh-CN_en_拖拽文件或文件夹到此处": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "拖拽文件或文件夹到此处",
+      "translated_text": "Drag and drop files or folders here"
+    },
+    "zh-CN_en_选择文件夹": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "选择文件夹",
+      "translated_text": "Select Folder"
+    },
+    "zh-CN_en_个文件": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "个文件",
+      "translated_text": "a file"
+    },
+    "zh-CN_en_已选择的文件": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "已选择的文件",
+      "translated_text": "Selected files"
+    },
+    "zh-CN_en_未选择文件": {
+      "source_lang": "zh-CN",
+      "target_lang": "en",
+      "source_text": "未选择文件",
+      "translated_text": "No file selected"
+    }
+  }
+}

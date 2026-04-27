@@ -43,5 +43,41 @@
         "placeholder": "通常在这里插入公司其他网站的外部导航链接、友情链接、SEO 优化链接等"
       }
     }
+  },
+  "templates": {
+    "channel": {
+      "name": "资源栏目页",
+      "description": "可用于资源的分类目录",
+      "settings": {
+        "title": {
+          "label": "栏目名称"
+        },
+        "description": {
+          "label": "描述",
+          "info": "栏目描述"
+        }
+      }
+    },
+    "page": {
+      "name": "资源",
+      "settings": {
+        "title": {
+          "label": "资源名称"
+        },
+        "asset": {
+          "label": "资源选择"
+        },
+        "resource_tags": {
+          "label": "资源标签"
+        },
+        "content": {
+          "label": "资源描述"
+        }
+      }
+    },
+    "index": {
+      "name": "首页",
+      "description": "列表展示所有栏目"
+    }
   }
 }

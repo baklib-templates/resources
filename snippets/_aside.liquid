@@ -9,13 +9,13 @@
         <div class="flex items-center justify-between mb-4">
           <div class="flex items-center gap-2 px-2">
             <i class="ri-folders-fill text-lg text-gray-600"></i>
-            <h2 class="text-base font-semibold text-gray-800">资源目录</h2>
+            <h2 class="text-base font-semibold text-gray-800">{{ "snippets.aside.resource_directory" | t: "资源目录" }}</h2>
           </div>
           <button
             type="button"
             class="hidden lg:flex items-center justify-center w-8 h-8 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-gray-600 dark:text-gray-400 transition-colors"
             @click="toggleSidebar(false)"
-            title="折叠侧边栏"
+            title='{{ "snippets.aside.collapse_sidebar" | t: "折叠侧边栏" }}'
           >
             <i class="ri-menu-fold-line text-lg"></i>
           </button>
@@ -63,7 +63,7 @@
   transition-colors duration-75 left-0 z-40 top-[96px]"
   :class="isCollapsed ? 'lg:hidden' : 'lg:flex'"
   @click="toggleSidebar(true)"
-  title="展开侧边栏"
+  title='{{ "snippets.aside.expand_sidebar" | t: "展开侧边栏" }}'
 >
   <i class="ri-menu-unfold-line text-lg"></i>
 </button>

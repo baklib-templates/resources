@@ -49,7 +49,7 @@
         <button type="button"
                 class="p-1.5 md:p-2 rounded-md hover:bg-gray-100 transition-colors text-gray-600"
                 data-action="click->user-menu#toggle"
-                title="个人中心">
+                title='{{ "snippets.header.user_center" | t: "个人中心" }}'>
           {% if current_user.avatar.url %}
             <img src="{{ current_user.avatar.url | asset_url }}"
                   alt="{{ current_user.name }}"
@@ -68,14 +68,14 @@
                   class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   data-discover="true">
                 <i class="ri-user-3-line text-lg"></i>
-                <span>个人信息</span>
+                <span>{{ "snippets.header.profile" | t: "个人信息" }}</span>
               </a>
             </li>
             <li>
               {% form_tag 'sign_out' %}
                 <button type="submit"
                         class="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-gray-100 w-full text-left cursor-pointer"
-                        data-disable-with="退出中...">
+                        data-disable-with='{{ "snippets.header.signout_loading" | t: "退出中..." }}'>
                   <i class="ri-logout-box-r-line text-lg"></i>
                   <span>{{ 'generic.signout' | t: '退出登录' }}</span>
                 </button>
@@ -89,9 +89,9 @@
       {% form_tag 'sign_in_with_baklib' %}
         <button type="submit"
                 class="btn btn-primary btn-sm bg-blue-600 hover:bg-blue-700 text-white border-none text-sm md:text-base px-3 md:px-4"
-                data-disable-with="登录中...">
-          <span class="lg:hidden">登录</span>
-          <span class="hidden lg:inline">登录 / 注册</span>
+                data-disable-with='{{ "snippets.header.signin_loading" | t: "登录中..." }}'>
+          <span class="lg:hidden">{{ "snippets.header.signin" | t: "登录" }}</span>
+          <span class="hidden lg:inline">{{ "snippets.header.signin_or_signup" | t: "登录 / 注册" }}</span>
         </button>
       {% endform_tag %}
     {% endif %}

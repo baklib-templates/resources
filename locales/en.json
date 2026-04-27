@@ -1,30 +1,237 @@
 {
   "snippets": {
     "footer": {
-      "copyright": ""
+      "copyright": "All rights reserved"
+    },
+    "attachments": {
+      "empty": {
+        "title": "No files found",
+        "description": "No resources match the current filters"
+      },
+      "list": {
+        "headers": {
+          "filename": "File Name",
+          "filesize": "File Size",
+          "filetype": "File Type",
+          "created_at": "Created At"
+        },
+        "file_types": {
+          "image": "Image",
+          "video": "Video",
+          "audio": "Audio",
+          "other": "Other"
+        }
+      },
+      "grid": {
+        "file_types": {
+          "archive": "ZIP",
+          "audio": "Audio",
+          "excel": "XLS",
+          "image": "Image",
+          "other": "Other",
+          "ppt": "PPT",
+          "video": "Video",
+          "word": "DOC"
+        }
+      }
+    },
+    "attachment": {
+      "common": {
+        "no_preview": "No preview available",
+        "metadata": "File Metadata",
+        "file_size": "File Size",
+        "file_type": "File Type",
+        "uploaded_at": "Uploaded At",
+        "visits_count": "Views",
+        "creator": "Creator",
+        "tags": "File Tags",
+        "description": "File Description"
+      },
+      "video": {
+        "browser_not_supported": "Your browser does not support video playback.",
+        "duration": "Duration"
+      },
+      "audio": {
+        "browser_not_supported": "Your browser does not support audio playback.",
+        "duration": "Duration"
+      },
+      "download_btn": {
+        "download_now": "Download Now"
+      },
+      "image": {
+        "preview_full": "View Full Image",
+        "resolution": "Resolution"
+      },
+      "permission_denied": {
+        "hint": "Sign in to view detailed information"
+      }
+    },
+    "aside": {
+      "resource_directory": "Resource Directory",
+      "collapse_sidebar": "Collapse Sidebar",
+      "expand_sidebar": "Expand Sidebar"
+    },
+    "header": {
+      "user_center": "Account",
+      "profile": "Profile",
+      "signout_loading": "Signing out...",
+      "signin_loading": "Signing in...",
+      "signin": "Sign In",
+      "signin_or_signup": "Sign In / Sign Up"
+    },
+    "search_form": {
+      "search_placeholder": "Search image resources...",
+      "actions": {
+        "search": "Search"
+      },
+      "filters": {
+        "tag": "Tag",
+        "all": "All",
+        "rating": "Rating",
+        "rating_5": "5 stars",
+        "rating_4_plus": "4 stars or above",
+        "rating_3_plus": "3 stars or above",
+        "rating_2_plus": "2 stars or above",
+        "rating_1_plus": "1 star or above",
+        "shape": "Shape",
+        "shape_landscape": "Landscape",
+        "shape_portrait": "Portrait",
+        "shape_square": "Square",
+        "type": "Type",
+        "collection": "Collection",
+        "sort": "Sort",
+        "sort_created_desc": "Newest First",
+        "sort_created_asc": "Oldest First",
+        "sort_updated_desc": "Recently Updated",
+        "sort_updated_asc": "Least Recently Updated",
+        "sort_name_asc": "Name A-Z",
+        "sort_name_desc": "Name Z-A"
+      }
+    },
+    "tag_selector": {
+      "label": "Tag Filter",
+      "selected_count_prefix": "Selected",
+      "selected_count_suffix": "tags",
+      "select_hint": "Click to select tags",
+      "empty_selected_hint": "There are currently no selected tags. Click the button above to select a tag",
+      "modal": {
+        "title": "Select Tags",
+        "close": "Close",
+        "search_placeholder": "Search tags...",
+        "clear_search": "Clear search",
+        "search": "Search",
+        "selected_tags": "Selected tags",
+        "empty_selected": "No tags selected at the moment",
+        "tag_list": "Tag List:",
+        "loading": "Loading...",
+        "cancel": "Cancel",
+        "confirm": "Confirm"
+      }
     }
   },
   "generic": {
-    "signout": ""
+    "signout": "Log out"
   },
   "paginate": {
-    "previous": "",
-    "next": "",
-    "showing": "",
-    "records": ""
+    "previous": "Previous",
+    "next": "Next",
+    "showing": "Showing",
+    "records": "records"
   },
   "shared": {
     "templates": {
       "403": {
-        "page_restricted_text": ""
+        "page_restricted_text": "This page has restricted access"
       }
     }
   },
   "prompts": {
-    "page_restricted": ""
+    "page_restricted": "This page has restricted access"
   },
   "buttons": {
-    "login": "",
-    "authorize": ""
+    "login": "Sign In",
+    "authorize": "Sign in / authorize required"
+  },
+  "statics": {
+    "attachment": {
+      "not_found": "Resource not found"
+    },
+    "download": {
+      "errors": {
+        "not_found": "Resource not found",
+        "forbidden": "Not authorized to access this resource",
+        "missing_params": "Missing required parameter"
+      }
+    },
+    "index": {
+      "nav_tree": {
+        "all_resources": "All resources"
+      }
+    },
+    "batch_import": {
+      "error": {
+        "title": "Error"
+      },
+      "loading": {
+        "directory": "Loading directory information..."
+      },
+      "upload": {
+        "title": "Upload Files",
+        "supported_formats": "Supported formats: csv, xls, xlsx, pdf, doc, docx, images, videos, audio, etc.",
+        "drop_hint": "Drag and drop files or folders here",
+        "select_files": "Select Files",
+        "select_folder": "Select Folder",
+        "selected_prefix": "Selected",
+        "selected_suffix": "files"
+      },
+      "file_list": {
+        "title": "Selected files",
+        "empty": "No file selected"
+      },
+      "actions": {
+        "cancel": "Cancel",
+        "upload": "Upload Files"
+      }
+    }
+  },
+  "templates": {
+    "index": {
+      "file_types": {
+        "image": "Image",
+        "video": "Video",
+        "audio": "Audio",
+        "archive": "Archive",
+        "other": "Other"
+      },
+      "filters": {
+        "keyword": "Keyword",
+        "keyword_placeholder": "Enter keywords to search resources...",
+        "date_range": "Date Range",
+        "start_date": "Start date",
+        "clear_start_date": "Clear start date",
+        "end_date": "End Date",
+        "clear_end_date": "Clear End Date",
+        "file_type": "File Type",
+        "all": "All",
+        "file_size": "File Size",
+        "tag_filter": "Tag Filter"
+      },
+      "actions": {
+        "search": "Search",
+        "reset": "Reset",
+        "advanced_filters": "Advanced Filters",
+        "filters": "Filters"
+      },
+      "sort": {
+        "latest_uploaded": "Latest Uploads",
+        "most_viewed": "Most Viewed",
+        "rules": "Sort Rules",
+        "sort": "Sort",
+        "by_created_at": "By Created Time",
+        "by_edited_at": "By Updated Time",
+        "asc": "Ascending",
+        "desc": "Descending"
+      }
+    }
   }
 }

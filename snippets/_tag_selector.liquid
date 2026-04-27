@@ -5,7 +5,7 @@
   - label: 标签文本（可选，默认为"标签筛选"）
 {% endcomment %}
 
-{% assign label = label | default: "标签筛选" %}
+{% assign label = label | default: "snippets.tag_selector.label" | t: "标签筛选" %}
 
 <!-- 标签筛选 -->
 <div class="flex flex-col md:flex-row md:items-start gap-2 md:gap-0">
@@ -17,7 +17,7 @@
         data-action="click->tag-selector#openModal">
         <i class="ri-search-line absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
         <span class="text-gray-500 pointer-events-none"
-              x-text="attachmentsQuery.resource_tags?.length ? `已选择 ${attachmentsQuery.resource_tags.length} 个标签` : '点击选择标签'"></span>
+              x-text="attachmentsQuery.resource_tags?.length ? `{{ 'snippets.tag_selector.selected_count_prefix' | t: '已选择' }} ${attachmentsQuery.resource_tags.length} {{ 'snippets.tag_selector.selected_count_suffix' | t: '个标签' }}` : '{{ 'snippets.tag_selector.select_hint' | t: '点击选择标签' }}'"></span>
         <i class="ri-arrow-down-s-line absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
       </button>
     </div>
@@ -33,7 +33,7 @@
         </span>
       </template>
       <span x-show="!attachmentsQuery.resource_tags || attachmentsQuery.resource_tags.length === 0"
-            class="text-gray-400">暂无已选标签，点击上方按钮选择标签</span>
+            class="text-gray-400">{{ "snippets.tag_selector.empty_selected_hint" | t: "暂无已选标签，点击上方按钮选择标签" }}</span>
     </div>
   </div>
 </div>
@@ -45,11 +45,11 @@
   <div class="modal-box w-full max-w-3xl max-h-[90vh] md:max-h-[85vh] flex flex-col p-4 md:p-6 gap-3 md:gap-4 overflow-hidden">
     <!-- Modal 标题 -->
     <div class="flex items-center justify-between shrink-0 pb-2 border-b border-gray-200">
-      <h3 class="font-bold text-base md:text-lg lg:text-xl mb-0">选择标签</h3>
+      <h3 class="font-bold text-base md:text-lg lg:text-xl mb-0">{{ "snippets.tag_selector.modal.title" | t: "选择标签" }}</h3>
       <button type="button"
               class="btn btn-sm btn-circle btn-ghost"
               data-action="click->tag-selector#closeModal"
-              aria-label="关闭">
+              aria-label='{{ "snippets.tag_selector.modal.close" | t: "关闭" }}'>
         <i class="ri-close-line text-lg"></i>
       </button>
     </div>
@@ -60,7 +60,7 @@
         <div class="relative flex-1">
           <input type="text"
             class="input input-bordered w-full pl-9 md:pl-10 pr-9 md:pr-10 text-sm md:text-base h-9 md:h-10"
-            placeholder="搜索标签..."
+            placeholder='{{ "snippets.tag_selector.modal.search_placeholder" | t: "搜索标签..." }}'
             data-tag-selector-target="searchInput"
             data-action="input->tag-selector#search keydown.enter->tag-selector#performSearch compositionstart->tag-selector#handleCompositionStart compositionend->tag-selector#handleCompositionEnd">
           <i class="ri-search-line absolute left-2.5 md:left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-sm md:text-base"></i>
@@ -68,7 +68,7 @@
                   data-action="click->tag-selector#clearSearch"
                   class="absolute right-2.5 md:right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 cursor-pointer hidden"
                   data-tag-selector-target="clearSearchBtn"
-                  aria-label="清除搜索">
+                  aria-label='{{ "snippets.tag_selector.modal.clear_search" | t: "清除搜索" }}'>
             <i class="ri-close-line text-sm md:text-base"></i>
           </button>
         </div>
@@ -76,9 +76,9 @@
                 class="btn btn-primary btn-sm md:btn-md h-9 md:h-10 px-4 md:px-6"
                 data-tag-selector-target="searchBtn"
                 data-action="click->tag-selector#searchButtonClick"
-                aria-label="搜索">
+                aria-label='{{ "snippets.tag_selector.modal.search" | t: "搜索" }}'>
           <i class="ri-search-2-line text-sm md:text-base"></i>
-          <span class="hidden sm:inline ml-1">搜索</span>
+          <span class="hidden sm:inline ml-1">{{ "snippets.tag_selector.modal.search" | t: "搜索" }}</span>
         </button>
       </div>
     </div>
@@ -86,20 +86,20 @@
     <!-- 已选标签列表 -->
     <div class="shrink-0">
       <div class="text-xs md:text-sm text-gray-500 font-medium mb-1.5 md:mb-2">
-        已选择的标签（<span data-tag-selector-target="selectedCount">0</span>）：
+        {{ "snippets.tag_selector.modal.selected_tags" | t: "已选择的标签" }}（<span data-tag-selector-target="selectedCount">0</span>）：
       </div>
       <div class="border border-gray-200 rounded-lg p-2 md:p-3 bg-gray-50 min-h-14 md:min-h-20 max-h-24 md:max-h-32 overflow-y-auto"
            data-tag-selector-target="selectedTagsContainer"
            style="scrollbar-width: thin; scrollbar-color: #d1d5db transparent;">
         <div data-tag-selector-target="selectedTagsList" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1.5 md:gap-2">
-          <div class="text-gray-400 text-xs md:text-sm py-1 md:py-2 text-center col-span-full">暂无已选标签</div>
+          <div class="text-gray-400 text-xs md:text-sm py-1 md:py-2 text-center col-span-full">{{ "snippets.tag_selector.modal.empty_selected" | t: "暂无已选标签" }}</div>
         </div>
       </div>
     </div>
 
     <!-- 检索结果列表 -->
     <div class="flex-1 min-h-0 flex flex-col overflow-hidden">
-      <div class="text-xs md:text-sm text-gray-500 font-medium mb-1.5 md:mb-2 shrink-0">标签列表：</div>
+      <div class="text-xs md:text-sm text-gray-500 font-medium mb-1.5 md:mb-2 shrink-0">{{ "snippets.tag_selector.modal.tag_list" | t: "标签列表：" }}</div>
       <div class="flex-1 border border-gray-200 rounded-lg p-2 md:p-3 bg-white overflow-y-auto min-h-0"
            data-tag-selector-target="resultsContainer"
            data-action="scroll->tag-selector#handleScroll"
@@ -108,7 +108,7 @@
              data-tag-selector-target="resultsList">
           <div class="w-full flex items-center justify-center py-8 md:py-12 gap-2">
             <span class="loading loading-spinner loading-md"></span>
-            <span class="text-sm md:text-base text-gray-500">加载中...</span>
+            <span class="text-sm md:text-base text-gray-500">{{ "snippets.tag_selector.modal.loading" | t: "加载中..." }}</span>
           </div>
         </div>
       </div>
@@ -119,12 +119,12 @@
       <button type="button"
               class="btn btn-ghost btn-sm md:btn-md flex-1 md:flex-none"
               data-action="click->tag-selector#closeModal">
-        取消
+        {{ "snippets.tag_selector.modal.cancel" | t: "取消" }}
       </button>
       <button type="button"
               class="btn btn-primary btn-sm md:btn-md flex-1 md:flex-none"
               data-action="click->tag-selector#confirmSelection">
-        确定
+        {{ "snippets.tag_selector.modal.confirm" | t: "确定" }}
       </button>
     </div>
   </div>
@@ -182,7 +182,7 @@
 <!-- Mustache 模板：已选标签空状态 -->
 <template data-tag-selector-target="emptySelectedTagsTemplate">
   {% raw %}
-    <div class="text-gray-400 text-xs md:text-sm py-1 md:py-2 text-center col-span-full">暂无已选标签</div>
+    <div class="text-gray-400 text-xs md:text-sm py-1 md:py-2 text-center col-span-full">{{ 'snippets.tag_selector.modal.empty_selected' | t: '暂无已选标签' }}</div>
   {% endraw %}
 </template>
 

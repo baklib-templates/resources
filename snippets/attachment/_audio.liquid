@@ -8,13 +8,13 @@
           <div class="w-full p-8 flex flex-col items-center justify-center">
             <i class="ri-music-2-line text-6xl text-gray-400 dark:text-gray-500 mb-4"></i>
             <audio src="{{ entity.url[site.settings.resource_download_expiry_time] }}" controls class="w-full max-w-md">
-              您的浏览器不支持音频播放。
+              {{ "snippets.attachment.audio.browser_not_supported" | t: "您的浏览器不支持音频播放。" }}
             </audio>
           </div>
         {% else %}
           <div class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500">
             <i class="ri-music-2-line text-6xl mb-2"></i>
-            <p>暂无预览</p>
+            <p>{{ "snippets.attachment.common.no_preview" | t: "暂无预览" }}</p>
           </div>
         {% endif %}
       </div>
@@ -34,7 +34,7 @@
         <!-- Title Section -->
         <div class="flex items-center gap-2 border-b border-gray-100 pb-4 mb-4">
           <i class="ri-price-tag-3-line text-primary"></i>
-          <span class="font-medium">文件元数据</span>
+          <span class="font-medium">{{ "snippets.attachment.common.metadata" | t: "文件元数据" }}</span>
         </div>
 
         <!-- Metadata Section -->
@@ -44,7 +44,7 @@
               <i class="ri-hard-drive-line"></i>
             </div>
             <div class="flex flex-col space-y-0.1">
-              <span class="text-[12px] text-base-content/50">文件大小</span>
+              <span class="text-[12px] text-base-content/50">{{ "snippets.attachment.common.file_size" | t: "文件大小" }}</span>
               <span class="font-bold">
                 {{ entity.metadata.human_size }}
               </span>
@@ -55,7 +55,7 @@
               <i class="ri-music-2-line"></i>
             </div>
             <div class="flex flex-col space-y-0.1">
-              <span class="text-[12px] text-base-content/50">文件类型</span>
+              <span class="text-[12px] text-base-content/50">{{ "snippets.attachment.common.file_type" | t: "文件类型" }}</span>
               <span class="font-bold">
                 {% if entity.metadata.kind %}
                   {{ entity.metadata.kind }}
@@ -71,7 +71,7 @@
                 <i class="ri-time-line"></i>
               </div>
               <div class="flex flex-col space-y-0.1">
-                <span class="text-[12px] text-base-content/50">时长</span>
+                <span class="text-[12px] text-base-content/50">{{ "snippets.attachment.audio.duration" | t: "时长" }}</span>
                 <span class="font-bold">
                   {{ entity.metadata.duration }}
                 </span>
@@ -83,7 +83,7 @@
               <i class="ri-calendar-check-line"></i>
             </div>
             <div class="flex flex-col space-y-0.1">
-              <span class="text-[12px] text-base-content/50">上传时间</span>
+              <span class="text-[12px] text-base-content/50">{{ "snippets.attachment.common.uploaded_at" | t: "上传时间" }}</span>
               <span class="font-bold">{{ page.published_at | date:
               "%Y-%m-%d" }}</span>
             </div>
@@ -93,7 +93,7 @@
               <i class="ri-eye-line"></i>
             </div>
             <div class="flex flex-col space-y-0.1">
-              <span class="text-[12px] text-base-content/50">浏览次数</span>
+              <span class="text-[12px] text-base-content/50">{{ "snippets.attachment.common.visits_count" | t: "浏览次数" }}</span>
               <span class="font-bold">
                 {{ page.visits_count }}
               </span>
@@ -105,7 +105,7 @@
                 <i class="ri-user-line"></i>
               </div>
               <div class="flex flex-col space-y-0.1">
-                <span class="text-[12px] text-base-content/50">创建者</span>
+                <span class="text-[12px] text-base-content/50">{{ "snippets.attachment.common.creator" | t: "创建者" }}</span>
                 <span class="font-bold">{{ page.author.name }}</span>
               </div>
             </div>
@@ -115,7 +115,7 @@
                 <i class="ri-user-line"></i>
               </div>
               <div class="flex flex-col space-y-0.1">
-                <span class="text-[12px] text-base-content/50">创建者</span>
+                <span class="text-[12px] text-base-content/50">{{ "snippets.attachment.common.creator" | t: "创建者" }}</span>
                 <span class="font-bold">{{ page.settings.creator }}</span>
               </div>
             </div>
@@ -131,7 +131,7 @@
       <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
         <div class="flex items-center gap-2 border-b border-gray-100 pb-4 mb-4">
           <i class="ri-price-tag-3-line text-primary"></i>
-          <span class="font-medium">文件标签</span>
+          <span class="font-medium">{{ "snippets.attachment.common.tags" | t: "文件标签" }}</span>
         </div>
         <div class="flex flex-wrap gap-2 min-h-9">
           {% for tag in page.settings.resource_tags %}
@@ -145,7 +145,7 @@
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
           <div class="flex items-center gap-2 border-b border-gray-100 pb-4 mb-4">
             <i class="ri-article-line text-primary"></i>
-            <span class="font-medium">文件描述</span>
+            <span class="font-medium">{{ "snippets.attachment.common.description" | t: "文件描述" }}</span>
           </div>
           <section
             class="ProseMirror prose prose-sm max-w-none dark:prose-invert prose-headings:mt-4 prose-headings:mb-2 prose-p:my-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-1 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg prose-img:my-4 min-h-9"

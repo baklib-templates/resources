@@ -1,6 +1,6 @@
 {% schema %}
   {
-    "name": "资源",
+    "name": "t:schema.templates.page.name",
     "description": "",
     "thumb_url": "images/theme/page.png",
     "batch_create_url": "/s/batch_import",
@@ -8,12 +8,12 @@
       {
         "id": "title",
         "type": "text",
-        "label": "资源名称"
+        "label": "t:schema.templates.page.settings.title.label"
       },
       {
         "id": "asset",
         "type": "dam_picker",
-        "label": "资源选择",
+        "label": "t:schema.templates.page.settings.asset.label",
         "queryable": {
           "metadata": {
             "fields": ["filename", "size", "kind"]
@@ -23,14 +23,14 @@
       {
         "id": "resource_tags",
         "type": "tag_picker",
-        "label": "资源标签",
+        "label": "t:schema.templates.page.settings.resource_tags.label",
         "queryable": true,
         "multiple": true
       },
       {
         "id": "content",
         "type": "richtext",
-        "label": "资源描述",
+        "label": "t:schema.templates.page.settings.content.label",
         "searchable": true
       }
     ]

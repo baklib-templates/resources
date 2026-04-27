@@ -23,7 +23,7 @@
         <div
           data-breadcrumb-target="navNode"
           data-node-path="/"
-          data-node-name="全部资源"
+          data-node-name="{{ 'statics.index.nav_tree.all_resources' | t: '全部资源' }}"
           @click="
             updateChannel('');
             handleSidebarClick();
@@ -50,7 +50,7 @@
           <span
             class="line-clamp-2 flex-1 nav-tree-channel-item text-sm leading-relaxed"
           >
-            全部资源
+            {{ "statics.index.nav_tree.all_resources" | t: "全部资源" }}
           </span>
         </div>
       </div>

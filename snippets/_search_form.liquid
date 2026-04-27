@@ -7,7 +7,7 @@
                 type="text"
                 name="{{form.keywords_field_name}}"
                 value="{{ search.keywords | escape }}"
-                placeholder="搜索图片资源..."
+                placeholder='{{ "snippets.search_form.search_placeholder" | t: "搜索图片资源..." }}'
                 class="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 autofocus
               >
@@ -16,7 +16,7 @@
               </button>
             </div>
             <button type="submit" class="px-6 py-3 bg-primary text-primary-content rounded-lg hover:bg-primary/90">
-              搜索
+              {{ "snippets.search_form.actions.search" | t: "搜索" }}
             </button>
           </div>
         {% endform_tag %}
@@ -26,9 +26,9 @@
       <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
         {% comment %} 标签筛选 {% endcomment %}
         <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">标签</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ "snippets.search_form.filters.tag" | t: "标签" }}</label>
           <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" data-controller="filter-select" data-param-name="tag" data-action="change->filter-select#change">
-            <option value="">全部</option>
+            <option value="">{{ "snippets.search_form.filters.all" | t: "全部" }}</option>
             {% for tag in site.tags %}
               <option value="{{ tag.name }}" {% if params.tag == tag.name %}selected{% endif %}>{{ tag.name }}</option>
             {% endfor %}
@@ -37,33 +37,33 @@
 
         {% comment %} 评分筛选 {% endcomment %}
         <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">评分</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ "snippets.search_form.filters.rating" | t: "评分" }}</label>
           <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
-            <option value="">全部</option>
-            <option value="5">5星</option>
-            <option value="4">4星及以上</option>
-            <option value="3">3星及以上</option>
-            <option value="2">2星及以上</option>
-            <option value="1">1星及以上</option>
+            <option value="">{{ "snippets.search_form.filters.all" | t: "全部" }}</option>
+            <option value="5">{{ "snippets.search_form.filters.rating_5" | t: "5星" }}</option>
+            <option value="4">{{ "snippets.search_form.filters.rating_4_plus" | t: "4星及以上" }}</option>
+            <option value="3">{{ "snippets.search_form.filters.rating_3_plus" | t: "3星及以上" }}</option>
+            <option value="2">{{ "snippets.search_form.filters.rating_2_plus" | t: "2星及以上" }}</option>
+            <option value="1">{{ "snippets.search_form.filters.rating_1_plus" | t: "1星及以上" }}</option>
           </select>
         </div>
 
         {% comment %} 形状筛选 {% endcomment %}
         <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">形状</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ "snippets.search_form.filters.shape" | t: "形状" }}</label>
           <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
-            <option value="">全部</option>
-            <option value="landscape">横图</option>
-            <option value="portrait">竖图</option>
-            <option value="square">方图</option>
+            <option value="">{{ "snippets.search_form.filters.all" | t: "全部" }}</option>
+            <option value="landscape">{{ "snippets.search_form.filters.shape_landscape" | t: "横图" }}</option>
+            <option value="portrait">{{ "snippets.search_form.filters.shape_portrait" | t: "竖图" }}</option>
+            <option value="square">{{ "snippets.search_form.filters.shape_square" | t: "方图" }}</option>
           </select>
         </div>
 
         {% comment %} 类型筛选 {% endcomment %}
         <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">类型</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ "snippets.search_form.filters.type" | t: "类型" }}</label>
           <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
-            <option value="">全部</option>
+            <option value="">{{ "snippets.search_form.filters.all" | t: "全部" }}</option>
             <option value="jpg">JPG</option>
             <option value="png">PNG</option>
             <option value="gif">GIF</option>
@@ -73,9 +73,9 @@
 
         {% comment %} 集合筛选 {% endcomment %}
         <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">集合</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ "snippets.search_form.filters.collection" | t: "集合" }}</label>
           <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
-            <option value="">全部</option>
+            <option value="">{{ "snippets.search_form.filters.all" | t: "全部" }}</option>
             {% if site.settings.collection_tags %}
               {% assign collections = site.settings.collection_tags | split: '\n' %}
               {% for collection in collections %}
@@ -90,14 +90,14 @@
 
         {% comment %} 排序 {% endcomment %}
         <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">排序</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ "snippets.search_form.filters.sort" | t: "排序" }}</label>
           <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
-            <option value="created_desc">最新创建</option>
-            <option value="created_asc">最早创建</option>
-            <option value="updated_desc">最近更新</option>
-            <option value="updated_asc">最早更新</option>
-            <option value="name_asc">名称A-Z</option>
-            <option value="name_desc">名称Z-A</option>
+            <option value="created_desc">{{ "snippets.search_form.filters.sort_created_desc" | t: "最新创建" }}</option>
+            <option value="created_asc">{{ "snippets.search_form.filters.sort_created_asc" | t: "最早创建" }}</option>
+            <option value="updated_desc">{{ "snippets.search_form.filters.sort_updated_desc" | t: "最近更新" }}</option>
+            <option value="updated_asc">{{ "snippets.search_form.filters.sort_updated_asc" | t: "最早更新" }}</option>
+            <option value="name_asc">{{ "snippets.search_form.filters.sort_name_asc" | t: "名称A-Z" }}</option>
+            <option value="name_desc">{{ "snippets.search_form.filters.sort_name_desc" | t: "名称Z-A" }}</option>
           </select>
         </div>
       </div>

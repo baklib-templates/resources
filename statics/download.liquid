@@ -18,18 +18,18 @@
     {% else %}
       {
         "success": false,
-        "error": "资源不存在"
+        "error": "{{ 'statics.download.errors.not_found' | t: '资源不存在' }}"
       }
     {% endif %}
   {% else %}
     {
       "success": false,
-      "error": "无权访问该资源"
+      "error": "{{ 'statics.download.errors.forbidden' | t: '无权访问该资源' }}"
     }
   {% endif %}
 {% else %}
   {
     "success": false,
-    "error": "缺少参数"
+    "error": "{{ 'statics.download.errors.missing_params' | t: '缺少参数' }}"
   }
 {% endif %}

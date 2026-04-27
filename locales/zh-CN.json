@@ -2,6 +2,131 @@
   "snippets": {
     "footer": {
       "copyright": "版权所有"
+    },
+    "attachments": {
+      "empty": {
+        "title": "暂无文件",
+        "description": "当前筛选条件下没有找到任何资源"
+      },
+      "list": {
+        "headers": {
+          "filename": "文件名称",
+          "filesize": "文件大小",
+          "filetype": "文件类型",
+          "created_at": "创建时间"
+        },
+        "file_types": {
+          "image": "图片",
+          "video": "视频",
+          "audio": "音频",
+          "other": "其他"
+        }
+      },
+      "grid": {
+        "file_types": {
+          "archive": "ZIP",
+          "audio": "音频",
+          "excel": "XLS",
+          "image": "图片",
+          "other": "其他",
+          "ppt": "PPT",
+          "video": "视频",
+          "word": "DOC"
+        }
+      }
+    },
+    "attachment": {
+      "common": {
+        "no_preview": "暂无预览",
+        "metadata": "文件元数据",
+        "file_size": "文件大小",
+        "file_type": "文件类型",
+        "uploaded_at": "上传时间",
+        "visits_count": "浏览次数",
+        "creator": "创建者",
+        "tags": "文件标签",
+        "description": "文件描述"
+      },
+      "video": {
+        "browser_not_supported": "您的浏览器不支持视频播放。",
+        "duration": "时长"
+      },
+      "audio": {
+        "browser_not_supported": "您的浏览器不支持音频播放。",
+        "duration": "时长"
+      },
+      "download_btn": {
+        "download_now": "立即下载"
+      },
+      "image": {
+        "preview_full": "预览大图",
+        "resolution": "分辨率"
+      },
+      "permission_denied": {
+        "hint": "查看详细信息需要登录授权"
+      }
+    },
+    "aside": {
+      "resource_directory": "资源目录",
+      "collapse_sidebar": "折叠侧边栏",
+      "expand_sidebar": "展开侧边栏"
+    },
+    "header": {
+      "user_center": "个人中心",
+      "profile": "个人信息",
+      "signout_loading": "退出中...",
+      "signin_loading": "登录中...",
+      "signin": "登录",
+      "signin_or_signup": "登录 / 注册"
+    },
+    "search_form": {
+      "search_placeholder": "搜索图片资源...",
+      "actions": {
+        "search": "搜索"
+      },
+      "filters": {
+        "tag": "标签",
+        "all": "全部",
+        "rating": "评分",
+        "rating_5": "5星",
+        "rating_4_plus": "4星及以上",
+        "rating_3_plus": "3星及以上",
+        "rating_2_plus": "2星及以上",
+        "rating_1_plus": "1星及以上",
+        "shape": "形状",
+        "shape_landscape": "横图",
+        "shape_portrait": "竖图",
+        "shape_square": "方图",
+        "type": "类型",
+        "collection": "集合",
+        "sort": "排序",
+        "sort_created_desc": "最新创建",
+        "sort_created_asc": "最早创建",
+        "sort_updated_desc": "最近更新",
+        "sort_updated_asc": "最早更新",
+        "sort_name_asc": "名称A-Z",
+        "sort_name_desc": "名称Z-A"
+      }
+    },
+    "tag_selector": {
+      "label": "标签筛选",
+      "selected_count_prefix": "已选择",
+      "selected_count_suffix": "个标签",
+      "select_hint": "点击选择标签",
+      "empty_selected_hint": "暂无已选标签，点击上方按钮选择标签",
+      "modal": {
+        "title": "选择标签",
+        "close": "关闭",
+        "search_placeholder": "搜索标签...",
+        "clear_search": "清除搜索",
+        "search": "搜索",
+        "selected_tags": "已选择的标签",
+        "empty_selected": "暂无已选标签",
+        "tag_list": "标签列表：",
+        "loading": "加载中...",
+        "cancel": "取消",
+        "confirm": "确定"
+      }
     }
   },
   "generic": {
@@ -16,7 +141,7 @@
   "shared": {
     "templates": {
       "403": {
-        "page_restricted_text": ""
+        "page_restricted_text": "该页面已限制访问"
       }
     }
   },
@@ -26,5 +151,87 @@
   "buttons": {
     "login": "登录",
     "authorize": "需要登录/授权"
+  },
+  "statics": {
+    "attachment": {
+      "not_found": "资源不存在"
+    },
+    "download": {
+      "errors": {
+        "not_found": "资源不存在",
+        "forbidden": "无权访问该资源",
+        "missing_params": "缺少参数"
+      }
+    },
+    "index": {
+      "nav_tree": {
+        "all_resources": "全部资源"
+      }
+    },
+    "batch_import": {
+      "error": {
+        "title": "错误"
+      },
+      "loading": {
+        "directory": "正在加载目录信息..."
+      },
+      "upload": {
+        "title": "上传文件",
+        "supported_formats": "支持格式: csv, xls, xlsx, pdf, doc, docx, 图片, 视频, 音频等",
+        "drop_hint": "拖拽文件或文件夹到此处",
+        "select_files": "选择文件",
+        "select_folder": "选择文件夹",
+        "selected_prefix": "已选择",
+        "selected_suffix": "个文件"
+      },
+      "file_list": {
+        "title": "已选择的文件",
+        "empty": "未选择文件"
+      },
+      "actions": {
+        "cancel": "取消",
+        "upload": "上传文件"
+      }
+    }
+  },
+  "templates": {
+    "index": {
+      "file_types": {
+        "image": "图片",
+        "video": "视频",
+        "audio": "音频",
+        "archive": "压缩包",
+        "other": "其他"
+      },
+      "filters": {
+        "keyword": "关键词",
+        "keyword_placeholder": "输入关键词搜索资源...",
+        "date_range": "时间范围",
+        "start_date": "开始日期",
+        "clear_start_date": "清除开始日期",
+        "end_date": "结束日期",
+        "clear_end_date": "清除结束日期",
+        "file_type": "文件类型",
+        "all": "全部",
+        "file_size": "文件大小",
+        "tag_filter": "标签筛选"
+      },
+      "actions": {
+        "search": "搜索",
+        "reset": "重置",
+        "advanced_filters": "高级筛选",
+        "filters": "筛选"
+      },
+      "sort": {
+        "latest_uploaded": "最新上传",
+        "most_viewed": "最多浏览",
+        "rules": "排序规则",
+        "sort": "排序",
+        "by_created_at": "按创建时间",
+        "by_edited_at": "按修改时间",
+        "asc": "升序",
+        "desc": "降序"
+      }
+    }
   }
 }

@@ -1,0 +1,17 @@
+{
+  "defaultLanguage": "zh-CN",
+  "targetLanguages": [],
+  "adapterName": "baidu",
+  "adapterOptions": {
+    "url": "https://api.fanyi.baidu.com/api/trans/vip/translate",
+    "appid": "20240321002000882",
+    "secretKey": "nPuSYcHz44FxZ4Cl9T97",
+    "qps": 0.8
+  },
+  "paths": {
+    "locales": "locales",
+    "schema": "config/settings_schema.json",
+    "source": ["config", "templates", "layout", "snippets", "statics"]
+  }
+}
+

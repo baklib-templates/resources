@@ -1,47 +1,83 @@
 {
-  "theme_label": "",
-  "theme_description": "",
+  "theme_label": "Resource Portal",
+  "theme_description": "A professional resource portal template for managing digital assets and media files. It supports multi-level channel navigation, tag organization, advanced filtering, and robust permission controls.",
   "generic": {
-    "name": "",
+    "name": "General Settings",
     "settings": {
       "logo_url": {
-        "label": "",
-        "info": ""
+        "label": "Logo image",
+        "info": "If a logo is configured, the header shows the logo; otherwise it shows the site icon and site name."
       },
       "company_name": {
-        "label": "",
-        "default": "",
-        "info": ""
+        "label": "Company Name",
+        "default": "Baklib.cn",
+        "info": "Displayed in the footer area at the bottom of the page."
       },
       "copyright_info": {
-        "label": "",
-        "default": ""
+        "label": "ICP / Copyright Info",
+        "default": "ICP Filing No. XXXX"
       }
     }
   },
   "custom_html": {
-    "name": "",
+    "name": "Custom HTML Code",
     "settings": {
       "head_html": {
-        "label": "",
-        "info": "",
-        "placeholder": ""
+        "label": "Custom HTML in <head></head>",
+        "info": "Supports HTML tags and limited Tailwind CSS styles.",
+        "placeholder": "Typically used for analytics scripts, support widgets, or other embed codes."
       },
       "header_menu_html": {
-        "label": "",
-        "info": "",
-        "placeholder": ""
+        "label": "Insert HTML in the top navigation area",
+        "info": "Supports HTML tags and limited Tailwind CSS styles.",
+        "placeholder": "Typically used to add navigation links to other company websites."
       },
       "footer_html": {
-        "label": "",
-        "info": "",
-        "placeholder": ""
+        "label": "Insert HTML in the footer area",
+        "info": "Supports HTML tags and limited Tailwind CSS styles; this completely replaces the default footer content.",
+        "placeholder": "To keep the default footer content, insert HTML in footer_menu_html instead."
       },
       "footer_menu_html": {
-        "label": "",
-        "info": "",
-        "placeholder": ""
+        "label": "Insert HTML in the bottom area (inside footer_menu_html)",
+        "info": "Supports HTML tags and limited Tailwind CSS styles.",
+        "placeholder": "Typically used for external links, partner links, and SEO-friendly footer links."
       }
+    }
+  },
+  "templates": {
+    "channel": {
+      "name": "Resource Channel Page",
+      "description": "Used for resource category directories",
+      "settings": {
+        "title": {
+          "label": "Channel Name"
+        },
+        "description": {
+          "label": "Description",
+          "info": "Channel description"
+        }
+      }
+    },
+    "page": {
+      "name": "Resource",
+      "settings": {
+        "title": {
+          "label": "Resource Name"
+        },
+        "asset": {
+          "label": "Resource Selector"
+        },
+        "resource_tags": {
+          "label": "Resource Tags"
+        },
+        "content": {
+          "label": "Resource Description"
+        }
+      }
+    },
+    "index": {
+      "name": "Home",
+      "description": "Display all channels in a list"
     }
   }
 }

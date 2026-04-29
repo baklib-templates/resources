@@ -77,7 +77,20 @@
     },
     "index": {
       "name": "Home",
-      "description": "Display all channels in a list"
+      "description": "Display all channels in a list",
+      "settings": {
+        "detail_open_mode": {
+          "label": "Detail page open mode",
+          "choices": {
+            "modal": {
+              "label": "Open in page"
+            },
+            "detail_page": {
+              "label": "Open in detail page"
+            }
+          }
+        }
+      }
     }
   }
 }

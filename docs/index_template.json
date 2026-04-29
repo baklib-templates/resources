@@ -1,0 +1,21 @@
+{
+	"data": {
+		"attributes": {
+			"name": "首页",
+			"slug": "index",
+			"parent_id": "",
+			"template_variables": {},
+			"template_name": "index",
+			"template_style": "",
+			"published": true,
+			"published_at": "2022-05-21 08:00",
+			"position": "1",
+			"seo_title": "资源中心首页",
+			"seo_keywords": "资源中心,资源库,文件下载",
+			"seo_description": "资源中心首页，展示所有资源栏目和文件",
+			"hidden_from_list": "false",
+			"hidden_from_nav_menu": "false",
+			"access_enabled": "true"
+		}
+	}
+}

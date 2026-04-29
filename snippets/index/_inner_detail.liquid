@@ -1,0 +1,41 @@
+{% assign _variant = variant | default: 'sidebar' %}
+{% assign _alpine_src_var = alpine_src_var | default: 'attachmentSidebarSrc' %}
+
+{% if _variant == 'sidebar' %}
+  <div class="flex-1 h-full py-2">
+    <div class="bg-white rounded-lg rounded-r-none shadow-sm h-full overflow-hidden">
+      <div class="px-3 py-3 border-b border-gray-200 flex items-center justify-between">
+        <div class="flex-1 line-clamp-1 font-semibold text-gray-900 truncate" x-text="attachmentTitle || '{{ 'templates.index.detail.title' | t: '资源详情' }}'"></div>
+
+        <div class="flex-0 flex items-center">
+          <a
+            :href="detailPageUrl || '#'"
+            class="btn btn-ghost btn-sm px-2"
+            :class="!detailPageUrl ? 'btn-disabled pointer-events-none opacity-40' : ''"
+            title="{{ 'templates.index.detail.open_full_page' | t: '打开完整页面' }}"
+          >
+            <i class="ri-external-link-line text-base"></i>
+          </a>
+
+          {% comment %} 关闭按钮 {% endcomment %}
+          <button class="btn btn-ghost btn-sm px-2" @click="showDetail = false" title="{{ 'templates.index.detail.close' | t: '关闭' }}">
+            <i class="ri-close-line text-base"></i>
+          </button>
+        </div>
+      </div>
+      <div class="h-[calc(100%-52px)] overflow-hidden">
+        <turbo-frame id="attachment_frame" :src="{{ _alpine_src_var }}" class="block h-full">
+          <div class="h-[200px] flex items-center justify-center text-gray-500">
+            <span class="loading loading-spinner loading-md"></span>
+          </div>
+        </turbo-frame>
+      </div>
+    </div>
+  </div>
+{% else %}
+  <turbo-frame id="attachment_frame" :src="{{ _alpine_src_var }}" class="block h-full">
+    <div class="h-[200px] flex items-center justify-center text-gray-500">
+      <span class="loading loading-spinner loading-md"></span>
+    </div>
+  </turbo-frame>
+{% endif %}

@@ -1,0 +1,272 @@
+<div class="flex-1 grid grid-rows-[auto_1fr] h-full px-2 md:px-4 pt-2">
+  <div class="flex-0">
+    <!-- 筛选区域 -->
+    <div class="flex-0 bg-white rounded-lg shadow-sm p-3 md:p-6 mb-4 space-y-2 md:space-y-4 text-sm">
+      <!-- 关键词搜索和操作按钮 -->
+      <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3 md:gap-4"
+        :class="showAdvancedFilters ? '': 'mb-0'">
+        <div class="flex flex-col md:flex-row md:items-start flex-1 gap-2 md:gap-0">
+          <span class="hidden md:inline-block w-18 md:w-24 shrink-0 text-gray-500 pt-1.5">{{
+            "templates.index.filters.keyword" | t: "关键词" }}</span>
+          <div class="flex-1 flex flex-wrap gap-3 items-center w-full">
+            <div class="join w-full md:max-w-lg">
+              <input type="text" class="input input-bordered input-sm join-item flex-1 bg-gray-50 h-9 text-sm"
+                placeholder='{{ "templates.index.filters.keyword_placeholder" | t: "输入关键词搜索资源..." }}'
+                x-model="searchKeyword" @keydown.enter.prevent="submitSearch">
+              <button
+                class="btn btn-sm border-gray-300 text-gray-600 hover:bg-gray-50 hover:text-primary hover:border-gray-300 join-item h-9 min-h-0 px-3 md:px-4"
+                @click="submitSearch">
+                <i class="ri-search-2-line"></i> <span class="hidden sm:inline">{{ "templates.index.actions.search" | t:
+                  "搜索" }}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- 重置和高级筛选按钮 -->
+        <div class="flex items-center gap-2 md:gap-1 shrink-0 justify-end">
+          <button class="btn btn-sm btn-link text-gray-600 hover:text-red-700 hover:bg-red-50 px-2 md:px-4"
+            @click="resetFilters">
+            {{ "templates.index.actions.reset" | t: "重置" }}
+          </button>
+          <button class="btn btn-sm btn-link px-2 md:px-4"
+            :class="showAdvancedFilters ? 'btn-primary' : 'btn-ghost text-gray-600 hover:bg-gray-100'"
+            @click="toggleAdvancedFilters">
+            <span class="hidden sm:inline">{{ "templates.index.actions.advanced_filters" | t: "高级筛选" }}</span>
+            <span class="sm:hidden">{{ "templates.index.actions.filters" | t: "筛选" }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 高级筛选区域 -->
+      <div x-show="showAdvancedFilters" x-cloak x-transition class="space-y-4">
+        <!-- 时间范围筛选 -->
+        <div class="flex flex-col md:flex-row md:items-start gap-2 md:gap-0">
+          <span class="hidden md:inline-block w-18 md:w-24 shrink-0 text-gray-500 pt-1.5">{{
+            "templates.index.filters.date_range" | t: "时间范围" }}</span>
+          <div class="flex-1 flex flex-col md:flex-row md:flex-wrap gap-2 md:gap-3 md:items-center">
+            <div class="flex items-center gap-2 w-full md:w-auto">
+              <div class="relative flex-1 md:flex-none">
+                <input type="date"
+                  class="w-full md:min-w-[110px] input input-bordered input-sm bg-gray-50 h-9 pr-9 text-sm"
+                  x-model="dateStart" @change="updateDateStart(dateStart)"
+                  placeholder='{{ "templates.index.filters.start_date" | t: "开始日期" }}'>
+                <button
+                  class="absolute right-7 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-gray-200 rounded-full cursor-pointer transition-colors z-10"
+                  @click.stop="clearDateStart" x-show="dateStart" type="button"
+                  title='{{ "templates.index.filters.clear_start_date" | t: "清除开始日期" }}'>
+                  <i class="ri-close-line text-xs"></i>
+                </button>
+              </div>
+              <span class="text-gray-400 hidden md:inline">-</span>
+              <div class="relative flex-1 md:flex-none">
+                <input type="date"
+                  class="w-full md:min-w-[110px] input input-bordered input-sm bg-gray-50 h-9 pr-9 text-sm"
+                  x-model="dateEnd" @change="updateDateEnd(dateEnd)"
+                  placeholder='{{ "templates.index.filters.end_date" | t: "结束日期" }}'>
+                <button
+                  class="absolute right-7 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-gray-200 rounded-full cursor-pointer transition-colors z-10"
+                  @click.stop="clearDateEnd" x-show="dateEnd" type="button"
+                  title='{{ "templates.index.filters.clear_end_date" | t: "清除结束日期" }}'>
+                  <i class="ri-close-line text-xs"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 文件类型 -->
+        <div class="flex flex-col md:flex-row md:items-start gap-2 md:gap-0">
+          <span class="hidden md:inline-block w-18 md:w-24 shrink-0 text-gray-500 pt-1.5">{{
+            "templates.index.filters.file_type"
+            | t: "文件类型" }}</span>
+          <div class="flex-1 grid grid-cols-4 md:flex flex-wrap gap-2 md:gap-3 items-center">
+            <button
+              class="px-3 md:px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border text-xs md:text-sm"
+              :class="!attachmentsQuery.file_type || attachmentsQuery.file_type.length === 0 ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+              @click="clearAllFileTypes()">{{ "templates.index.filters.all" | t: "全部" }}</button>
+            <template x-for="fileType in fileTypes" :key="fileType.value">
+              <button
+                class="px-3 md:px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border text-xs md:text-sm"
+                :class="isFileTypeSelected(fileType.value) ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+                @click="toggleFileType(fileType.value)">
+                <i :class="fileType.icon + ' text-sm ' + fileType.icon_color"></i>
+                <span x-text="fileType.label"></span>
+              </button>
+            </template>
+          </div>
+        </div>
+
+        <!-- 文件大小 -->
+        <div class="flex flex-col md:flex-row md:items-start gap-2 md:gap-0">
+          <span class="hidden md:inline-block w-18 md:w-24 shrink-0 text-gray-500 pt-1.5">{{
+            "templates.index.filters.file_size" | t: "文件大小" }}</span>
+          <div class="flex-1 grid grid-cols-4 md:flex flex-wrap gap-2 md:gap-3 items-center whitespace-nowrap">
+            <button
+              class="px-3 md:px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border text-xs md:text-sm"
+              :class="isSizeRangeActive('', '') ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+              @click="applySizeRange('', '')">{{ "templates.index.filters.all" | t: "全部" }}</button>
+            <button
+              class="px-3 md:px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border text-xs md:text-sm"
+              :class="isSizeRangeActive(0, 10) ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+              @click="applySizeRange(0, 10)">{{ "templates.index.filters.size_0_10_mb" | t: "0-10MB" }}</button>
+            <button
+              class="px-3 md:px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border text-xs md:text-sm"
+              :class="isSizeRangeActive(10, 50) ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+              @click="applySizeRange(10, 50)">{{ "templates.index.filters.size_10_50_mb" | t: "10-50MB" }}</button>
+            <button
+              class="px-3 md:px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border text-xs md:text-sm"
+              :class="isSizeRangeActive(50, 100) ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+              @click="applySizeRange(50, 100)">{{ "templates.index.filters.size_50_100_mb" | t: "50-100MB" }}</button>
+            <button
+              class="px-3 md:px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border text-xs md:text-sm"
+              :class="isSizeRangeActive(100, 1024) ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+              @click="applySizeRange(100, 1024)">{{ "templates.index.filters.size_100_mb_1_gb" | t: "100MB-1GB" }}</button>
+            <button
+              class="px-3 md:px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border text-xs md:text-sm"
+              :class="isSizeRangeActive(1024, 10240) ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+              @click="applySizeRange(1024, 10240)">{{ "templates.index.filters.size_1_10_gb" | t: "1GB-10GB" }}</button>
+            <button
+              class="px-3 md:px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border text-xs md:text-sm"
+              :class="isSizeRangeActive(10240, 102400) ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
+              @click="applySizeRange(10240, 102400)">
+              {{ "templates.index.filters.size_gt_10_gb" | t: ">10GB" }}
+            </button>
+          </div>
+        </div>
+
+        <!-- 标签筛选 -->
+        <div data-controller="tag-selector" data-tag-selector-url-value="{{ statics['tag_search'] }}"
+          @tags-changed="updateResourceTags($event)">
+          {% render 'tag_selector', label: "templates.index.filters.tag_filter" | t: "标签筛选" %}
+        </div>
+      </div>
+    </div>
+
+    <!-- 工具栏 -->
+    <div class="flex-0 flex justify-between items-center pb-4">
+      <!-- 排序按钮 -->
+      <div class="flex gap-2">
+        <button @click="setSortByEditedAt()" class="btn btn-outline btn-sm gap-2 shadow-none"
+          :class="isSortByEditedAt() ? 'bg-white border-gray-200 text-primary' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-primary hover:border-gray-300'">
+          <i class="ri-time-line"></i>
+          <span class="hidden md:block">{{ "templates.index.sort.latest_uploaded" | t: "最新上传" }}</span>
+        </button>
+        <button @click="setSortByVisitsCount()" class="btn btn-outline btn-sm gap-2 shadow-none"
+          :class="isSortByVisitsCount() ? 'bg-white border-gray-200 text-primary' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-primary hover:border-gray-300'">
+          <i class="ri-fire-line"></i>
+          <span class="hidden md:block">{{ "templates.index.sort.most_viewed" | t: "最多浏览" }}</span>
+        </button>
+      </div>
+
+      <div class="flex gap-2">
+        {% comment %} 视图缩放按钮 {% endcomment %}
+        <div class="hidden md:flex items-center gap-2 mr-2 px-2 border border-gray-300 rounded-md bg-white">
+          <i class="ri-zoom-out-line text-gray-500 dark:text-gray-400 text-sm"></i>
+          <input type="range" min="50" max="200" value="100" step="5"
+            class="w-24 h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+            data-image-zoom-target="zoomControl"
+            data-action="input->image-zoom#change"
+            title='{{ "templates.index.actions.zoom_workspace_images" | t: "缩放工作区图片大小" }}'>
+          <i class="ri-zoom-in-line text-gray-500 dark:text-gray-400 text-sm"></i>
+          <span class="text-xs text-gray-500 dark:text-gray-400 min-w-10 text-center"
+            data-image-zoom-target="value">100%</span>
+        </div>
+
+        {% comment %} 视图模式按钮 {% endcomment %}
+        <div class="flex gap-2">
+          <button class="btn btn-sm bg-white border-gray-300 text-gray-600 shadow-none"
+            :class="isViewMode('grid') ? 'border-primary text-primary' : 'hover:bg-gray-50 hover:text-primary hover:border-gray-300'"
+            @click="setViewMode('grid')">
+            <i class="ri-grid-line"></i>
+          </button>
+          <button class="btn btn-sm bg-white border-gray-300 text-gray-600 shadow-none"
+            :class="isViewMode('list') ? 'border-primary text-primary' : 'hover:bg-gray-50 hover:text-primary hover:border-gray-300'"
+            @click="setViewMode('list')">
+            <i class="ri-list-check"></i>
+          </button>
+        </div>
+
+        {% comment %} 排序规则 {% endcomment %}
+        <div class="relative whitespace-nowrap" x-data="{
+                          sortKey: 'created_at',
+                          sortOrder: 'desc',
+                          init() {
+                            if (attachmentsQuery.sort) {
+                              this.updateSort(attachmentsQuery.sort)
+                            }
+                            this.$watch('attachmentsQuery.sort', (sort) => {
+                              this.updateSort(sort)
+                            }, { deep: true });
+                          },
+                          updateSort(value) {
+                            if (value && value.startsWith('-')) {
+                              this.sortKey = value.substring(1)
+                              this.sortOrder = 'desc'
+                            } else if (value) {
+                              this.sortKey = value
+                              this.sortOrder = 'asc'
+                            } else {
+                              this.sortKey = 'created_at'
+                              this.sortOrder = 'desc'
+                            }
+                          }
+                        }
+                        ">
+          <button class="btn btn-sm hover:bg-gray-50 bg-white border-gray-300 text-gray-600 gap-2 shadow-none"
+            popovertarget="popover-sort-options-menu" style="anchor-name:--sort-options-menu"
+            title='{{ "templates.index.sort.rules" | t: "排序规则" }}'>
+            <i class="ri-filter-3-line"></i>
+            <span>{{ "templates.index.sort.sort" | t: "排序" }}</span>
+            <i class="ri-arrow-down-s-line"></i>
+          </button>
+          <div class="dropdown dropdown-end menu w-52 rounded-box bg-base-100 shadow-sm" popover x-ref="popover1"
+            @click="$refs.popover1.hidePopover()" id="popover-sort-options-menu"
+            style="position-anchor:--sort-options-menu">
+            <div @click="attachmentsQuery.sort = sortOrder === 'desc' ? '-created_at' : 'created_at'"
+              class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+              <div class="flex items-center gap-2">
+                <i class="ri-calendar-line"></i>
+                <span>{{ "templates.index.sort.by_created_at" | t: "按创建时间" }}</span>
+              </div>
+              <i class="ri-check-line text-primary" x-show="sortKey === 'created_at'"></i>
+            </div>
+            <div @click="attachmentsQuery.sort = sortOrder === 'desc' ? '-edited_at' : 'edited_at'"
+              class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+              <div class="flex items-center gap-2">
+                <i class="ri-edit-line"></i>
+                <span>{{ "templates.index.sort.by_edited_at" | t: "按修改时间" }}</span>
+              </div>
+              <i class="ri-check-line text-primary" x-show="sortKey === 'edited_at'"></i>
+            </div>
+            <div class="divider my-1"></div>
+            <div @click="attachmentsQuery.sort = sortKey"
+              class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+              <div class="flex items-center gap-2">
+                <i class="ri-arrow-up-line"></i>
+                <span>{{ "templates.index.sort.asc" | t: "升序" }}</span>
+              </div>
+              <i class="ri-check-line text-primary" x-show="sortOrder === 'asc'"></i>
+            </div>
+            <div @click="attachmentsQuery.sort = '-' + sortKey"
+              class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+              <div class="flex items-center gap-2">
+                <i class="ri-arrow-down-line"></i>
+                <span>{{ "templates.index.sort.desc" | t: "降序" }}</span>
+              </div>
+              <i class="ri-check-line text-primary" x-show="sortOrder === 'desc'"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% comment %} 图片网格区域 {% endcomment %}
+  <div class="flex-1 min-h-0 h-full overflow-y-auto">
+    <turbo-frame id="attachments_frame" :src="attachmentsSrc">
+      <div class="h-[200px] flex items-center justify-center text-gray-500 dark:text-gray-400">
+        <span class="loading loading-spinner loading-md"></span>
+      </div>
+    </turbo-frame>
+  </div>
+</div>

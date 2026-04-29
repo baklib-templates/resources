@@ -1,0 +1,26 @@
+{
+	"data": {
+		"attributes": {
+			"name": "示例资源文件",
+			"slug": "example-resource",
+			"parent_id": "",
+			"template_variables": {
+				"title": "示例资源文件",
+				"asset": null,
+				"resource_tags": [],
+				"content": ""
+			},
+			"template_name": "page",
+			"template_style": "",
+			"published": false,
+			"published_at": "2022-05-21 08:00",
+			"position": "1",
+			"seo_title": "示例资源文件",
+			"seo_keywords": "资源,文件,下载",
+			"seo_description": "这是一个示例资源文件页面",
+			"hidden_from_list": "false",
+			"hidden_from_nav_menu": "false",
+			"access_enabled": "true"
+		}
+	}
+}

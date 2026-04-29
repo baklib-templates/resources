@@ -1,0 +1,194 @@
+{% assign entity = entity | default: page.settings.asset %}
+
+<div class="h-full flex flex-col">
+  <div class="flex-1 min-h-0 overflow-auto p-3 space-y-3">
+    <div class="bg-gray-50 rounded-lg overflow-hidden border border-gray-100">
+      <div class="h-48 flex items-center justify-center relative">
+      {% comment %} 预览：按 snippets/attachment 的逻辑做分支（侧边栏版尺寸收敛）{% endcomment %}
+      {% if entity and entity.image? %}
+        {% if entity.previewable? %}
+          <img src="{{ entity.preview.cover | default: entity.preview.thumb }}"
+            alt="{{ page.link_text }}"
+            class="max-w-full max-h-full object-contain">
+        {% elsif entity.metadata.content_type == 'image/svg+xml' %}
+          <img src="{{ entity.url[site.settings.resource_download_expiry_time] }}"
+            alt="{{ page.link_text }}"
+            class="max-w-full max-h-full object-contain">
+        {% else %}
+          <div class="flex flex-col items-center justify-center text-gray-400">
+            <i class="ri-image-line text-5xl mb-2"></i>
+            <p class="text-xs">{{ "snippets.attachment.common.no_preview" | t: "暂无预览" }}</p>
+          </div>
+        {% endif %}
+      {% elsif entity and entity.video? %}
+        {% if entity and entity.url %}
+          <video
+            src="{{ entity.url[site.settings.resource_download_expiry_time] }}"
+            controls
+            class="w-full h-full object-contain"
+            poster="{% if entity.previewable? and entity.preview.cover %}{{ entity.preview.cover }}{% elsif page.settings.cover %}{{ page.settings.cover }}{% endif %}">
+            {{ "snippets.attachment.video.browser_not_supported" | t: "您的浏览器不支持视频播放。" }}
+          </video>
+        {% elsif entity and entity.previewable? and entity.preview.cover %}
+          <img src="{{ entity.preview.cover }}"
+            alt="{{ page.link_text }}"
+            class="max-w-full max-h-full object-contain">
+        {% elsif page.settings.cover %}
+          <img src="{{ page.settings.cover }}"
+            alt="{{ page.link_text }}"
+            class="max-w-full max-h-full object-contain">
+        {% else %}
+          <div class="flex flex-col items-center justify-center text-gray-400">
+            <i class="ri-video-line text-5xl mb-2"></i>
+            <p class="text-xs">{{ "snippets.attachment.common.no_preview" | t: "暂无预览" }}</p>
+          </div>
+        {% endif %}
+      {% elsif entity and entity.audio? %}
+        {% if entity and entity.url %}
+          <div class="w-full p-4 flex flex-col items-center justify-center">
+            <i class="ri-music-2-line text-5xl text-gray-400 mb-3"></i>
+            <audio src="{{ entity.url[site.settings.resource_download_expiry_time] }}" controls class="w-full">
+              {{ "snippets.attachment.audio.browser_not_supported" | t: "您的浏览器不支持音频播放。" }}
+            </audio>
+          </div>
+        {% else %}
+          <div class="flex flex-col items-center justify-center text-gray-400">
+            <i class="ri-music-2-line text-5xl mb-2"></i>
+            <p class="text-xs">{{ "snippets.attachment.common.no_preview" | t: "暂无预览" }}</p>
+          </div>
+        {% endif %}
+      {% elsif entity and entity.pdf? %}
+        {% render 'pdf_viewer', pdf_url: entity.url[site.settings.resource_download_expiry_time], scale: 1.0, class: 'w-full h-full bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center' %}
+      {% elsif entity and entity.previewable? and entity.preview_file_url %}
+        {% comment %} Word / Excel / PPT 等与 snippets/attachment/* 一致：服务端预览 PDF {% endcomment %}
+        {% render 'pdf_viewer', pdf_url: entity.preview_file_url, scale: 1.0, class: 'w-full h-full bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center' %}
+      {% elsif entity and entity.metadata.kind == 'archive' %}
+        {% if page.settings.cover %}
+          <img src="{{ page.settings.cover }}"
+            alt="{{ page.link_text }}"
+            class="max-w-full max-h-full object-contain">
+        {% else %}
+          <div class="flex flex-col items-center justify-center text-gray-400">
+            <i class="ri-file-zip-line text-5xl mb-2"></i>
+            <p class="text-xs">{{ "snippets.attachment.common.no_preview" | t: "暂无预览" }}</p>
+          </div>
+        {% endif %}
+      {% else %}
+        {% if entity and entity.previewable? and entity.preview.cover %}
+          <img src="{{ entity.preview.cover }}"
+            alt="{{ page.link_text }}"
+            class="max-w-full max-h-full object-contain">
+        {% elsif page.settings.cover %}
+          <img src="{{ page.settings.cover }}"
+            alt="{{ page.link_text }}"
+            class="max-w-full max-h-full object-contain">
+        {% else %}
+          <div class="flex flex-col items-center justify-center text-gray-400">
+            {% if entity and entity.metadata.content_type %}
+              {% assign content_type = entity.metadata.content_type | split: '/' | first %}
+              {% if content_type == 'text' %}
+                <i class="ri-file-text-line text-5xl mb-2"></i>
+              {% elsif content_type == 'application' %}
+                {% if entity.metadata.kind == 'excel' %}
+                  <i class="ri-file-excel-line text-5xl mb-2"></i>
+                {% elsif entity.metadata.kind == 'word' %}
+                  <i class="ri-file-word-line text-5xl mb-2"></i>
+                {% else %}
+                  <i class="ri-file-line text-5xl mb-2"></i>
+                {% endif %}
+              {% else %}
+                <i class="ri-file-line text-5xl mb-2"></i>
+              {% endif %}
+            {% else %}
+              <i class="ri-file-line text-5xl mb-2"></i>
+            {% endif %}
+            <p class="text-xs">{{ "snippets.attachment.common.no_preview" | t: "暂无预览" }}</p>
+          </div>
+        {% endif %}
+      {% endif %}
+      </div>
+    </div>
+
+    <div class="bg-white rounded-lg border border-gray-100">
+      <div class="px-3 py-2 border-b border-gray-100 text-sm font-medium text-gray-800 flex items-center gap-2">
+        <i class="ri-information-line"></i>
+        <span>{{ "snippets.attachment.common.metadata" | t: "文件元数据" }}</span>
+      </div>
+      <div class="p-3 grid grid-cols-2 gap-3 text-sm">
+      <div class="space-y-0.5">
+        <div class="text-xs text-gray-500">{{ "snippets.attachment.common.file_type" | t: "文件类型" }}</div>
+        <div class="font-semibold text-gray-900">
+          {% if entity and entity.metadata.kind %}
+            {{ entity.metadata.kind }}
+          {% elsif entity and entity.metadata.content_type %}
+            {{ entity.metadata.content_type | split: '/' | last }}
+          {% else %}
+            -
+          {% endif %}
+        </div>
+      </div>
+      <div class="space-y-0.5">
+        <div class="text-xs text-gray-500">{{ "snippets.attachment.common.file_size" | t: "文件大小" }}</div>
+        <div class="font-semibold text-gray-900">
+          {% if entity and entity.metadata.human_size %}
+            {{ entity.metadata.human_size }}
+          {% else %}
+            -
+          {% endif %}
+        </div>
+      </div>
+      <div class="space-y-0.5">
+        <div class="text-xs text-gray-500">{{ "snippets.attachment.common.uploaded_at" | t: "上传时间" }}</div>
+        <div class="font-semibold text-gray-900">
+          {% if page.published_at %}
+            {{ page.published_at | date: "%Y-%m-%d" }}
+          {% else %}
+            -
+          {% endif %}
+        </div>
+      </div>
+      <div class="space-y-0.5">
+        <div class="text-xs text-gray-500">{{ "snippets.attachment.common.visits_count" | t: "浏览次数" }}</div>
+        <div class="font-semibold text-gray-900">
+          {{ page.visits_count | default: 0 }}
+        </div>
+      </div>
+      </div>
+    </div>
+
+    {% assign tags = page.settings.resource_tags | presence %}
+    {% if tags %}
+      <div class="bg-white rounded-lg border border-gray-100">
+        <div class="px-3 py-2 border-b border-gray-100 text-sm font-medium text-gray-800 flex items-center gap-2">
+          <i class="ri-price-tag-3-line"></i>
+          <span>{{ "snippets.attachment.common.tags" | t: "文件标签" }}</span>
+        </div>
+        <div class="p-3 flex flex-wrap gap-2">
+          {% for tag in tags %}
+            <span class="inline-flex items-center px-3 py-1 bg-primary/10 text-primary/80 rounded text-xs">
+              {% if tag.name %}{{ tag.name }}{% else %}{{ tag }}{% endif %}
+            </span>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% assign has_content = page.settings.content | replace: '<p></p>', '' | present? %}
+    {% if has_content %}
+      <div class="bg-white rounded-lg border border-gray-100">
+        <div class="px-3 py-2 border-b border-gray-100 text-sm font-medium text-gray-800 flex items-center gap-2">
+          <i class="ri-file-text-line"></i>
+          <span>{{ "snippets.attachment.common.description" | t: "文件描述" }}</span>
+        </div>
+        <div class="p-3 prose prose-sm max-w-none">
+          {{ page.settings.content }}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="shrink-0 border-t border-gray-100 bg-white p-3">
+    {% render 'attachment/download_btn', entity: entity, page: page %}
+  </div>
+</div>
+

@@ -3,13 +3,25 @@
     "name": "t:schema.templates.index.name",
     "description": "t:schema.templates.index.description",
     "thumb_url": "images/theme/index.png",
-    "sub_page_templates": ["channel", "page"]
+    "sub_page_templates": ["channel", "page"],
+    "settings": [
+      {
+        "type": "select",
+        "id": "detail_open_mode",
+        "label": "t:schema.templates.index.settings.detail_open_mode.label",
+        "choices": [
+          { "value": "modal", "label": "t:schema.templates.index.settings.detail_open_mode.choices.modal.label" },
+          { "value": "detail_page", "label": "t:schema.templates.index.settings.detail_open_mode.choices.detail_page.label" }
+        ],
+        "default": "detail_page"
+      }
+    ]
   }
 {% endschema %}
 
 {% assign channel = params.channel | default: '/' %}
 {% assign defaultBreadcrumb = site.pages[channel].breadcrumb | default: [] %}
-
+{% assign detail_open_mode = page.settings.detail_open_mode.value | default: 'detail_page' %}
 <div
   class="flex-1 flex min-h-0 overflow-hidden"
   data-controller="breadcrumb"
@@ -30,33 +42,41 @@
       document.querySelector('#my-drawer-3').click()
     },
     attachmentsBaseSrc: '{{ statics['attachments'] }}',
+    attachmentDetailBaseSrc: '{{ statics['index/attachment'] }}',
     attachmentsQuery: {},
     attachmentsSrc: '',
-    attachmentSrc: '{{ statics['attachments'] }}',
+    attachmentSidebarSrc: '',
+    attachmentModalSrc: '',
     skipNextWatch: false,
     showDetail: false,
+    detailDrawerOpen: false,
+    detailOpenMode: '{{ detail_open_mode }}',
     attachmentTitle: '',
+    detailPageUrl: '',
     searchKeyword: '',
     sizeMin: '',
     sizeMax: '',
     dateStart: '',
     dateEnd: '',
+    viewMode: 'grid',
     tagInput: '',
     showAdvancedFilters: false,
     fileTypes: [
       { value: 'image', label: '{{ "templates.index.file_types.image" | t: "图片" }}', icon: 'ri-image-line', icon_color: 'text-blue-500' },
       { value: 'video', label: '{{ "templates.index.file_types.video" | t: "视频" }}', icon: 'ri-video-line', icon_color: 'text-purple-500' },
       { value: 'audio', label: '{{ "templates.index.file_types.audio" | t: "音频" }}', icon: 'ri-audio-line', icon_color: 'text-green-500' },
-      { value: 'pdf', label: 'PDF', icon: 'ri-file-pdf-line', icon_color: 'text-red-500' },
-      { value: 'ppt', label: 'PPT', icon: 'ri-file-ppt-line', icon_color: 'text-orange-500' },
-      { value: 'word', label: 'Word', icon: 'ri-file-word-line', icon_color: 'text-blue-600' },
-      { value: 'excel', label: 'Excel', icon: 'ri-file-excel-line', icon_color: 'text-green-600' },
+      { value: 'pdf', label: '{{ "templates.index.file_types.pdf" | t: "PDF" }}', icon: 'ri-file-pdf-line', icon_color: 'text-red-500' },
+      { value: 'ppt', label: '{{ "templates.index.file_types.ppt" | t: "PPT" }}', icon: 'ri-file-ppt-line', icon_color: 'text-orange-500' },
+      { value: 'word', label: '{{ "templates.index.file_types.word" | t: "Word" }}', icon: 'ri-file-word-line', icon_color: 'text-blue-600' },
+      { value: 'excel', label: '{{ "templates.index.file_types.excel" | t: "Excel" }}', icon: 'ri-file-excel-line', icon_color: 'text-green-600' },
       { value: 'archive', label: '{{ "templates.index.file_types.archive" | t: "压缩包" }}', icon: 'ri-file-zip-line', icon_color: 'text-yellow-500' },
       { value: 'other', label: '{{ "templates.index.file_types.other" | t: "其他" }}', icon: 'ri-file-line', icon_color: 'text-gray-500' },
     ],
     init() {
       this.isCollapsed = localStorage.getItem('sidebar-collapsed-status') === 'true';
       this.attachmentsQuery = this.$getQueryParams(window.location.href)
+      this.viewMode = this.normalizeViewMode(this.attachmentsQuery.view || localStorage.getItem('picture-portal-view'))
+      this.attachmentsQuery.view = this.viewMode
 
       // 初始化 resource_tags 为数组
       if (this.attachmentsQuery.resource_tags) {
@@ -138,6 +158,8 @@
       window.addEventListener('popstate', () => {
         this.skipNextWatch = true;
         this.attachmentsQuery = this.$getQueryParams(window.location.href);
+        this.viewMode = this.normalizeViewMode(this.attachmentsQuery.view || localStorage.getItem('picture-portal-view'));
+        this.attachmentsQuery.view = this.viewMode;
         // 同步 resource_tags 为数组
         if (this.attachmentsQuery.resource_tags) {
           if (!Array.isArray(this.attachmentsQuery.resource_tags)) {
@@ -229,9 +251,13 @@
       });
     },
     openDetail(item) {
+      if (this.detailOpenMode === 'detail_page') return;
       this.attachmentTitle = item.title;
-      this.attachmentSrc = this.$buildUrl(this.attachmentsBaseSrc, { full_slug: item.full_slug });
+      this.detailPageUrl = item.url;
+      this.attachmentSidebarSrc = this.$buildUrl(this.attachmentDetailBaseSrc, { full_slug: item.full_slug, view: 'sidebar' });
+      this.attachmentModalSrc = this.$buildUrl(this.attachmentDetailBaseSrc, { full_slug: item.full_slug, view: 'sidebar' });
       this.showDetail = true;
+
       // 移动端打开 modal
       if (window.innerWidth < 768) {
         const modal = document.getElementById('mobile-detail-modal');
@@ -242,6 +268,10 @@
     },
     closeDetail() {
       this.showDetail = false;
+      this.detailPageUrl = '';
+      this.attachmentSidebarSrc = '';
+      this.attachmentModalSrc = '';
+
       // 移动端关闭 modal
       const modal = document.getElementById('mobile-detail-modal');
       if (modal) {
@@ -446,6 +476,19 @@
     toggleAdvancedFilters() {
       this.showAdvancedFilters = !this.showAdvancedFilters;
     },
+    normalizeViewMode(view) {
+      return view === 'list' ? 'list' : 'grid';
+    },
+    setViewMode(view) {
+      const normalizedView = this.normalizeViewMode(view);
+      this.viewMode = normalizedView;
+      this.attachmentsQuery.view = normalizedView;
+      localStorage.setItem('picture-portal-view', normalizedView);
+      this.updateAttachmentsSrc(true);
+    },
+    isViewMode(view) {
+      return this.viewMode === this.normalizeViewMode(view);
+    },
     setSortByEditedAt() {
       this.attachmentsQuery.sort = '-edited_at';
       this.updateAttachmentsSrc(true);
@@ -476,275 +519,44 @@
   {% render 'aside', page: page %}
 
   {% comment %} 主内容区 {% endcomment %}
-  <main class="flex-1 h-full bg-gray-50 overflow-y-auto min-h-[calc(100vh-80px)]" data-controller="image-zoom">
-    <div class="flex-1 flex flex-col px-2 py-2 md:px-6 md:py-4 min-h-[calc(100vh-80px)]">
-      <div class='flex-0' data-image-zoom-target="zoomControl"></div>
+  <main class="flex flex-col flex-1 h-full bg-gray-50 min-h-[calc(100vh-80px)] overflow-y-auto scrollbar-hide" data-controller="image-zoom">
 
-      <!-- 筛选区域 -->
-      <div class="flex-0 bg-white rounded-lg shadow-sm p-3 md:p-6 mb-4 space-y-4 text-sm">
-        <!-- 关键词搜索和操作按钮 -->
-        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3 md:gap-4"  :class="showAdvancedFilters ? '': 'mb-0'">
-          <div class="flex flex-col md:flex-row md:items-start flex-1 gap-2 md:gap-0">
-            <span class="hidden md:inline-block w-18 md:w-24 shrink-0 text-gray-500 pt-1.5">{{ "templates.index.filters.keyword" | t: "关键词" }}</span>
-            <div class="flex-1 flex flex-wrap gap-3 items-center w-full">
-              <div class="join w-full md:max-w-lg">
-                <input type="text" class="input input-bordered input-sm join-item flex-1 bg-gray-50 h-9 text-sm"
-                  placeholder='{{ "templates.index.filters.keyword_placeholder" | t: "输入关键词搜索资源..." }}' x-model="searchKeyword" @keydown.enter.prevent="submitSearch">
-                <button class="btn btn-primary join-item bg-blue-600 border-blue-600 text-white h-9 min-h-0 px-3 md:px-4"
-                  @click="submitSearch">
-                  <i class="ri-search-2-line"></i> <span class="hidden sm:inline">{{ "templates.index.actions.search" | t: "搜索" }}</span>
-                </button>
-              </div>
-            </div>
-          </div>
-          <!-- 重置和高级筛选按钮 -->
-          <div class="flex items-center gap-2 md:gap-1 shrink-0">
-            <button class="btn btn-sm btn-link text-gray-600 hover:text-red-700 hover:bg-red-50 px-2 md:px-4"
-              @click="resetFilters">
-              {{ "templates.index.actions.reset" | t: "重置" }}
-            </button>
-            <button class="btn btn-sm btn-link px-2 md:px-4"
-              :class="showAdvancedFilters ? 'btn-primary' : 'btn-ghost text-gray-600 hover:bg-gray-100'"
-              @click="toggleAdvancedFilters">
-              <span class="hidden sm:inline">{{ "templates.index.actions.advanced_filters" | t: "高级筛选" }}</span>
-              <span class="sm:hidden">{{ "templates.index.actions.filters" | t: "筛选" }}</span>
-            </button>
-          </div>
+    {% if detail_open_mode == 'detail_page' %}
+      {% render 'index/main_content' %}
+    {% else %}
+      <div class="flex h-full">
+        <div class="flex-1">
+          {% render 'index/main_content' %}
         </div>
 
-        <!-- 高级筛选区域 -->
-        <div x-show="showAdvancedFilters" x-cloak x-transition class="space-y-4">
-          <!-- 时间范围筛选 -->
-          <div class="flex flex-col md:flex-row md:items-start gap-2 md:gap-0">
-            <span class="hidden md:inline-block w-18 md:w-24 shrink-0 text-gray-500 pt-1.5">{{ "templates.index.filters.date_range" | t: "时间范围" }}</span>
-            <div class="flex-1 flex flex-col md:flex-row md:flex-wrap gap-2 md:gap-3 md:items-center">
-              <div class="flex items-center gap-2 w-full md:w-auto">
-                <div class="relative flex-1 md:flex-none">
-                  <input type="date"
-                    class="w-full md:min-w-[110px] input input-bordered input-sm bg-gray-50 h-9 pr-9 text-sm"
-                    x-model="dateStart"
-                    @change="updateDateStart(dateStart)"
-                    placeholder='{{ "templates.index.filters.start_date" | t: "开始日期" }}'>
-                  <button
-                    class="absolute right-7 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-gray-200 rounded-full cursor-pointer transition-colors z-10"
-                    @click.stop="clearDateStart"
-                    x-show="dateStart"
-                    type="button"
-                    title='{{ "templates.index.filters.clear_start_date" | t: "清除开始日期" }}'>
-                    <i class="ri-close-line text-xs"></i>
-                  </button>
-                </div>
-                <span class="text-gray-400 hidden md:inline">-</span>
-                <div class="relative flex-1 md:flex-none">
-                  <input type="date"
-                    class="w-full md:min-w-[110px] input input-bordered input-sm bg-gray-50 h-9 pr-9 text-sm"
-                    x-model="dateEnd"
-                    @change="updateDateEnd(dateEnd)"
-                    placeholder='{{ "templates.index.filters.end_date" | t: "结束日期" }}'>
-                  <button
-                    class="absolute right-7 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-gray-200 rounded-full cursor-pointer transition-colors z-10"
-                    @click.stop="clearDateEnd"
-                    x-show="dateEnd"
-                    type="button"
-                    title='{{ "templates.index.filters.clear_end_date" | t: "清除结束日期" }}'>
-                    <i class="ri-close-line text-xs"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 文件类型 -->
-          <div class="flex flex-col md:flex-row md:items-start gap-2 md:gap-0">
-            <span class="hidden md:inline-block w-18 md:w-24 shrink-0 text-gray-500 pt-1.5">{{ "templates.index.filters.file_type" | t: "文件类型" }}</span>
-            <div class="flex-1 grid grid-cols-4 md:flex flex-wrap gap-2 md:gap-3 items-center">
-              <button class="px-3 md:px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border text-xs md:text-sm"
-                :class="!attachmentsQuery.file_type || attachmentsQuery.file_type.length === 0 ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
-                @click="clearAllFileTypes()">{{ "templates.index.filters.all" | t: "全部" }}</button>
-              <template x-for="fileType in fileTypes" :key="fileType.value">
-                <button
-                  class="px-3 md:px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border text-xs md:text-sm"
-                  :class="isFileTypeSelected(fileType.value) ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
-                  @click="toggleFileType(fileType.value)">
-                  <i :class="fileType.icon + ' text-sm ' + fileType.icon_color"></i>
-                  <span x-text="fileType.label"></span>
-                </button>
-              </template>
-            </div>
-          </div>
-
-          <!-- 文件大小 -->
-          <div class="flex flex-col md:flex-row md:items-start gap-2 md:gap-0">
-            <span class="hidden md:inline-block w-18 md:w-24 shrink-0 text-gray-500 pt-1.5">{{ "templates.index.filters.file_size" | t: "文件大小" }}</span>
-            <div class="flex-1 grid grid-cols-4 md:flex flex-wrap gap-2 md:gap-3 items-center">
-              <button
-                class="px-3 md:px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border text-xs md:text-sm"
-                :class="isSizeRangeActive('', '') ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
-                @click="applySizeRange('', '')">{{ "templates.index.filters.all" | t: "全部" }}</button>
-              <button
-                class="px-3 md:px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border text-xs md:text-sm"
-                :class="isSizeRangeActive(0, 10) ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
-                @click="applySizeRange(0, 10)">0-10MB</button>
-              <button
-                class="px-3 md:px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border text-xs md:text-sm"
-                :class="isSizeRangeActive(10, 50) ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
-                @click="applySizeRange(10, 50)">10-50MB</button>
-              <button
-                class="px-3 md:px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border text-xs md:text-sm"
-                :class="isSizeRangeActive(50, 100) ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
-                @click="applySizeRange(50, 100)">50-100MB</button>
-              <button
-                class="px-3 md:px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border text-xs md:text-sm"
-                :class="isSizeRangeActive(100, 1024) ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
-                @click="applySizeRange(100, 1024)">100MB-1GB</button>
-              <button
-                class="px-3 md:px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border text-xs md:text-sm"
-                :class="isSizeRangeActive(1024, 10240) ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
-                @click="applySizeRange(1024, 10240)">1GB-10GB</button>
-              <button
-                class="px-3 md:px-4 py-1.5 rounded-md cursor-pointer transition-all duration-200 border text-xs md:text-sm"
-                :class="isSizeRangeActive(10240, 102400) ? 'bg-indigo-100 border-indigo-200 text-blue-600 font-medium' : 'bg-white border-transparent text-gray-600 hover:bg-gray-100 hover:text-blue-600'"
-                @click="applySizeRange(10240, 102400)">
-                  &gt;10GB
-                </button>
-            </div>
-          </div>
-
-          <!-- 标签筛选 -->
-          <div data-controller="tag-selector" data-tag-selector-url-value="{{ statics['tag_search'] }}" @tags-changed="updateResourceTags($event)">
-            {% render 'tag_selector', label: "templates.index.filters.tag_filter" | t: "标签筛选" %}
-          </div>
+        <div class="w-96 hidden lg:block" x-show="showDetail" x-cloak>
+          {% render 'index/inner_detail', variant: 'sidebar', alpine_src_var: 'attachmentSidebarSrc' %}
         </div>
       </div>
 
-      <!-- 排序工具栏 -->
-      <div class="flex-0 flex justify-between items-center pb-4">
-        <div class="flex gap-2">
-          <button
-            @click="setSortByEditedAt()"
-            class="px-5 py-2 rounded-md text-sm cursor-pointer transition-all duration-200 border-none flex items-center gap-1.5"
-            :class="isSortByEditedAt() ? 'bg-blue-600 text-white' : 'bg-white text-gray-500 hover:text-blue-600'">
-            <i class="ri-time-line"></i>
-            <span>{{ "templates.index.sort.latest_uploaded" | t: "最新上传" }}</span>
-          </button>
-          <button
-            @click="setSortByVisitsCount()"
-            class="px-5 py-2 rounded-md text-sm cursor-pointer transition-all duration-200 border-none flex items-center gap-1.5"
-            :class="isSortByVisitsCount() ? 'bg-blue-600 text-white' : 'bg-white text-gray-500 hover:text-blue-600'">
-            <i class="ri-fire-line"></i>
-            <span>{{ "templates.index.sort.most_viewed" | t: "最多浏览" }}</span>
-          </button>
-        </div>
-
-        {% comment %} 排序规则 {% endcomment %}
-        <div class="relative" x-data="{
-                      sortKey: 'created_at',
-                      sortOrder: 'desc',
-                      init() {
-                        if (attachmentsQuery.sort) {
-                          this.updateSort(attachmentsQuery.sort)
-                        }
-                        this.$watch('attachmentsQuery.sort', (sort) => {
-                          this.updateSort(sort)
-                        }, { deep: true });
-                      },
-                      updateSort(value) {
-                        if (value && value.startsWith('-')) {
-                          this.sortKey = value.substring(1)
-                          this.sortOrder = 'desc'
-                        } else if (value) {
-                          this.sortKey = value
-                          this.sortOrder = 'asc'
-                        } else {
-                          this.sortKey = 'created_at'
-                          this.sortOrder = 'desc'
-                        }
-                      }
-                    }
-                    ">
-          <button
-            class="btn btn-sm btn-outline border-gray-300 hover:bg-gray-50 text-gray-600 gap-2"
-            popovertarget="popover-sort-options-menu" style="anchor-name:--sort-options-menu" title='{{ "templates.index.sort.rules" | t: "排序规则" }}'>
-            <i class="ri-filter-3-line"></i>
-            <span>{{ "templates.index.sort.sort" | t: "排序" }}</span>
-            <i class="ri-arrow-down-s-line"></i>
-          </button>
-          <div class="dropdown dropdown-end menu w-52 rounded-box bg-base-100 shadow-sm" popover x-ref="popover1"
-            @click="$refs.popover1.hidePopover()" id="popover-sort-options-menu" style="position-anchor:--sort-options-menu">
-            <div @click="attachmentsQuery.sort = sortOrder === 'desc' ? '-created_at' : 'created_at'"
-              class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-              <div class="flex items-center gap-2">
-                <i class="ri-calendar-line"></i>
-                <span>{{ "templates.index.sort.by_created_at" | t: "按创建时间" }}</span>
-              </div>
-              <i class="ri-check-line text-primary" x-show="sortKey === 'created_at'"></i>
-            </div>
-            <div @click="attachmentsQuery.sort = sortOrder === 'desc' ? '-edited_at' : 'edited_at'"
-              class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-              <div class="flex items-center gap-2">
-                <i class="ri-edit-line"></i>
-                <span>{{ "templates.index.sort.by_edited_at" | t: "按修改时间" }}</span>
-              </div>
-              <i class="ri-check-line text-primary" x-show="sortKey === 'edited_at'"></i>
-            </div>
-            <div class="divider my-1"></div>
-            <div @click="attachmentsQuery.sort = sortKey"
-              class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-              <div class="flex items-center gap-2">
-                <i class="ri-arrow-up-line"></i>
-                <span>{{ "templates.index.sort.asc" | t: "升序" }}</span>
-              </div>
-              <i class="ri-check-line text-primary" x-show="sortOrder === 'asc'"></i>
-            </div>
-            <div @click="attachmentsQuery.sort = '-' + sortKey"
-              class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-              <div class="flex items-center gap-2">
-                <i class="ri-arrow-down-line"></i>
-                <span>{{ "templates.index.sort.desc" | t: "降序" }}</span>
-              </div>
-              <i class="ri-check-line text-primary" x-show="sortOrder === 'desc'"></i>
-            </div>
+      <dialog id="mobile-detail-modal" class="modal lg:hidden">
+        <div class="modal-box w-screen h-screen max-w-none max-h-none rounded-none p-0 flex flex-col">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+            <div class="font-semibold text-gray-900 truncate" x-text="attachmentTitle || '{{ 'templates.index.detail.title' | t: '资源详情' }}'"></div>
+            <form method="dialog">
+              <button type="submit" class="btn btn-ghost btn-sm">
+                <i class="ri-close-line text-lg"></i>
+              </button>
+            </form>
+          </div>
+          <div class="flex-1 min-h-0 p-0">
+            {% render 'index/inner_detail', variant: 'dialog', alpine_src_var: 'attachmentModalSrc' %}
           </div>
         </div>
-      </div>
-
-      {% comment %} 图片网格区域 {% endcomment %}
-      <div class="flex-1 min-h-0 h-full overflow-auto">
-        <turbo-frame class='c' id="attachments_frame" :src="attachmentsSrc">
-          <div class="h-[200px] flex items-center justify-center text-gray-500 dark:text-gray-400">
-            <span class="loading loading-spinner loading-md"></span>
-          </div>
-        </turbo-frame>
-      </div>
-    </div>
+        <form method="dialog" class="modal-backdrop">
+          <button>{{ "templates.index.detail.close" | t: "关闭" }}</button>
+        </form>
+      </dialog>
+    {% endif %}
 
     <div class="flex-0">
       {% render 'footer' %}
     </div>
+
   </main>
 </div>
-
-{% comment %} 移动端筛选器切换脚本 {% endcomment %}
-<script>
-  (function () {
-    document.addEventListener('DOMContentLoaded', function () {
-      const filterToggle = document.getElementById('mobile-filter-toggle');
-      const filterPanel = document.getElementById('mobile-filter-panel');
-      const filterIcon = document.getElementById('mobile-filter-icon');
-
-      if (filterToggle && filterPanel && filterIcon) {
-        filterToggle.addEventListener('click', function () {
-          const isHidden = filterPanel.classList.contains('hidden');
-
-          if (isHidden) {
-            filterPanel.classList.remove('hidden');
-            filterIcon.style.transform = 'rotate(180deg)';
-          } else {
-            filterPanel.classList.add('hidden');
-            filterIcon.style.transform = 'rotate(0deg)';
-          }
-        });
-      }
-    });
-  })();
-</script>

@@ -4,8 +4,8 @@
   "adapterName": "baidu",
   "adapterOptions": {
     "url": "https://api.fanyi.baidu.com/api/trans/vip/translate",
-    "appid": "20240321002000882",
-    "secretKey": "nPuSYcHz44FxZ4Cl9T97",
+    "appid": "",
+    "secretKey": "",
     "qps": 0.8
   },
   "paths": {

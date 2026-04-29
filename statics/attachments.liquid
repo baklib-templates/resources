@@ -1,6 +1,11 @@
 {% layout none %}
 
 {% assign sort = params.sort %}
+{% assign view_mode = params.view | default: 'grid' %}
+{% assign detail_open_mode = site.pages['/'].settings.detail_open_mode.value | default: 'detail_page' %}
+{% unless view_mode == 'list' %}
+  {% assign view_mode = 'grid' %}
+{% endunless %}
 {% comment %} 100MB {% endcomment %}
 {% assign file_limit = 104857600 %}
 
@@ -43,7 +48,12 @@
 {% endquery %}
 
 <turbo-frame id="attachments_frame">
-  <div class="min-h-full flex flex-col flex-1 w-full min-w-0" data-image-zoom-target="view" x-cloak>
+  <div
+    class="min-h-full flex flex-col flex-1 w-full min-w-0"
+    data-image-zoom-target="view"
+    style="--view-zoom: 1; --zoom-font: 1; --zoom-thumb: 1;"
+    x-cloak
+  >
     {% search filtered_pages, keywords: params.search_q, by_user: true, allow_empty_keywords: true %}
       {% if sort %}
         {% assign search_pages = search.pages | order_by: sort %}
@@ -53,11 +63,15 @@
 
       {% paginate_tag search_pages, per: 30 %}
         <div class="flex-1">
-          {% render 'attachments/grid', filtered_pages: search_pages %}
+          {% if view_mode == 'list' %}
+            {% render 'attachments/list', filtered_pages: search_pages, detail_open_mode: detail_open_mode %}
+          {% else %}
+            {% render 'attachments/grid', filtered_pages: search_pages, detail_open_mode: detail_open_mode %}
+          {% endif %}
         </div>
 
         {% comment %} 分页 {% endcomment %}
-        <div class="mt-6 flex-0">
+        <div class="my-6 flex-0">
           {% render 'paginate', paginate: paginate %}
         </div>
       {% endpaginate_tag %}

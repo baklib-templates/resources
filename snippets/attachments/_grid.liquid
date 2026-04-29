@@ -2,17 +2,32 @@
 {% comment %}
   types = [:fragment, :link, :image, :video, :audio, :pdf, :ppt, :word, :excel, :archive, :other]
 {% endcomment %}
-<div class="flex flex-wrap gap-2 md:gap-4">
+<div
+  class="grid 2xl:grid-cols-8 [--grid-base-min:9rem] [--grid-base-gap:1rem] sm:[--grid-base-min:9.5rem] sm:[--grid-base-gap:1.1rem] md:[--grid-base-min:10.5rem] md:[--grid-base-gap:1.2rem] lg:[--grid-base-min:11rem] lg:[--grid-base-gap:1.3rem] xl:[--grid-base-min:15rem] xl:[--grid-base-gap:1.35rem]"
+  style="
+    --grid-gap: clamp(0.9rem, calc(var(--grid-base-gap, 1.2rem) * var(--view-zoom, 1)), 2rem);
+    --grid-min-size: clamp(9rem, calc(var(--grid-base-min, 11.5rem) * var(--view-zoom, 1)), 25rem);
+    --grid-title-size: clamp(0.75rem, calc(0.875rem * var(--zoom-font, 1)), 1.05rem);
+    --grid-meta-size: clamp(0.7rem, calc(0.78rem * var(--zoom-font, 1)), 0.95rem);
+    --grid-badge-size: clamp(0.65rem, calc(0.7rem * var(--zoom-font, 1)), 0.82rem);
+    --grid-tag-size: clamp(0.65rem, calc(0.72rem * var(--zoom-font, 1)), 0.85rem);
+    grid-template-columns: repeat(auto-fill, minmax(var(--grid-min-size), 1fr));
+    gap: var(--grid-gap);
+  "
+>
   {% for item in filtered_pages %}
     {% assign entity = item.settings.asset %}
     {% assign can_access = item | can_access? %}
+    {% assign _detail_open_mode = detail_open_mode | default: 'detail_page' %}
     <a
-      id="item-{{ item.full_slug | replace: '/', '-' | replace: '.', '-' }}"
       class="block bg-white rounded-lg overflow-hidden transition-all duration-300 ease-in-out group hover:-translate-y-0.5 hover:shadow-lg cursor-pointer shadow-sm shadow-primary/4"
-      data-image-zoom-target="item"
-      style="width: 0;"
-      href="{{ item.url }}"
-      data-turbo="false"
+      {% if _detail_open_mode == 'modal' %}
+        href="#"
+        @click.prevent.stop="$dispatch('open-detail', { full_slug: '{{ item.full_slug }}', title: '{{ item.link_text }}', url: '{{ item.url }}' })"
+      {% else %}
+        href="{{ item.url }}"
+        data-turbo="false"
+      {% endif %}
     >
       {% comment %} 根据文件类型加载对应的模板 {% endcomment %}
       {% if entity and entity.image? %}
@@ -37,7 +52,7 @@
     </a>
   {% else %}
       {% comment %} 添加没有内容的展示 {% endcomment %}
-      <div class="w-full py-12">
+      <div class="w-full py-12 bg-white rounded-lg">
         <div class="text-center">
           <i class="ri-folder-open-line text-6xl text-gray-400 mb-4"></i>
           <p class="text-gray-600 dark:text-gray-400 text-lg">{{ "snippets.attachments.empty.title" | t: "暂无文件" }}</p>

@@ -1,0 +1,24 @@
+{
+	"data": {
+		"attributes": {
+			"name": "示例资源栏目",
+			"slug": "example-channel",
+			"parent_id": "",
+			"template_variables": {
+				"title": "示例资源栏目",
+				"description": "这是一个示例资源栏目的描述信息"
+			},
+			"template_name": "channel",
+			"template_style": "",
+			"published": false,
+			"published_at": "2022-05-21 08:00",
+			"position": "1",
+			"seo_title": "示例资源栏目",
+			"seo_keywords": "资源栏目,分类,目录",
+			"seo_description": "这是一个示例资源栏目页面",
+			"hidden_from_list": "false",
+			"hidden_from_nav_menu": "false",
+			"access_enabled": "true"
+		}
+	}
+}

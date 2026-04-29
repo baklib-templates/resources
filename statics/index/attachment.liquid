@@ -1,0 +1,38 @@
+{% layout none %}
+
+{% query pages from site.pages %}
+  {
+    "where": {
+      "template_name_eq": "page",
+      "full_path_eq": params.full_slug
+    }
+  }
+{% endquery %}
+
+{%
+  assign page = pages | first
+%}
+
+<turbo-frame id="attachment_frame">
+  {% if page %}
+    {% comment %} 权限检查 {% endcomment %}
+    {% assign can_access = page | can_access? %}
+    {% if can_access %}
+      {% assign entity = page.settings.asset %}
+
+      {% assign view = params.view | default: 'page' %}
+      {% render 'index/attachment/detail', page: page, entity: entity %}
+    {% else %}
+      {% comment %} 无权限访问 - 显示授权按钮，链接到详细页面 {% endcomment %}
+      {% render 'attachment/permission_denied', page: page %}
+    {% endif %}
+  {% else %}
+    {% comment %} 404 {% endcomment %}
+    <div class="h-full flex items-center justify-center text-gray-500 dark:text-gray-400">
+      <div class="text-center">
+        <i class="ri-file-search-line text-4xl mb-2"></i>
+        <p>{{ "statics.attachment.not_found" | t: "资源不存在" }}</p>
+      </div>
+    </div>
+  {% endif %}
+</turbo-frame>

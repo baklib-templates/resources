@@ -50,8 +50,9 @@
                 class="p-1.5 md:p-2 rounded-md hover:bg-gray-100 transition-colors text-gray-600"
                 data-action="click->user-menu#toggle"
                 title='{{ "snippets.header.user_center" | t: "个人中心" }}'>
-          {% if current_user.avatar.url %}
-            <img src="{{ current_user.avatar.url | asset_url }}"
+
+          {% if current_user.image %}
+            <img src="{{ current_user.image | asset_url }}"
                   alt="{{ current_user.name }}"
                   class="w-7 h-7 md:w-8 md:h-8 rounded-full object-cover">
           {% else %}

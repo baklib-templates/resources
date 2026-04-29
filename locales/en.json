@@ -98,6 +98,10 @@
         "shape_portrait": "Portrait",
         "shape_square": "Square",
         "type": "Type",
+        "jpg": "JPG",
+        "png": "PNG",
+        "gif": "GIF",
+        "webp": "WebP",
         "collection": "Collection",
         "sort": "Sort",
         "sort_created_desc": "Newest First",
@@ -107,6 +111,16 @@
         "sort_name_asc": "Name A-Z",
         "sort_name_desc": "Name Z-A"
       }
+    },
+    "pdf_viewer": {
+      "loading": "Loading...",
+      "load_failed": "Failed to load preview",
+      "previous_page": "Previous page",
+      "next_page": "Next page",
+      "zoom_out": "Zoom out",
+      "reset_zoom": "Reset zoom",
+      "reset": "Reset",
+      "zoom_in": "Zoom in"
     },
     "tag_selector": {
       "label": "Tag Filter",
@@ -201,7 +215,11 @@
         "video": "Video",
         "audio": "Audio",
         "archive": "Archive",
-        "other": "Other"
+        "other": "Other",
+        "pdf": "PDF",
+        "ppt": "PPT",
+        "word": "Word",
+        "excel": "Excel"
       },
       "filters": {
         "keyword": "Keyword",
@@ -214,13 +232,20 @@
         "file_type": "File Type",
         "all": "All",
         "file_size": "File Size",
+        "size_0_10_mb": "0-10MB",
+        "size_10_50_mb": "10-50MB",
+        "size_50_100_mb": "50-100MB",
+        "size_100_mb_1_gb": "100MB-1GB",
+        "size_1_10_gb": "1GB-10GB",
+        "size_gt_10_gb": ">10GB",
         "tag_filter": "Tag Filter"
       },
       "actions": {
         "search": "Search",
         "reset": "Reset",
         "advanced_filters": "Advanced Filters",
-        "filters": "Filters"
+        "filters": "Filters",
+        "zoom_workspace_images": "Zoom workspace image size"
       },
       "sort": {
         "latest_uploaded": "Latest Uploads",
@@ -231,6 +256,11 @@
         "by_edited_at": "By Updated Time",
         "asc": "Ascending",
         "desc": "Descending"
+      },
+      "detail": {
+        "title": "Resource Details",
+        "open_full_page": "Open full page",
+        "close": "Close"
       }
     }
   }

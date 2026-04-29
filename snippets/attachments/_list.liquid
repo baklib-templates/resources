@@ -1,136 +1,170 @@
-{% comment %} 列表视图（表格样式） {% endcomment %}
-<div class="dark:bg-gray-800">
+{% comment %} 列表视图（div布局） {% endcomment %}
+<div
+  class="dark:bg-gray-800 [--list-base-thumb:2.75rem] [--list-base-title:0.76rem] [--list-base-meta:0.72rem] [--list-base-badge:0.66rem] md:[--list-base-thumb:4.25rem] md:[--list-base-title:0.82rem] md:[--list-base-meta:0.76rem] md:[--list-base-badge:0.69rem] xl:[--list-base-thumb:5rem] xl:[--list-base-title:0.88rem] xl:[--list-base-meta:0.8rem] xl:[--list-base-badge:0.72rem]"
+  style="
+    --list-thumb-size: clamp(2.5rem, calc(var(--list-base-thumb, 5rem) * var(--zoom-thumb, 1)), 20rem);
+    --list-title-size: clamp(0.5rem, calc(var(--list-base-title, 0.8rem) * var(--zoom-font, 1)), 2rem);
+    --list-meta-size: clamp(0.7rem, calc(var(--list-base-meta, 0.74rem) * var(--zoom-font, 1)), 1.8rem);
+    --list-badge-size: clamp(0.65rem, calc(var(--list-base-badge, 0.68rem) * var(--zoom-font, 1)), 1.7rem);
+  "
+>
   <div class="overflow-x-auto max-w-[calc(100vw-32px)] md:max-w-full">
-    <table class="table table-zebra">
-      <!-- head -->
-      <thead>
-        <tr>
-          <th class="w-auto min-w-[200px] md:min-w-[300px]">{{ "snippets.attachments.list.headers.filename" | t: "文件名称" }}</th>
-          <th class="w-[100px] md:w-[120px] whitespace-nowrap">{{ "snippets.attachments.list.headers.filesize" | t: "文件大小" }}</th>
-          <th class="w-[90px] md:w-[100px] whitespace-nowrap">{{ "snippets.attachments.list.headers.filetype" | t: "文件类型" }}</th>
-          <th class="w-[140px] md:w-[160px] whitespace-nowrap hidden md:table-cell">{{ "snippets.attachments.list.headers.created_at" | t: "创建时间" }}</th>
-        </tr>
-      </thead>
-      <tbody>
+    <div class="bg-white rounded-lg overflow-hidden">
+      {% comment %} head {% endcomment %}
+      <div class="grid grid-cols-[minmax(0,1fr)_70px_70px] md:grid-cols-[minmax(220px,1fr)_120px_100px_160px] text-xs font-semibold text-gray-600 px-2 md:px-4 py-4 border-b border-gray-200">
+        <div>{{ "snippets.attachments.list.headers.filename" | t: "文件名称" }}</div>
+        <div class="whitespace-nowrap">{{ "snippets.attachments.list.headers.filesize" | t: "文件大小" }}</div>
+        <div class="whitespace-nowrap">{{ "snippets.attachments.list.headers.filetype" | t: "文件类型" }}</div>
+        <div class="whitespace-nowrap hidden md:block">{{ "snippets.attachments.list.headers.created_at" | t: "创建时间" }}</div>
+      </div>
+
+      <div class="divide-y divide-gray-100">
         {% for item in filtered_pages %}
           {% assign entity = item.settings.asset %}
-          <tr id="item-{{ item.full_slug | replace: '/', '-' | replace: '.', '-' }}"
-            class="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+          {% assign can_access = item | can_access? %}
+          {% assign _detail_open_mode = detail_open_mode | default: 'detail_page' %}
+
+          <a
+            class="grid grid-cols-[minmax(0,1fr)_70px_70px] md:grid-cols-[minmax(220px,1fr)_120px_100px_160px] px-2 md:px-4 py-2 md:py-3 items-center hover:bg-gray-50 transition-colors group"
             data-image-zoom-target="item"
-            @click="$dispatch('open-detail', {
-              full_slug: '{{ item.full_slug }}',
-              title: '{{ item.link_text | escape }}'
-            })">
-            <td class="px-2 md:px-4 py-2 md:py-3">
-              <div class="flex items-center gap-2 md:gap-3">
+            {% if _detail_open_mode == 'modal' %}
+              href="#"
+              @click.prevent.stop="$dispatch('open-detail', { full_slug: '{{ item.full_slug }}', title: '{{ item.link_text }}', url: '{{ item.url }}' })"
+            {% else %}
+              href="{{ item.url }}"
+              data-turbo="false"
+            {% endif %}
+          >
+            <div class="min-w-0">
+              <div class="grid grid-cols-[auto_minmax(0,1fr)] items-stretch gap-2 md:gap-3 min-h-10 md:min-h-20">
                 {% comment %} 根据文件类型显示不同的图标和样式 {% endcomment %}
                 {% if entity and entity.image? %}
                   {% comment %} 图片类型 {% endcomment %}
                   {% if entity.previewable? %}
-                    <div class="w-8 h-8 md:w-10 md:h-10 shrink-0 overflow-hidden rounded bg-gray-100 dark:bg-gray-700">
+                    <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 overflow-hidden rounded bg-gray-100 dark:bg-gray-700">
                       <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-cover">
                     </div>
                   {% else %}
-                    <div class="w-8 h-8 md:w-10 md:h-10 shrink-0 bg-gray-100 dark:bg-gray-700 rounded flex items-center justify-center">
-                      <i class="ri-image-line text-base md:text-lg text-gray-400"></i>
+                    <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 bg-gray-100 dark:bg-gray-700 rounded flex items-center justify-center">
+                      <i class="ri-image-line text-(length:--list-title-size) text-gray-400"></i>
                     </div>
                   {% endif %}
                 {% elsif entity and entity.video? %}
                   {% comment %} 视频类型 {% endcomment %}
                   {% if entity.previewable? %}
-                    <div class="w-8 h-8 md:w-10 md:h-10 shrink-0 overflow-hidden rounded bg-gray-100 dark:bg-gray-700 relative">
+                    <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 overflow-hidden rounded bg-gray-100 dark:bg-gray-700 relative">
                       <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-cover">
                       <div class="absolute inset-0 flex items-center justify-center bg-black/20">
-                        <i class="ri-play-fill text-xs md:text-sm text-white"></i>
+                        <i class="ri-play-fill text-(length:--list-meta-size) text-white"></i>
                       </div>
                     </div>
                   {% else %}
-                    <div class="w-8 h-8 md:w-10 md:h-10 shrink-0 bg-gray-100 dark:bg-gray-700 rounded flex items-center justify-center">
-                      <i class="ri-play-circle-line text-base md:text-lg text-gray-400"></i>
+                    <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 bg-gray-100 dark:bg-gray-700 rounded flex items-center justify-center">
+                      <i class="ri-play-circle-line text-(length:--list-title-size) text-gray-400"></i>
                     </div>
                   {% endif %}
                 {% elsif entity and entity.audio? %}
                   {% comment %} 音频类型 {% endcomment %}
                   {% if entity.previewable? %}
-                    <div class="w-8 h-8 md:w-10 md:h-10 shrink-0 overflow-hidden rounded bg-purple-100 dark:bg-purple-900/30">
+                    <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 overflow-hidden rounded bg-purple-100 dark:bg-purple-900/30">
                       <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-cover">
                     </div>
                   {% else %}
-                    <div class="w-8 h-8 md:w-10 md:h-10 shrink-0 bg-purple-100 dark:bg-purple-900/30 rounded flex items-center justify-center">
-                      <i class="ri-music-2-line text-base md:text-lg text-purple-500"></i>
+                    <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 bg-purple-100 dark:bg-purple-900/30 rounded flex items-center justify-center">
+                      <i class="ri-music-2-line text-(length:--list-title-size) text-purple-500"></i>
                     </div>
                   {% endif %}
                 {% elsif entity and entity.pdf? %}
                   {% comment %} PDF类型 {% endcomment %}
                   {% if entity.previewable? %}
-                    <div class="w-8 h-8 md:w-10 md:h-10 shrink-0 overflow-hidden rounded bg-red-50 dark:bg-red-900/20">
+                    <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 overflow-hidden rounded bg-red-50 dark:bg-red-900/20">
                       <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-cover">
                     </div>
                   {% else %}
-                    <div class="w-8 h-8 md:w-10 md:h-10 shrink-0 bg-red-50 dark:bg-red-900/20 rounded flex items-center justify-center">
-                      <i class="ri-file-pdf-line text-base md:text-lg text-red-500"></i>
+                    <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 bg-red-50 dark:bg-red-900/20 rounded flex items-center justify-center">
+                      <i class="ri-file-pdf-line text-(length:--list-title-size) text-red-500"></i>
                     </div>
                   {% endif %}
                 {% elsif entity and entity.metadata.kind == 'word' %}
                   {% comment %} Word类型 {% endcomment %}
                   {% if entity.previewable? %}
-                    <div class="w-8 h-8 md:w-10 md:h-10 shrink-0 overflow-hidden rounded bg-blue-50 dark:bg-blue-900/20">
+                    <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 overflow-hidden rounded bg-blue-50 dark:bg-blue-900/20">
                       <img src="{{ entity.preview.icon }}" alt="{{ item.link_text }}" class="w-full h-full object-cover">
                     </div>
                   {% else %}
-                    <div class="w-8 h-8 md:w-10 md:h-10 shrink-0 bg-blue-50 dark:bg-blue-900/20 rounded flex items-center justify-center">
-                      <i class="ri-file-word-line text-base md:text-lg text-blue-500"></i>
+                    <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 bg-blue-50 dark:bg-blue-900/20 rounded flex items-center justify-center">
+                      <i class="ri-file-word-line text-(length:--list-title-size) text-blue-500"></i>
                     </div>
                   {% endif %}
                 {% elsif entity and entity.metadata.kind == 'excel' %}
                   {% comment %} Excel类型 {% endcomment %}
                   {% if entity.previewable? %}
-                    <div class="w-8 h-8 md:w-10 md:h-10 shrink-0 overflow-hidden rounded bg-green-50 dark:bg-green-900/20">
+                    <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 overflow-hidden rounded bg-green-50 dark:bg-green-900/20">
                       <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-cover">
                     </div>
                   {% else %}
-                    <div class="w-8 h-8 md:w-10 md:h-10 shrink-0 bg-green-50 dark:bg-green-900/20 rounded flex items-center justify-center">
-                      <i class="ri-file-excel-line text-base md:text-lg text-green-500"></i>
+                    <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 bg-green-50 dark:bg-green-900/20 rounded flex items-center justify-center">
+                      <i class="ri-file-excel-line text-(length:--list-title-size) text-green-500"></i>
                     </div>
                   {% endif %}
                 {% elsif entity and entity.metadata.kind == 'ppt' %}
                   {% comment %} PPT类型 {% endcomment %}
                   {% if entity.previewable? %}
-                    <div class="w-8 h-8 md:w-10 md:h-10 shrink-0 overflow-hidden rounded bg-orange-50 dark:bg-orange-900/20">
+                    <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 overflow-hidden rounded bg-orange-50 dark:bg-orange-900/20">
                       <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-cover">
                     </div>
                   {% else %}
-                    <div class="w-8 h-8 md:w-10 md:h-10 shrink-0 bg-orange-50 dark:bg-orange-900/20 rounded flex items-center justify-center">
-                      <i class="ri-file-ppt-line text-base md:text-lg text-orange-500"></i>
+                    <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 bg-orange-50 dark:bg-orange-900/20 rounded flex items-center justify-center">
+                      <i class="ri-file-ppt-line text-(length:--list-title-size) text-orange-500"></i>
                     </div>
                   {% endif %}
                 {% elsif entity and entity.metadata.kind == 'archive' %}
                   {% comment %} 压缩包类型 {% endcomment %}
                   {% if entity.previewable? %}
-                    <div class="w-8 h-8 md:w-10 md:h-10 shrink-0 overflow-hidden rounded bg-yellow-50 dark:bg-yellow-900/20">
+                    <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 overflow-hidden rounded bg-yellow-50 dark:bg-yellow-900/20">
                       <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-cover">
                     </div>
                   {% else %}
-                    <div class="w-8 h-8 md:w-10 md:h-10 shrink-0 bg-yellow-50 dark:bg-yellow-900/20 rounded flex items-center justify-center">
-                      <i class="ri-file-zip-line text-base md:text-lg text-yellow-500"></i>
+                    <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 bg-yellow-50 dark:bg-yellow-900/20 rounded flex items-center justify-center">
+                      <i class="ri-file-zip-line text-(length:--list-title-size) text-yellow-500"></i>
                     </div>
                   {% endif %}
                 {% else %}
                   {% comment %} 其他类型 {% endcomment %}
                   {% if entity and entity.previewable? %}
-                    <div class="w-8 h-8 md:w-10 md:h-10 shrink-0 overflow-hidden rounded bg-gray-100 dark:bg-gray-700">
+                    <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 overflow-hidden rounded bg-gray-100 dark:bg-gray-700">
                       <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-cover">
                     </div>
                   {% else %}
-                    <div class="w-8 h-8 md:w-10 md:h-10 shrink-0 bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center">
-                      <i class="ri-file-line text-base md:text-lg text-gray-400"></i>
+                    <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center">
+                      <i class="ri-file-line text-(length:--list-title-size) text-gray-400"></i>
                     </div>
                   {% endif %}
                 {% endif %}
-                <span class="text-xs md:text-sm text-gray-900 dark:text-gray-100 truncate min-w-0">{{ item.link_text }}</span>
+                <div class="min-w-0 h-full overflow-hidden flex flex-col justify-between">
+                  <div class="gap-2 truncate">
+                    <span class="text-(length:--list-title-size) text-gray-900 dark:text-gray-100 min-w-0 group-hover:text-primary truncate">{{ item.link_text }}</span>
+                    {% unless can_access %}
+                      <i class="ri-lock-2-line text-warning shrink-0"></i>
+                    {% endunless %}
+                  </div>
+                  <!-- Tags -->
+                  {% if item.settings.resource_tags.size > 0 %}
+                    <div class="overflow-x-auto w-full scrollbar-hide">
+                      <div class="flex flex-row space-x-2 whitespace-nowrap">
+                        {% for tag in item.settings.resource_tags %}
+                          <div class="badge badge-xs badge-outline badge-accent">
+                            <span class="line-clamp-1">{{ tag.name }}</span>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  {% endif %}
+                </div>
               </div>
-            </td>
-            <td class="px-2 md:px-4 py-2 md:py-3 text-xs md:text-sm text-gray-700 dark:text-gray-300 whitespace-nowrap">
+            </div>
+
+            <div class="text-(length:--list-meta-size) text-gray-700 dark:text-gray-300 whitespace-nowrap">
               {% if entity and entity.metadata.human_size %}
                 {{ entity.metadata.human_size }}
               {% elsif item.settings.file_size %}
@@ -138,50 +172,50 @@
               {% else %}
                 -
               {% endif %}
-            </td>
-            <td class="px-2 md:px-4 py-2 md:py-3">
+            </div>
+
+            <div class="whitespace-nowrap">
               {% comment %} 显示文件类型标签 {% endcomment %}
               {% if entity and entity.image? %}
-                <span class="px-1.5 md:px-2 py-0.5 md:py-1 bg-primary text-white text-xs rounded font-semibold whitespace-nowrap">{{ "snippets.attachments.list.file_types.image" | t: "图片" }}</span>
+                <span class="px-1.5 md:px-2 py-0.5 md:py-1 bg-primary text-white text-(length:--list-badge-size) rounded font-semibold whitespace-nowrap">{{ "snippets.attachments.list.file_types.image" | t: "图片" }}</span>
               {% elsif entity and entity.video? %}
-                <span class="px-1.5 md:px-2 py-0.5 md:py-1 bg-black/70 text-white text-xs rounded whitespace-nowrap">{{ "snippets.attachments.list.file_types.video" | t: "视频" }}</span>
+                <span class="px-1.5 md:px-2 py-0.5 md:py-1 bg-black/70 text-white text-(length:--list-badge-size) rounded whitespace-nowrap">{{ "snippets.attachments.list.file_types.video" | t: "视频" }}</span>
               {% elsif entity and entity.audio? %}
-                <span class="px-1.5 md:px-2 py-0.5 md:py-1 bg-black/70 text-white text-xs rounded whitespace-nowrap">{{ "snippets.attachments.list.file_types.audio" | t: "音频" }}</span>
+                <span class="px-1.5 md:px-2 py-0.5 md:py-1 bg-black/70 text-white text-(length:--list-badge-size) rounded whitespace-nowrap">{{ "snippets.attachments.list.file_types.audio" | t: "音频" }}</span>
               {% elsif entity and entity.pdf? %}
-                <span class="px-1.5 md:px-2 py-0.5 md:py-1 bg-red-500 text-white text-xs rounded font-semibold whitespace-nowrap">PDF</span>
+                <span class="px-1.5 md:px-2 py-0.5 md:py-1 bg-red-500 text-white text-(length:--list-badge-size) rounded font-semibold whitespace-nowrap">PDF</span>
               {% elsif entity and entity.metadata.kind == 'word' %}
-                <span class="px-1.5 md:px-2 py-0.5 md:py-1 bg-blue-500 text-white text-xs rounded font-semibold whitespace-nowrap">DOC</span>
+                <span class="px-1.5 md:px-2 py-0.5 md:py-1 bg-blue-500 text-white text-(length:--list-badge-size) rounded font-semibold whitespace-nowrap">DOC</span>
               {% elsif entity and entity.metadata.kind == 'excel' %}
-                <span class="px-1.5 md:px-2 py-0.5 md:py-1 bg-green-500 text-white text-xs rounded font-semibold whitespace-nowrap">XLS</span>
+                <span class="px-1.5 md:px-2 py-0.5 md:py-1 bg-green-500 text-white text-(length:--list-badge-size) rounded font-semibold whitespace-nowrap">XLS</span>
               {% elsif entity and entity.metadata.kind == 'ppt' %}
-                <span class="px-1.5 md:px-2 py-0.5 md:py-1 bg-orange-500 text-white text-xs rounded font-semibold whitespace-nowrap">PPT</span>
+                <span class="px-1.5 md:px-2 py-0.5 md:py-1 bg-orange-500 text-white text-(length:--list-badge-size) rounded font-semibold whitespace-nowrap">PPT</span>
               {% elsif entity and entity.metadata.kind == 'archive' %}
-                <span class="px-1.5 md:px-2 py-0.5 md:py-1 bg-yellow-500 text-white text-xs rounded font-semibold whitespace-nowrap">ZIP</span>
+                <span class="px-1.5 md:px-2 py-0.5 md:py-1 bg-yellow-500 text-white text-(length:--list-badge-size) rounded font-semibold whitespace-nowrap">ZIP</span>
               {% else %}
-                <span class="px-1.5 md:px-2 py-0.5 md:py-1 bg-primary text-white text-xs rounded font-semibold whitespace-nowrap">{{ "snippets.attachments.list.file_types.other" | t: "其他" }}</span>
+                <span class="px-1.5 md:px-2 py-0.5 md:py-1 bg-primary text-white text-(length:--list-badge-size) rounded font-semibold whitespace-nowrap">{{ "snippets.attachments.list.file_types.other" | t: "其他" }}</span>
               {% endif %}
-            </td>
-            <td class="px-2 md:px-4 py-2 md:py-3 text-xs md:text-sm text-gray-700 dark:text-gray-300 whitespace-nowrap hidden md:table-cell">
+            </div>
+
+            <div class="text-(length:--list-meta-size) text-gray-700 dark:text-gray-300 whitespace-nowrap hidden md:block">
               {% if item.created_at %}
-              {{ item.created_at | date: '%Y-%m-%d %H:%M:%S' }}
+                {{ item.created_at | date: '%Y-%m-%d %H:%M:%S' }}
               {% else %}
-              -
+                -
               {% endif %}
-            </td>
-          </tr>
+            </div>
+          </a>
         {% else %}
           {% comment %} 添加没有内容的展示 {% endcomment %}
-          <tr>
-            <td colspan="4" class="px-4 py-12">
-              <div class="text-center">
-                <i class="ri-folder-open-line text-6xl text-gray-400 mb-4"></i>
-                <p class="text-gray-600 dark:text-gray-400 text-lg">{{ "snippets.attachments.empty.title" | t: "暂无文件" }}</p>
-                <p class="text-gray-500 dark:text-gray-500 text-sm mt-2">{{ "snippets.attachments.empty.description" | t: "当前筛选条件下没有找到任何资源" }}</p>
-              </div>
-            </td>
-          </tr>
+          <div class="px-4 py-12">
+            <div class="text-center">
+              <i class="ri-folder-open-line text-6xl text-gray-400 mb-4"></i>
+              <p class="text-gray-600 dark:text-gray-400 text-lg">{{ "snippets.attachments.empty.title" | t: "暂无文件" }}</p>
+              <p class="text-gray-500 dark:text-gray-500 text-sm mt-2">{{ "snippets.attachments.empty.description" | t: "当前筛选条件下没有找到任何资源" }}</p>
+            </div>
+          </div>
         {% endfor %}
-      </tbody>
-    </table>
+      </div>
+    </div>
   </div>
 </div>

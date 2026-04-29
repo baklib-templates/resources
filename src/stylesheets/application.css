@@ -135,3 +135,20 @@ input, .input {
 .toastify.dark{
     @apply bg-slate-800 text-slate-200
 }
+
+.scrollbar-hide {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: transparent;
+  }
+}

@@ -8,19 +8,19 @@
       <i class="ri-music-2-line text-5xl text-purple-500"></i>
     </div>
   {% endif %}
-  <div class="absolute top-2 right-2 px-2 py-1 bg-purple-500 text-white text-xs rounded font-semibold shadow-sm">
+  <div class="absolute top-2 right-2 px-2 py-1 bg-purple-500 text-white text-(length:--grid-badge-size) rounded font-semibold shadow-sm">
     {{ "snippets.attachments.grid.file_types.audio" | t: "音频" }}
   </div>
 </div>
 
 <div class="p-4 flex flex-col flex-1 space-y-2">
-  <p class="font-medium text-sm line-clamp-1 truncate flex items-center gap-1.5">
+  <p class="font-medium text-(length:--grid-title-size) line-clamp-1 truncate flex items-center gap-1.5">
     {% unless can_access %}
       <i class="ri-lock-2-line text-warning shrink-0"></i>
     {% endunless %}
     {{ item.link_text }}
   </p>
-  <div class="flex overflow-hidden whitespace-nowrap items-center text-base-content/60">
+  <div class="flex overflow-hidden whitespace-nowrap items-center text-(length:--grid-meta-size) text-base-content/60">
     {% if entity and entity.metadata.human_size %}
       <div class="">{{ entity.metadata.human_size }}</div>
       <div class='bg-gray-300 w-[1.5px] h-[15px] mx-2'></div>
@@ -32,10 +32,10 @@
 
   <!-- Tags -->
   {% if item.settings.resource_tags.size > 0 %}
-    <div class="overflow-x-scroll w-full">
+    <div class="overflow-x-auto w-full">
       <div class="flex flex-row space-x-2 whitespace-nowrap">
         {% for tag in item.settings.resource_tags %}
-          <div class="px-2.5 py-1 bg-gray-100 text-gray-500 rounded font-normal">
+          <div class="px-2.5 py-1 bg-gray-100 text-gray-500 text-(length:--grid-tag-size) rounded font-normal">
             <span class="line-clamp-1">{{ tag.name }}</span>
           </div>
         {% endfor %}

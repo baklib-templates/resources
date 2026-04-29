@@ -77,7 +77,20 @@
     },
     "index": {
       "name": "首页",
-      "description": "列表展示所有栏目"
+      "description": "列表展示所有栏目",
+      "settings": {
+        "detail_open_mode": {
+          "label": "资源详细页打开方式",
+          "choices": {
+            "modal": {
+              "label": "页面内打开"
+            },
+            "detail_page": {
+              "label": "详情页面打开"
+            }
+          }
+        }
+      }
     }
   }
 }

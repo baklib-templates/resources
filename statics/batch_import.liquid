@@ -14,6 +14,29 @@
      data-batch-import-template-style-value="{{ params.template_style }}"
      data-batch-import-full-path-value="{{ params.full_path }}">
 
+  <script type="application/json" data-batch-import-target="i18n">
+    {
+      "apiNotConfiguredInit": "{{ "statics.batch_import.js.api_not_configured_init" | t: "API 地址未配置，请在主题设置中配置 API 主机地址" }}",
+      "apiNotConfiguredUpload": "{{ "statics.batch_import.js.api_not_configured_upload" | t: "API 地址未配置，无法上传文件" }}",
+      "apiNotConfiguredLoad": "{{ "statics.batch_import.js.api_not_configured_load" | t: "API 地址未配置，无法加载目录数据" }}",
+      "noValidFiles": "{{ "statics.batch_import.js.no_valid_files" | t: "所选文件中没有有效的文件（文件名不能为空）" }}",
+      "loadDirectoryFirst": "{{ "statics.batch_import.js.load_directory_first" | t: "请先加载目录数据" }}",
+      "loadPageFailed": "{{ "statics.batch_import.js.load_page_failed" | t: "加载页面数据失败" }}",
+      "pageInfoUploadTo": "{{ "statics.batch_import.js.page_info_upload_to" | t: "上传至目录" }}",
+      "fileListEmpty": "{{ "statics.batch_import.js.file_list_empty" | t: "未选择文件" }}",
+      "fileTypeOther": "{{ "statics.batch_import.js.file_type_other" | t: "其他" }}",
+      "statusUploading": "{{ "statics.batch_import.js.status_uploading" | t: "正在上传..." }}",
+      "statusCreatingPage": "{{ "statics.batch_import.js.status_creating_page" | t: "正在创建页面..." }}",
+      "statusCompleted": "{{ "statics.batch_import.js.status_completed" | t: "完成" }}",
+      "viewPage": "{{ "statics.batch_import.js.view_page" | t: "查看页面" }}",
+      "uploadFailedFallback": "{{ "statics.batch_import.js.upload_failed_fallback" | t: "上传失败" }}",
+      "statusPending": "{{ "statics.batch_import.js.status_pending" | t: "等待处理" }}",
+      "removeFileTitle": "{{ "statics.batch_import.js.remove_file_title" | t: "移除" }}",
+      "buttonUploading": "{{ "statics.batch_import.js.button_uploading" | t: "上传中..." }}",
+      "buttonUpload": "{{ "statics.batch_import.js.button_upload" | t: "上传文件" }}"
+    }
+  </script>
+
   <main class="mx-auto">
     <div data-batch-import-target="pageInfo" class="flex items-center gap-2 text-sm text-gray-600 sticky py-4 top-0 bg-gray-50 px-6" style="display: none;"></div>
 

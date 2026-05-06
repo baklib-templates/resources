@@ -92,5 +92,33 @@
         }
       }
     }
+  },
+  "track_events": {
+    "resource_download": {
+      "name": "资源下载",
+      "description": "资源下载事件"
+    }
+  },
+  "color_schemas": {
+    "default": {
+      "name": "默认"
+    },
+    "modern": {
+      "name": "现代"
+    },
+    "elegant": {
+      "name": "优雅"
+    }
+  },
+  "resource_settings": {
+    "name": "资源设置",
+    "resource_download_expiry_time": {
+      "label": "资源下载链接有效期",
+      "info": "单位：秒; 设置为0 则永不过期。预览图有效期固定为7200秒"
+    },
+    "api_host": {
+      "label": "API 域名",
+      "info": "填写 API 域名，以支持批量上传等功能。未填写时，会自动推断为 open.*。如：open.baklib.com"
+    }
   }
 }

@@ -205,6 +205,26 @@
       "actions": {
         "cancel": "取消",
         "upload": "上传文件"
+      },
+      "js": {
+        "api_not_configured_init": "API 地址未配置，请在主题设置中配置 API 主机地址",
+        "api_not_configured_upload": "API 地址未配置，无法上传文件",
+        "api_not_configured_load": "API 地址未配置，无法加载目录数据",
+        "no_valid_files": "所选文件中没有有效的文件（文件名不能为空）",
+        "load_directory_first": "请先加载目录数据",
+        "load_page_failed": "加载页面数据失败",
+        "page_info_upload_to": "上传至目录:",
+        "file_list_empty": "未选择文件",
+        "file_type_other": "其他",
+        "status_uploading": "正在上传...",
+        "status_creating_page": "正在创建页面...",
+        "status_completed": "完成",
+        "view_page": "查看页面",
+        "upload_failed_fallback": "上传失败",
+        "status_pending": "等待处理",
+        "remove_file_title": "移除",
+        "button_uploading": "上传中...",
+        "button_upload": "上传文件"
       }
     }
   },

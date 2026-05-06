@@ -92,5 +92,33 @@
         }
       }
     }
+  },
+  "track_events": {
+    "resource_download": {
+      "name": "Resource download",
+      "description": "Resource download event"
+    }
+  },
+  "color_schemas": {
+    "default": {
+      "name": "Default"
+    },
+    "modern": {
+      "name": "Modern"
+    },
+    "elegant": {
+      "name": "Elegant"
+    }
+  },
+  "resource_settings": {
+    "name": "Resource settings",
+    "resource_download_expiry_time": {
+      "label": "Resource download link validity (seconds)",
+      "info": "Unit: seconds; 0 means never expires. Preview image TTL is fixed at 7200 seconds."
+    },
+    "api_host": {
+      "label": "API host",
+      "info": "API host for batch upload and related features. If empty, it is inferred as open.* (e.g. open.baklib.com)."
+    }
   }
 }

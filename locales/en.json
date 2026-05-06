@@ -205,6 +205,26 @@
       "actions": {
         "cancel": "Cancel",
         "upload": "Upload Files"
+      },
+      "js": {
+        "api_not_configured_init": "API host is not configured. Set the API host in theme settings.",
+        "api_not_configured_upload": "API host is not configured. Cannot upload files.",
+        "api_not_configured_load": "API host is not configured. Cannot load directory data.",
+        "no_valid_files": "No valid files selected (file names cannot be empty).",
+        "load_directory_first": "Please load directory data first.",
+        "load_page_failed": "Failed to load page data.",
+        "page_info_upload_to": "Upload to folder:",
+        "file_list_empty": "No file selected",
+        "file_type_other": "Other",
+        "status_uploading": "Uploading...",
+        "status_creating_page": "Creating page...",
+        "status_completed": "Done",
+        "view_page": "View page",
+        "upload_failed_fallback": "Upload failed",
+        "status_pending": "Pending",
+        "remove_file_title": "Remove",
+        "button_uploading": "Uploading...",
+        "button_upload": "Upload Files"
       }
     }
   },

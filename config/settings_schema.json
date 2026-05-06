@@ -27,14 +27,14 @@
     ],
     "track_events": {
       "resource_download": {
-        "name": "资源下载",
-        "description": "资源下载事件"
+        "name": "t:schema.track_events.resource_download.name",
+        "description": "t:schema.track_events.resource_download.description"
       }
     },
     "recommendations": {
       "color_schemas": {
         "default": {
-          "name": "默认",
+          "name": "t:schema.color_schemas.default.name",
           "colors": {
             "--theme-color-primary": "#2563EB",
             "--theme-color-secondary": "#60A5FA",
@@ -45,7 +45,7 @@
           }
         },
         "modern": {
-          "name": "现代",
+          "name": "t:schema.color_schemas.modern.name",
           "colors": {
             "--theme-color-primary": "#2563EB",
             "--theme-color-secondary": "#60A5FA",
@@ -56,7 +56,7 @@
           }
         },
         "elegant": {
-          "name": "优雅",
+          "name": "t:schema.color_schemas.elegant.name",
           "colors": {
             "--theme-color-primary": "#1E40AF",
             "--theme-color-secondary": "#93C5FD",
@@ -133,13 +133,13 @@
     ]
   },
   {
-    "name": "资源设置",
+    "name": "t:schema.resource_settings.name",
     "settings": [
       {
         "id": "resource_download_expiry_time",
         "type": "number",
-        "label": "资源下载链接有效期",
-        "info": "单位：秒; 设置为0 则永不过期。预览图有效期固定为7200秒",
+        "label": "t:schema.resource_settings.resource_download_expiry_time.label",
+        "info": "t:schema.resource_settings.resource_download_expiry_time.info",
         "default": 7200,
         "step": 1,
         "min": 0,
@@ -148,9 +148,8 @@
       {
         "id": "api_host",
         "type": "text",
-        "label": "API 地址",
-        "info": "批量上传功能使用的 API 地址",
-        "default": "https://open.baklib.com"
+        "label": "t:schema.resource_settings.api_host.label",
+        "info": "t:schema.resource_settings.api_host.info"
       }
     ]
   }

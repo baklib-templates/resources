@@ -17,7 +17,8 @@ export default class extends Controller {
     "fileCount",
     "fileListContainer",
     "fileInput",
-    "folderInput"
+    "folderInput",
+    "i18n"
   ]
 
   static values = {
@@ -29,10 +30,53 @@ export default class extends Controller {
     fullPath: String
   }
 
+  /** 主题配置的 API 基址；未配置时从父窗口 ancestorOrigins[0] 推断为 open.* 网关域 */
+  get effectiveApiUrl() {
+    const configured = typeof this.apiUrlValue === 'string' ? this.apiUrlValue.trim() : ''
+    if (configured) return configured
+    return this.inferApiUrlFromAncestorOrigins()
+  }
+
+  /**
+   * 由父页面 origin 推断 Open API 基址：
+   * - 主机仅 1～2 段（如 baklib.com、baklib.ai）→ open.{原主机名}
+   * - 主机 3 段及以上（如 site-*.free.lvh.me、team.baklib.com）→ open.{去掉首段后的主机名}
+   */
+  inferApiUrlFromAncestorOrigins() {
+    try {
+      const list = window.location.ancestorOrigins
+      if (!list || list.length === 0) return ''
+
+      const u = new URL(list[0])
+      const hostname = u.hostname
+      const parts = hostname.split('.').filter(Boolean)
+      if (parts.length === 0) return ''
+
+      const apiHost =
+        parts.length <= 2
+          ? `open.${hostname}`
+          : `open.${parts.slice(1).join('.')}`
+
+      return `${u.protocol}//${apiHost}${u.port ? `:${u.port}` : ''}`
+    } catch {
+      return ''
+    }
+  }
+
   connect() {
+    this.messages = {}
+    if (this.hasI18nTarget) {
+      try {
+        this.messages = JSON.parse(this.i18nTarget.textContent.trim())
+      } catch {
+        this.messages = {}
+      }
+    }
+
     console.log('[BatchImport] Controller connected', {
       apiUrl: this.apiUrlValue,
-      token: this.tokenValue ? '***' : null,
+      effectiveApiUrl: this.effectiveApiUrl ? '***' : null,
+      token: this.tokenValue,
       siteId: this.siteIdValue,
       fullPath: this.fullPathValue
     })
@@ -66,8 +110,8 @@ export default class extends Controller {
 
   async init() {
     // 检查必要参数
-    if (!this.apiUrlValue) {
-      this.error = 'API 地址未配置，请在主题设置中配置 API 主机地址'
+    if (!this.effectiveApiUrl) {
+      this.error = this.t('apiNotConfiguredInit', 'API 地址未配置，请在主题设置中配置 API 主机地址')
       this.isLoadingPage = false  // 停止加载状态
       this.showError(this.error)
       this.updateUI()
@@ -149,8 +193,8 @@ export default class extends Controller {
 
   handleFiles(files) {
     // 检查 API 地址
-    if (!this.apiUrlValue) {
-      this.showError('API 地址未配置，无法上传文件')
+    if (!this.effectiveApiUrl) {
+      this.showError(this.t('apiNotConfiguredUpload', 'API 地址未配置，无法上传文件'))
       return
     }
 
@@ -181,13 +225,7 @@ export default class extends Controller {
     })
 
     if (validFiles.length === 0) {
-      this.showError('所选文件中没有有效的文件（文件名不能为空）')
-      return
-    }
-
-
-    if (validFiles.length === 0) {
-      this.showError('所选文件中没有有效的文件（文件名不能为空）')
+      this.showError(this.t('noValidFiles', '所选文件中没有有效的文件（文件名不能为空）'))
       return
     }
 
@@ -247,13 +285,13 @@ export default class extends Controller {
     if (this.isProcessing) return
 
     // 检查 API 地址
-    if (!this.apiUrlValue) {
-      this.showError('API 地址未配置，无法上传文件')
+    if (!this.effectiveApiUrl) {
+      this.showError(this.t('apiNotConfiguredUpload', 'API 地址未配置，无法上传文件'))
       return
     }
 
     if (!this.currentPage) {
-      this.showError('请先加载目录数据')
+      this.showError(this.t('loadDirectoryFirst', '请先加载目录数据'))
       return
     }
 
@@ -316,7 +354,7 @@ export default class extends Controller {
 
   async uploadFileWithProgress(item, name) {
     return await uploadFile(
-      this.apiUrlValue,
+      this.effectiveApiUrl,
       this.tokenValue,
       item.file,
       name,
@@ -362,7 +400,7 @@ export default class extends Controller {
     }
 
     return await createPage(
-      this.apiUrlValue,
+      this.effectiveApiUrl,
       this.tokenValue,
       this.siteIdValue,
       pageData
@@ -371,8 +409,8 @@ export default class extends Controller {
 
   async loadPageData() {
     // 检查 API 地址
-    if (!this.apiUrlValue) {
-      this.error = 'API 地址未配置，无法加载目录数据'
+    if (!this.effectiveApiUrl) {
+      this.error = this.t('apiNotConfiguredLoad', 'API 地址未配置，无法加载目录数据')
       this.showError(this.error)
       this.updateUI()
       return
@@ -385,7 +423,7 @@ export default class extends Controller {
     try {
       this.currentPagePathTagIds = []
       const page = await getPageByPath(
-        this.apiUrlValue,
+        this.effectiveApiUrl,
         this.tokenValue,
         this.siteIdValue,
         this.fullPathValue
@@ -404,7 +442,7 @@ export default class extends Controller {
       this.currentPagePathTags = [...new Set(this.currentPagePathTags)]
       // 通过 API 按名称查询标签，得到标签 id 列表（优先 iid），供创建页面时写入 resource_tags
       this.currentPagePathTagIds = await getTagIdsByNames(
-        this.apiUrlValue,
+        this.effectiveApiUrl,
         this.tokenValue,
         this.siteIdValue,
         this.currentPagePathTags
@@ -413,7 +451,7 @@ export default class extends Controller {
       this.currentPage = page
       this.updatePageInfo()
     } catch (err) {
-      this.error = err instanceof Error ? err.message : '加载页面数据失败'
+      this.error = err instanceof Error ? err.message : this.t('loadPageFailed', '加载页面数据失败')
       this.showError(this.error)
     } finally {
       this.isLoadingPage = false
@@ -424,9 +462,10 @@ export default class extends Controller {
   updatePageInfo() {
     if (this.hasPageInfoTarget && this.currentPage) {
       const pageName = this.currentPage.attributes.calculated_link_text || this.currentPage.attributes.full_path
+      const label = this.t('pageInfoUploadTo', '上传至目录:')
       const html = `
         <i class="ri-folder-line"></i>
-        <span>上传至目录: <span class="font-medium">${this.escapeHtml(pageName)}</span></span>
+        <span>${this.escapeHtml(label)} <span class="font-medium">${this.escapeHtml(pageName)}</span></span>
       `
       this.pageInfoTarget.innerHTML = html
       // 确保显示
@@ -452,7 +491,7 @@ export default class extends Controller {
     }
 
     if (this.items.length === 0) {
-      fileList.innerHTML = '<div class="text-center text-gray-400 py-8">未选择文件</div>'
+      fileList.innerHTML = `<div class="text-center text-gray-400 py-8">${this.escapeHtml(this.t('fileListEmpty', '未选择文件'))}</div>`
       return
     }
 
@@ -461,7 +500,7 @@ export default class extends Controller {
         icon: 'ri-file-line',
         iconColor: 'text-gray-400',
         bgColor: 'bg-gray-100',
-        tagText: '其他',
+        tagText: this.t('fileTypeOther', '其他'),
         tagColor: 'bg-primary'
       }
 
@@ -472,27 +511,27 @@ export default class extends Controller {
             <div class="bg-blue-500 h-2 rounded-full transition-all duration-300" style="width: ${item.progress}%"></div>
           </div>
           <div class="text-xs text-gray-500">
-            ${item.progress}% - ${item.status === 'uploading' ? '正在上传...' : '正在创建页面...'}
+            ${item.progress}% - ${item.status === 'uploading' ? this.t('statusUploading', '正在上传...') : this.t('statusCreatingPage', '正在创建页面...')}
           </div>
         `
       } else if (item.status === 'completed') {
         statusHtml = `
           <div class="text-xs text-green-600 flex items-center gap-1">
             <i class="ri-check-line"></i>
-            <span>完成</span>
-            ${item.pageUrl ? `<a href="${item.pageUrl}" target="_blank" class="text-blue-600 hover:underline ml-2">查看页面</a>` : ''}
+            <span>${this.escapeHtml(this.t('statusCompleted', '完成'))}</span>
+            ${item.pageUrl ? `<a href="${item.pageUrl}" target="_blank" class="text-blue-600 hover:underline ml-2">${this.escapeHtml(this.t('viewPage', '查看页面'))}</a>` : ''}
           </div>
         `
       } else if (item.status === 'error') {
         statusHtml = `
           <div class="text-xs text-red-600 flex items-center gap-1">
             <i class="ri-error-warning-line"></i>
-            <span>${this.escapeHtml(item.message || '上传失败')}</span>
+            <span>${this.escapeHtml(item.message || this.t('uploadFailedFallback', '上传失败'))}</span>
           </div>
         `
       } else {
         statusHtml = `
-          <div class="text-xs text-gray-500">等待处理</div>
+          <div class="text-xs text-gray-500">${this.escapeHtml(this.t('statusPending', '等待处理'))}</div>
         `
       }
 
@@ -521,7 +560,7 @@ export default class extends Controller {
               data-action="click->batch-import#handleRemoveFile"
               data-item-id="${item.id}"
               class="flex-shrink-0 text-gray-400 hover:text-red-600 transition-colors"
-              title="移除"
+              title="${this.escapeHtml(this.t('removeFileTitle', '移除'))}"
             >
               <i class="ri-close-line text-xl"></i>
             </button>
@@ -557,7 +596,7 @@ export default class extends Controller {
         this.mainContentTarget.style.display = 'block'
 
         // 缺少必要配置时禁用交互
-        const isDisabled = !this.apiUrlValue || !this.currentPage
+        const isDisabled = !this.effectiveApiUrl || !this.currentPage
         this.mainContentTarget.style.pointerEvents = isDisabled ? 'none' : 'auto'
         this.mainContentTarget.style.opacity = isDisabled ? '0.5' : '1'
 
@@ -620,9 +659,9 @@ export default class extends Controller {
       const buttonText = startButton.querySelector('span')
       if (buttonText) {
         if (this.isProcessing) {
-          buttonText.innerHTML = '<i class="ri-loader-4-line animate-spin"></i> 上传中...'
+          buttonText.innerHTML = `<i class="ri-loader-4-line animate-spin"></i> ${this.escapeHtml(this.t('buttonUploading', '上传中...'))}`
         } else {
-          buttonText.textContent = '上传文件'
+          buttonText.textContent = this.t('buttonUpload', '上传文件')
         }
       }
       if (this.isProcessing || this.getPendingCount() === 0) {
@@ -657,5 +696,10 @@ export default class extends Controller {
     const div = document.createElement('div')
     div.textContent = text
     return div.innerHTML
+  }
+
+  t(key, fallback) {
+    const v = this.messages[key]
+    return v != null && v !== '' ? v : fallback
   }
 }

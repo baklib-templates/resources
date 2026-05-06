@@ -1,10 +1,10 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "resource_hub",
+    "theme_name": "resources",
     "theme_label": "t:schema.theme_label",
     "theme_description": "t:schema.theme_description",
-    "theme_version": "0.0.1",
+    "theme_version": "1.0.1",
     "theme_syntax_version": "v2",
     "theme_scope": "cms",
     "theme_author": "Baklib",

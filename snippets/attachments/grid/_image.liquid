@@ -3,10 +3,10 @@
 <div class="relative aspect-video bg-gray-200 overflow-hidden">
   {% if entity.previewable? %}
     <img src="{{ entity.preview.cover }}" alt="{{ item.link_text }}"
-      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+      class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500">
   {% elsif entity.metadata.content_type == 'image/svg+xml' %}
     <img src="{{ entity.url[site.settings.resource_download_expiry_time] }}" alt="{{ item.link_text }}"
-      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+      class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500">
   {% else %}
     <div class="w-full h-full flex items-center justify-center">
       <i class="ri-image-line text-4xl text-gray-400"></i>

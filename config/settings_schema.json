@@ -79,19 +79,6 @@
         "width": 240,
         "label": "t:schema.generic.settings.logo_url.label",
         "info": "t:schema.generic.settings.logo_url.info"
-      },
-      {
-        "id": "company_name",
-        "label": "t:schema.generic.settings.company_name.label",
-        "type": "text",
-        "default": "t:schema.generic.settings.company_name.default",
-        "info": "t:schema.generic.settings.company_name.info"
-      },
-      {
-        "id": "copyright_info",
-        "type": "text",
-        "label": "t:schema.generic.settings.copyright_info.label",
-        "default": "t:schema.generic.settings.copyright_info.default"
       }
     ]
   },
@@ -103,32 +90,23 @@
         "type": "html",
         "label": "t:schema.custom_html.settings.head_html.label",
         "info": "t:schema.custom_html.settings.head_html.info",
-        "rows": 10,
-        "placeholder": "t:schema.custom_html.settings.head_html.placeholder"
+        "rows": 6
       },
       {
-        "id": "header_menu_html",
+        "id": "header_html",
         "type": "html",
-        "label": "t:schema.custom_html.settings.header_menu_html.label",
-        "info": "t:schema.custom_html.settings.header_menu_html.info",
-        "rows": 6,
-        "placeholder": "t:schema.custom_html.settings.header_menu_html.placeholder"
+        "label": "t:schema.custom_html.settings.header_html.label",
+        "info": "t:schema.custom_html.settings.header_html.info",
+        "rows": 12,
+        "default": "preset:header_default.html"
       },
       {
         "id": "footer_html",
         "type": "html",
         "label": "t:schema.custom_html.settings.footer_html.label",
         "info": "t:schema.custom_html.settings.footer_html.info",
-        "rows": 6,
-        "placeholder": "t:schema.custom_html.settings.footer_html.placeholder"
-      },
-      {
-        "id": "footer_menu_html",
-        "type": "html",
-        "label": "t:schema.custom_html.settings.footer_menu_html.label",
-        "info": "t:schema.custom_html.settings.footer_menu_html.info",
-        "rows": 6,
-        "placeholder": "t:schema.custom_html.settings.footer_menu_html.placeholder"
+        "rows": 12,
+        "default": "preset:footer_default.html"
       }
     ]
   },
@@ -149,7 +127,8 @@
         "id": "api_host",
         "type": "text",
         "label": "t:schema.resource_settings.api_host.label",
-        "info": "t:schema.resource_settings.api_host.info"
+        "info": "t:schema.resource_settings.api_host.info",
+        "default": "https://open.baklib.com"
       }
     ]
   }

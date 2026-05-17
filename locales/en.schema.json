@@ -1,21 +1,12 @@
 {
-  "theme_label": "Resource Portal",
-  "theme_description": "A professional resource portal template for managing digital assets and media files. It supports multi-level channel navigation, tag organization, advanced filtering, and robust permission controls.",
+  "theme_label": "Resources",
+  "theme_description": "Resource library site template with multi-level channel navigation, tag organization, advanced filtering, and comprehensive permission management and resource security.",
   "generic": {
     "name": "General Settings",
     "settings": {
       "logo_url": {
         "label": "Logo image",
-        "info": "If a logo is configured, the header shows the logo; otherwise it shows the site icon and site name."
-      },
-      "company_name": {
-        "label": "Company Name",
-        "default": "Baklib.cn",
-        "info": "Displayed in the footer area at the bottom of the page."
-      },
-      "copyright_info": {
-        "label": "ICP / Copyright Info",
-        "default": "ICP Filing No. XXXX"
+        "info": "If a logo is set, the header shows the logo; otherwise it shows the site icon and site name."
       }
     }
   },
@@ -24,30 +15,22 @@
     "settings": {
       "head_html": {
         "label": "Custom HTML in <head></head>",
-        "info": "Supports HTML tags and limited Tailwind CSS styles.",
-        "placeholder": "Typically used for analytics scripts, support widgets, or other embed codes."
+        "info": "Supports HTML tags; typically used for analytics, support widgets, and other embed codes."
       },
-      "header_menu_html": {
+      "header_html": {
         "label": "Insert HTML in the top navigation area",
-        "info": "Supports HTML tags and limited Tailwind CSS styles.",
-        "placeholder": "Typically used to add navigation links to other company websites."
+        "info": "Supports HTML tags and limited Tailwind CSS styles; typically used for external navigation links, friend links, copyright/ICP info, etc."
       },
       "footer_html": {
         "label": "Insert HTML in the footer area",
-        "info": "Supports HTML tags and limited Tailwind CSS styles; this completely replaces the default footer content.",
-        "placeholder": "To keep the default footer content, insert HTML in footer_menu_html instead."
-      },
-      "footer_menu_html": {
-        "label": "Insert HTML in the bottom area (inside footer_menu_html)",
-        "info": "Supports HTML tags and limited Tailwind CSS styles.",
-        "placeholder": "Typically used for external links, partner links, and SEO-friendly footer links."
+        "info": "Supports HTML tags and limited Tailwind CSS styles; typically used for external navigation links, friend links, copyright/ICP info, etc."
       }
     }
   },
   "templates": {
     "channel": {
-      "name": "Resource Channel Page",
-      "description": "Used for resource category directories",
+      "name": "Channel Page",
+      "description": "Used as a category directory for resources",
       "settings": {
         "title": {
           "label": "Channel Name"
@@ -59,7 +42,7 @@
       }
     },
     "page": {
-      "name": "Resource",
+      "name": "Detail Page",
       "settings": {
         "title": {
           "label": "Resource Name"
@@ -77,10 +60,10 @@
     },
     "index": {
       "name": "Home",
-      "description": "Display all channels in a list",
+      "description": "List all channels",
       "settings": {
         "detail_open_mode": {
-          "label": "Detail page open mode",
+          "label": "Resource detail page open mode",
           "choices": {
             "modal": {
               "label": "Open in page"
@@ -111,9 +94,9 @@
     }
   },
   "resource_settings": {
-    "name": "Resource settings",
+    "name": "Resource Settings",
     "resource_download_expiry_time": {
-      "label": "Resource download link validity (seconds)",
+      "label": "Resource download link validity",
       "info": "Unit: seconds; 0 means never expires. Preview image TTL is fixed at 7200 seconds."
     },
     "api_host": {

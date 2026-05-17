@@ -18,14 +18,14 @@
         <div class="whitespace-nowrap hidden md:block">{{ "snippets.attachments.list.headers.created_at" | t: "创建时间" }}</div>
       </div>
 
-      <div class="divide-y divide-gray-100">
+      <div class="divide-y divide-gray-100 dark:divide-gray-900">
         {% for item in filtered_pages %}
           {% assign entity = item.settings.asset %}
           {% assign can_access = item | can_access? %}
           {% assign _detail_open_mode = detail_open_mode | default: 'detail_page' %}
 
           <a
-            class="grid grid-cols-[minmax(0,1fr)_70px_70px] md:grid-cols-[minmax(220px,1fr)_120px_100px_160px] px-2 md:px-4 py-2 md:py-3 items-center hover:bg-gray-50 transition-colors group"
+            class="grid grid-cols-[minmax(0,1fr)_70px_70px] md:grid-cols-[minmax(220px,1fr)_120px_100px_160px] px-2 md:px-4 py-2 md:py-3 items-center hover:bg-gray-50 transition-colors group {% cycle 'bg-white', 'bg-gray-50' %}"
             data-image-zoom-target="item"
             {% if _detail_open_mode == 'modal' %}
               href="#"
@@ -42,7 +42,7 @@
                   {% comment %} 图片类型 {% endcomment %}
                   {% if entity.previewable? %}
                     <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 overflow-hidden rounded bg-gray-100 dark:bg-gray-700">
-                      <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-cover">
+                      <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-scale-down">
                     </div>
                   {% else %}
                     <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 bg-gray-100 dark:bg-gray-700 rounded flex items-center justify-center">
@@ -53,7 +53,7 @@
                   {% comment %} 视频类型 {% endcomment %}
                   {% if entity.previewable? %}
                     <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 overflow-hidden rounded bg-gray-100 dark:bg-gray-700 relative">
-                      <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-cover">
+                      <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-scale-down">
                       <div class="absolute inset-0 flex items-center justify-center bg-black/20">
                         <i class="ri-play-fill text-(length:--list-meta-size) text-white"></i>
                       </div>
@@ -67,7 +67,7 @@
                   {% comment %} 音频类型 {% endcomment %}
                   {% if entity.previewable? %}
                     <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 overflow-hidden rounded bg-purple-100 dark:bg-purple-900/30">
-                      <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-cover">
+                      <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-scale-down">
                     </div>
                   {% else %}
                     <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 bg-purple-100 dark:bg-purple-900/30 rounded flex items-center justify-center">
@@ -78,7 +78,7 @@
                   {% comment %} PDF类型 {% endcomment %}
                   {% if entity.previewable? %}
                     <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 overflow-hidden rounded bg-red-50 dark:bg-red-900/20">
-                      <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-cover">
+                      <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-scale-down">
                     </div>
                   {% else %}
                     <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 bg-red-50 dark:bg-red-900/20 rounded flex items-center justify-center">
@@ -89,7 +89,7 @@
                   {% comment %} Word类型 {% endcomment %}
                   {% if entity.previewable? %}
                     <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 overflow-hidden rounded bg-blue-50 dark:bg-blue-900/20">
-                      <img src="{{ entity.preview.icon }}" alt="{{ item.link_text }}" class="w-full h-full object-cover">
+                      <img src="{{ entity.preview.icon }}" alt="{{ item.link_text }}" class="w-full h-full object-scale-down">
                     </div>
                   {% else %}
                     <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 bg-blue-50 dark:bg-blue-900/20 rounded flex items-center justify-center">
@@ -100,7 +100,7 @@
                   {% comment %} Excel类型 {% endcomment %}
                   {% if entity.previewable? %}
                     <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 overflow-hidden rounded bg-green-50 dark:bg-green-900/20">
-                      <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-cover">
+                      <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-scale-down">
                     </div>
                   {% else %}
                     <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 bg-green-50 dark:bg-green-900/20 rounded flex items-center justify-center">
@@ -111,7 +111,7 @@
                   {% comment %} PPT类型 {% endcomment %}
                   {% if entity.previewable? %}
                     <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 overflow-hidden rounded bg-orange-50 dark:bg-orange-900/20">
-                      <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-cover">
+                      <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-scale-down">
                     </div>
                   {% else %}
                     <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 bg-orange-50 dark:bg-orange-900/20 rounded flex items-center justify-center">
@@ -122,7 +122,7 @@
                   {% comment %} 压缩包类型 {% endcomment %}
                   {% if entity.previewable? %}
                     <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 overflow-hidden rounded bg-yellow-50 dark:bg-yellow-900/20">
-                      <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-cover">
+                      <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-scale-down">
                     </div>
                   {% else %}
                     <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 bg-yellow-50 dark:bg-yellow-900/20 rounded flex items-center justify-center">
@@ -133,7 +133,7 @@
                   {% comment %} 其他类型 {% endcomment %}
                   {% if entity and entity.previewable? %}
                     <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 overflow-hidden rounded bg-gray-100 dark:bg-gray-700">
-                      <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-cover">
+                      <img src="{{ entity.preview.thumb }}" alt="{{ item.link_text }}" class="w-full h-full object-scale-down">
                     </div>
                   {% else %}
                     <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center">
@@ -160,6 +160,7 @@
                       </div>
                     </div>
                   {% endif %}
+                  <div>&nbsp;</div>
                 </div>
               </div>
             </div>

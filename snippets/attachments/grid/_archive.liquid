@@ -2,7 +2,7 @@
 <div class="relative aspect-video bg-gray-200 overflow-hidden">
   {% if entity.previewable? %}
     <img src="{{ entity.preview.cover }}" alt="{{ item.link_text }}"
-      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+      class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500">
   {% else %}
     <div class="absolute inset-0 flex items-center justify-center">
       <i class="ri-file-zip-line text-5xl text-yellow-500"></i>

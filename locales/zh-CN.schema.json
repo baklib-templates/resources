@@ -88,8 +88,8 @@
     }
   },
   "color_schemas": {
-    "default": {
-      "name": "默认"
+    "luxury": {
+      "name": "奢华"
     },
     "modern": {
       "name": "现代"

@@ -1,0 +1,95 @@
+{% comment %} 预设样式预览（与 presets/ 目录对应） {% endcomment %}
+
+<div class="space-y-10">
+  <div id="preset-header-default" class="scroll-mt-28">
+    <div class="flex flex-wrap items-baseline justify-between gap-2 mb-3">
+      <h3 class="text-lg font-semibold text-base-content">header_default</h3>
+      <a href="https://daisyui.com/components/navbar/" target="_blank" rel="noopener noreferrer" class="text-sm text-primary hover:underline">DaisyUI Navbar</a>
+    </div>
+    <p class="text-sm text-base-content/60 mb-4">顶部导航菜单预设，对应 <code class="text-xs bg-base-200 px-1 rounded">presets/header_default.html</code>，用于站点设置「顶部导航区域 HTML」。</p>
+    <div class="rounded-lg border border-base-300 bg-base-100 p-4">
+      <div class="relative inline-block" data-controller="more-menu">
+        <button type="button" class="rounded-md p-2 text-base-content/70 hover:bg-base-200" data-action="click->more-menu#toggle" title="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6"><path d="M11.644 1.59a.75.75 0 0 1 .712 0l9.75 5.25a.75.75 0 0 1 0 1.32l-9.75 5.25a.75.75 0 0 1-.712 0l-9.75-5.25a.75.75 0 0 1 0-1.32l9.75-5.25Z"/><path d="m3.265 10.602 7.668 4.129a2.25 2.25 0 0 0 2.134 0l7.668-4.13 1.37.739a.75.75 0 0 1 0 1.32l-9.75 5.25a.75.75 0 0 1-.71 0l-9.75-5.25a.75.75 0 0 1 0-1.32l1.37-.738Z"/><path d="m10.933 19.231-7.668-4.13-1.37.739a.75.75 0 0 0 0 1.32l9.75 5.25c.221.12.489.12.71 0l9.75-5.25a.75.75 0 0 0 0-1.32l-1.37-.738-7.668 4.13a2.25 2.25 0 0 1-2.134-.001Z"/></svg>
+        </button>
+        <div class="absolute right-0 z-50 mt-2 hidden w-48 rounded-md border border-base-300 bg-base-100 shadow-lg" data-more-menu-target="menu">
+          <div class="py-1 text-sm">
+            <a href="/-/search" class="flex items-center gap-2 px-4 py-2 hover:bg-base-200"><i class="ri-search-line"></i>全站搜索</a>
+            <a href="/" class="flex items-center gap-2 px-4 py-2 hover:bg-base-200"><i class="ri-link"></i>首页</a>
+            <a href="/s/about" class="flex items-center gap-2 px-4 py-2 hover:bg-base-200"><i class="ri-link"></i>关于本站</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="preset-footer-default" class="scroll-mt-28">
+    <div class="flex flex-wrap items-baseline justify-between gap-2 mb-3">
+      <h3 class="text-lg font-semibold text-base-content">footer_default</h3>
+      <a href="https://daisyui.com/components/footer/" target="_blank" rel="noopener noreferrer" class="text-sm text-primary hover:underline">DaisyUI Footer</a>
+    </div>
+    <p class="text-sm text-base-content/60 mb-4">页脚预设，对应 <code class="text-xs bg-base-200 px-1 rounded">presets/footer_default.html</code>。</p>
+    <div class="rounded-lg border border-base-300 bg-base-100 p-4 text-center text-sm">
+      <span>© Baklib 版权所有</span>
+      <a href="https://beian.miit.gov.cn/" class="ml-3 hover:underline" target="_blank" rel="noopener noreferrer">蜀ICP备xxxx号</a>
+    </div>
+  </div>
+
+  <div id="preset-hero" class="scroll-mt-28">
+    <div class="flex flex-wrap items-baseline justify-between gap-2 mb-3">
+      <h3 class="text-lg font-semibold text-base-content">hero</h3>
+      <a href="https://daisyui.com/components/hero/" target="_blank" rel="noopener noreferrer" class="text-sm text-primary hover:underline">DaisyUI Hero</a>
+    </div>
+    <p class="text-sm text-base-content/60 mb-4">简洁卡片 Hero，首页默认 <code class="text-xs bg-base-200 px-1 rounded">preset:hero.html</code>。</p>
+    <div class="rounded-lg border border-base-300 overflow-hidden bg-primary/10 px-6 py-8 md:px-10 md:py-10">
+      <div class="max-w-3xl">
+        <p class="text-sm font-medium text-primary mb-2">Resources Portal</p>
+        <h4 class="text-2xl md:text-3xl font-bold text-base-content mb-3">数字资源库</h4>
+        <p class="text-base text-base-content/70">集中管理图片、视频、文档等媒体资源，支持多级栏目、标签筛选与权限控制。</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="preset-hero2" class="scroll-mt-28">
+    <div class="flex flex-wrap items-baseline justify-between gap-2 mb-3">
+      <h3 class="text-lg font-semibold text-base-content">hero2</h3>
+      <a href="https://daisyui.com/components/hero/" target="_blank" rel="noopener noreferrer" class="text-sm text-primary hover:underline">DaisyUI Hero</a>
+    </div>
+    <p class="text-sm text-base-content/60 mb-4">全屏背景图 Hero，<code class="text-xs bg-base-200 px-1 rounded">presets/hero2.html</code>。</p>
+    <div class="rounded-lg border border-base-300 overflow-hidden">
+      <div class="hero min-h-[260px] md:min-h-[300px]" style="background-image:url(https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp)">
+        <div class="hero-overlay"></div>
+        <div class="hero-content text-neutral-content text-center">
+          <div class="max-w-xl px-4">
+            <p class="mb-2 text-sm font-medium opacity-80">数字资源门户</p>
+            <h4 class="mb-3 text-2xl font-bold md:text-4xl">让每一份资源，触手可及</h4>
+            <p class="mb-5 text-sm md:text-base opacity-90">统一收纳图片、视频、文档与音视频素材，支持栏目分类、标签检索与权限管控。</p>
+            <a href="/" class="btn btn-primary btn-sm">浏览资源库</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="preset-hero3" class="scroll-mt-28">
+    <div class="flex flex-wrap items-baseline justify-between gap-2 mb-3">
+      <h3 class="text-lg font-semibold text-base-content">hero3</h3>
+      <a href="https://daisyui.com/components/carousel/" target="_blank" rel="noopener noreferrer" class="text-sm text-primary hover:underline">DaisyUI Carousel</a>
+    </div>
+    <p class="text-sm text-base-content/60 mb-4">多屏轮播 Hero，<code class="text-xs bg-base-200 px-1 rounded">presets/hero3.html</code>。</p>
+    <div class="rounded-lg border border-base-300 overflow-hidden">
+      {% render 'about/preset_hero3' %}
+    </div>
+  </div>
+
+  <div id="preset-hero4" class="scroll-mt-28">
+    <div class="flex flex-wrap items-baseline justify-between gap-2 mb-3">
+      <h3 class="text-lg font-semibold text-base-content">hero4（参考样式）</h3>
+      <a href="https://tailwindcss.com/plus/ui-blocks/marketing/sections/heroes" target="_blank" rel="noopener noreferrer" class="text-sm text-primary hover:underline">Tailwind UI Heroes</a>
+    </div>
+    <p class="text-sm text-base-content/60 mb-4">Tailwind Plus 营销 Hero 参考，可按需复制至首页 Hero HTML。</p>
+    <div class="rounded-lg border border-base-300 overflow-hidden max-h-[480px] overflow-y-auto">
+      {% render 'about/preset_hero4' %}
+    </div>
+  </div>
+</div>

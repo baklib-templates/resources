@@ -33,37 +33,37 @@
     },
     "recommendations": {
       "color_schemas": {
-        "default": {
-          "name": "t:schema.color_schemas.default.name",
+        "luxury": {
+          "name": "t:schema.color_schemas.luxury.name",
           "colors": {
-            "--theme-color-primary": "#2563EB",
-            "--theme-color-secondary": "#60A5FA",
-            "--theme-color-accent": "#3B82F6",
-            "--theme-color-info": "#3B82F6",
-            "--theme-color-success": "#10B981",
-            "--theme-color-warning": "#F59E0B"
+            "--theme-color-primary": "#B8860B",
+            "--theme-color-secondary": "#8B6914",
+            "--theme-color-accent": "#D4AF37",
+            "--theme-color-info": "#5B7FA6",
+            "--theme-color-success": "#228B22",
+            "--theme-color-warning": "#CD853F"
           }
         },
         "modern": {
           "name": "t:schema.color_schemas.modern.name",
           "colors": {
-            "--theme-color-primary": "#2563EB",
-            "--theme-color-secondary": "#60A5FA",
-            "--theme-color-accent": "#6366F1",
-            "--theme-color-info": "#3B82F6",
-            "--theme-color-success": "#059669",
-            "--theme-color-warning": "#F59E0B"
+            "--theme-color-primary": "#2C3E50",
+            "--theme-color-secondary": "#4A6572",
+            "--theme-color-accent": "#5D8AA8",
+            "--theme-color-info": "#3498DB",
+            "--theme-color-success": "#27AE60",
+            "--theme-color-warning": "#F39C12"
           }
         },
         "elegant": {
           "name": "t:schema.color_schemas.elegant.name",
           "colors": {
-            "--theme-color-primary": "#1E40AF",
-            "--theme-color-secondary": "#93C5FD",
-            "--theme-color-accent": "#6366F1",
-            "--theme-color-info": "#3B82F6",
-            "--theme-color-success": "#059669",
-            "--theme-color-warning": "#D97706"
+            "--theme-color-primary": "#6B4423",
+            "--theme-color-secondary": "#8B7355",
+            "--theme-color-accent": "#C9A961",
+            "--theme-color-info": "#5B7FA6",
+            "--theme-color-success": "#7A9B76",
+            "--theme-color-warning": "#D4A574"
           }
         }
       }

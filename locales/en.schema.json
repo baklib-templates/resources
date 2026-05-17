@@ -88,8 +88,8 @@
     }
   },
   "color_schemas": {
-    "default": {
-      "name": "Default"
+    "luxury": {
+      "name": "Luxury"
     },
     "modern": {
       "name": "Modern"

@@ -538,6 +538,7 @@
   {% comment %} 主内容区 {% endcomment %}
   <main class="flex flex-col flex-1 h-full bg-gray-50 mx-auto max-w-screen min-h-[calc(100vh-80px)] overflow-y-auto scrollbar-hide" data-controller="image-zoom">
 
+    <!-- hero section: settings hero_html -->
     {% assign hero_html = page.settings.hero_html | presence %}
     {% if hero_html and params.channel == blank %}
       <div class="flex-0 px-2 md:px-4 pt-2">
@@ -547,10 +548,12 @@
       </div>
     {% endif %}
 
+    <!-- channel section: settings show_channel_section -->
     {% if page.settings.show_channel_section and params.channel == blank %}
       {% render 'channel_section', page: page %}
     {% endif %}
 
+    <!-- main content section: settings detail_open_mode -->
     {% if detail_open_mode == 'detail_page' %}
       {% render 'index/main_content' %}
     {% else %}

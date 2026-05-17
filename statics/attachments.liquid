@@ -65,7 +65,7 @@
         {% assign search_pages = search.pages %}
       {% endif %}
 
-      {% paginate_tag search_pages, per: 30 %}
+      {% paginate_tag search_pages, per: 50 %}
         <div class="flex-1">
           {% if view_mode == 'list' %}
             {% render 'attachments/list', filtered_pages: search_pages, detail_open_mode: detail_open_mode %}

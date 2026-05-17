@@ -38,6 +38,10 @@
         "description": {
           "label": "描述",
           "info": "栏目描述"
+        },
+        "thumb_url": {
+          "label": "封面图片",
+          "info": "用于首页栏目卡片导航展示，建议比例 16:9"
         }
       }
     },
@@ -63,15 +67,16 @@
       "description": "列表展示所有栏目",
       "settings": {
         "detail_open_mode": {
-          "label": "资源详细页打开方式",
-          "choices": {
-            "modal": {
-              "label": "页面内打开"
-            },
-            "detail_page": {
-              "label": "详情页面打开"
-            }
-          }
+          "label": "在详情页面打开资源",
+          "info": "勾选后点击资源跳转详情页；未勾选则在页面内打开（侧边栏/弹层）"
+        },
+        "hero_html": {
+          "label": "Hero 区域 HTML",
+          "info": "首页主内容区顶部自定义 Hero 区块，支持 HTML 与有限的 Tailwind CSS 样式。仅在首页根路径 '/' 时显示"
+        },
+        "show_channel_section": {
+          "label": "首页显示栏目导航卡片",
+          "info": "勾选后在首页展示一级栏目的卡片导航（封面、标题、描述、子页面数量）。仅在首页根路径 '/' 时显示"
         }
       }
     }

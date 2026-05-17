@@ -6,22 +6,39 @@
     "sub_page_templates": ["channel", "page"],
     "settings": [
       {
-        "type": "select",
         "id": "detail_open_mode",
+        "type": "checkbox",
         "label": "t:schema.templates.index.settings.detail_open_mode.label",
-        "choices": [
-          { "value": "modal", "label": "t:schema.templates.index.settings.detail_open_mode.choices.modal.label" },
-          { "value": "detail_page", "label": "t:schema.templates.index.settings.detail_open_mode.choices.detail_page.label" }
-        ],
-        "default": "detail_page"
+        "info": "t:schema.templates.index.settings.detail_open_mode.info",
+        "default": false
+      },
+      {
+        "id": "show_channel_section",
+        "type": "checkbox",
+        "label": "t:schema.templates.index.settings.show_channel_section.label",
+        "info": "t:schema.templates.index.settings.show_channel_section.info",
+        "default": false
+      },
+      {
+        "id": "hero_html",
+        "type": "html",
+        "label": "t:schema.templates.index.settings.hero_html.label",
+        "info": "t:schema.templates.index.settings.hero_html.info",
+        "rows": 24,
+        "default": "preset:hero.html"
       }
+      
     ]
   }
 {% endschema %}
 
 {% assign channel = params.channel | default: '/' %}
 {% assign defaultBreadcrumb = site.pages[channel].breadcrumb | default: [] %}
-{% assign detail_open_mode = page.settings.detail_open_mode.value | default: 'detail_page' %}
+{% if page.settings.detail_open_mode %}
+  {% assign detail_open_mode = 'detail_page' %}
+{% else %}
+  {% assign detail_open_mode = 'modal' %}
+{% endif %}
 <div
   class="flex-1 flex min-h-0 overflow-hidden"
   data-controller="breadcrumb"
@@ -519,7 +536,20 @@
   {% render 'aside', page: page %}
 
   {% comment %} 主内容区 {% endcomment %}
-  <main class="flex flex-col flex-1 h-full bg-gray-50 min-h-[calc(100vh-80px)] overflow-y-auto scrollbar-hide" data-controller="image-zoom">
+  <main class="flex flex-col flex-1 h-full bg-gray-50 mx-auto max-w-screen min-h-[calc(100vh-80px)] overflow-y-auto scrollbar-hide" data-controller="image-zoom">
+
+    {% assign hero_html = page.settings.hero_html | presence %}
+    {% if hero_html and params.channel == blank %}
+      <div class="flex-0 px-2 md:px-4 pt-2">
+        <section class="rounded-lg overflow-hidden bg-secondary-100">
+          {{ hero_html }}
+        </section>
+      </div>
+    {% endif %}
+
+    {% if page.settings.show_channel_section and params.channel == blank %}
+      {% render 'channel_section', page: page %}
+    {% endif %}
 
     {% if detail_open_mode == 'detail_page' %}
       {% render 'index/main_content' %}

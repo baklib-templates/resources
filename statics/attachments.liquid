@@ -2,7 +2,11 @@
 
 {% assign sort = params.sort %}
 {% assign view_mode = params.view | default: 'grid' %}
-{% assign detail_open_mode = site.pages['/'].settings.detail_open_mode.value | default: 'detail_page' %}
+{% if site.pages['/'].settings.detail_open_mode %}
+  {% assign detail_open_mode = 'detail_page' %}
+{% else %}
+  {% assign detail_open_mode = 'modal' %}
+{% endif %}
 {% unless view_mode == 'list' %}
   {% assign view_mode = 'grid' %}
 {% endunless %}

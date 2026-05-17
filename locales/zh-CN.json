@@ -1,5 +1,9 @@
 {
   "snippets": {
+    "channel_section": {
+      "title": "栏目导航",
+      "resource_unit": "个资源"
+    },
     "footer": {
       "copyright": "版权所有"
     },

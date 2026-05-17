@@ -1,0 +1,16 @@
+{% layout 'theme_no_content' %}
+
+{% comment %}
+  Preset sections rendered in order. Add new presets under presets/*.html,
+  copy to snippets/presets/_<name>.liquid, then append the basename here.
+{% endcomment %}
+{% assign preset_sections = "hero,header_default,footer_default" | split: "," %}
+
+<main class="mx-auto w-full max-w-6xl px-4 py-8 space-y-6">
+  {% for preset_name in preset_sections %}
+    <h2 class="text-lg font-bold text-base-content mb-4">{{ preset_name }}</h2>
+    <section class="preset-section rounded-lg shadow-sm border border-base-300 px-6 py-8 md:px-10 md:py-10" aria-label="{{ preset_name }}">
+      {% render 'presets', name: preset_name %}
+    </section>
+  {% endfor %}
+</main>

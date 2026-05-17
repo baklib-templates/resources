@@ -38,6 +38,10 @@
         "description": {
           "label": "Description",
           "info": "Channel description"
+        },
+        "thumb_url": {
+          "label": "Cover image",
+          "info": "Shown on home channel cards; recommended aspect ratio 16:9"
         }
       }
     },
@@ -63,15 +67,16 @@
       "description": "List all channels",
       "settings": {
         "detail_open_mode": {
-          "label": "Resource detail page open mode",
-          "choices": {
-            "modal": {
-              "label": "Open in page"
-            },
-            "detail_page": {
-              "label": "Open in detail page"
-            }
-          }
+          "label": "Open resources in detail page",
+          "info": "When checked, opens the resource detail page; when unchecked, opens in-page (sidebar/modal)"
+        },
+        "hero_html": {
+          "label": "Hero section HTML",
+          "info": "Custom hero block at the top of the home main area; supports HTML and limited Tailwind CSS"
+        },
+        "show_channel_section": {
+          "label": "Show channel navigation cards",
+          "info": "When enabled, displays first-level channel cards with cover, title, description, and child page count"
         }
       }
     }

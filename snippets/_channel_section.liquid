@@ -2,47 +2,101 @@
 {% assign channel_pages_size = channel_pages | size %}
 
 {% if channel_pages_size > 0 %}
-  <section class="px-2 md:px-4 pt-2 pb-2">
+  <section
+    class="px-2 md:px-4 pt-2 pb-2"
+    x-data="{
+      canScrollPrev: false,
+      canScrollNext: false,
+      updateScrollState() {
+        const track = this.$refs.track
+        if (!track) return
+        const maxScroll = track.scrollWidth - track.clientWidth
+        this.canScrollPrev = track.scrollLeft > 1
+        this.canScrollNext = track.scrollLeft < maxScroll - 1
+      },
+      scrollPrev() {
+        const track = this.$refs.track
+        if (!track) return
+        track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' })
+      },
+      scrollNext() {
+        const track = this.$refs.track
+        if (!track) return
+        track.scrollBy({ left: track.clientWidth, behavior: 'smooth' })
+      }
+    }"
+    x-init="$nextTick(() => updateScrollState())"
+    @resize.window.debounce.150ms="updateScrollState()"
+  >
     <h2 class="text-lg font-bold text-base-content mb-4">
       {{ 'snippets.channel_section.title' | t: '栏目导航' }}
     </h2>
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-      {% for channel_page in channel_pages %}
-        {% if channel_page.template_name == 'channel' %}
-          {% assign channel_title = channel_page.settings.title | default: channel_page.link_text %}
-          {% assign channel_description = channel_page.settings.description | presence %}
-          {% assign channel_thumb = channel_page.settings.thumb_url | presence %}
-          {% assign sub_count = channel_page.children_in_list | size %}
-          <a
-            href="{{ site.index_path }}?channel={{ channel_page.full_slug }}"
-            data-turbo="false"
-            class="flex flex-col rounded-lg border border-base-300 bg-white shadow-sm overflow-hidden hover:shadow-md transition-shadow"
-          >
-            <div class="aspect-video bg-base-200 flex items-center justify-center overflow-hidden">
-              {% if channel_thumb %}
-                <img
-                  src="{{ channel_thumb }}"
-                  alt="{{ channel_title }}"
-                  class="w-full h-full object-cover"
-                  loading="lazy"
-                >
-              {% else %}
-                <i class="ri-folder-line text-4xl text-base-content/30"></i>
-              {% endif %}
-            </div>
-            <div class="p-3 flex flex-col flex-1 min-h-0">
-              <h3 class="font-semibold text-base-content line-clamp-1">{{ channel_title }}</h3>
-              {% if channel_description %}
-                <p class="mt-1 text-sm text-base-content/60 line-clamp-2 flex-1">{{ channel_description }}</p>
-              {% endif %}
-              <div class="mt-2 flex items-center gap-1 text-xs text-base-content/50">
-                <i class="ri-file-list-2-line"></i>
-                <span>{{ sub_count }} {{ 'snippets.channel_section.resource_unit' | t: '个资源' }}</span>
+
+    <div class="relative group">
+      <button
+        type="button"
+        class="absolute left-0 top-1/2 z-10 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full border border-base-300 bg-white shadow-md text-base-content/70 transition hover:bg-base-200 hover:text-base-content disabled:pointer-events-none disabled:opacity-0 -ml-1"
+        x-show="canScrollPrev"
+        x-cloak
+        @click="scrollPrev()"
+        aria-label="{{ 'snippets.channel_section.scroll_prev' | t: '向左滑动' }}"
+      >
+        <i class="ri-arrow-left-s-line text-xl"></i>
+      </button>
+
+      <div
+        x-ref="track"
+        class="flex flex-nowrap gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide py-1"
+        @scroll.debounce.50ms="updateScrollState()"
+      >
+        {% for channel_page in channel_pages %}
+          {% if channel_page.template_name == 'channel' %}
+            {% assign channel_title = channel_page.settings.title | default: channel_page.link_text %}
+            {% assign channel_description = channel_page.settings.description | presence %}
+            {% assign channel_thumb = channel_page.settings.thumb_url | presence %}
+            {% assign sub_count = channel_page.children_in_list | size %}
+            <a
+              href="{{ site.index_path }}?channel={{ channel_page.full_slug }}"
+              data-turbo="false"
+              class="channel-card snap-start flex shrink-0 flex-col overflow-hidden rounded-lg border border-base-300 bg-white shadow-sm transition-shadow hover:shadow-md w-[calc((100%-1rem)/2)] sm:w-[calc((100%-2rem)/3)] lg:w-[calc((100%-5*1rem)/6)]"
+            >
+              <div class="aspect-video bg-base-200 flex items-center justify-center overflow-hidden">
+                {% if channel_thumb %}
+                  <img
+                    src="{{ channel_thumb }}"
+                    alt="{{ channel_title }}"
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                  >
+                {% else %}
+                  <i class="ri-folder-line text-4xl text-base-content/30"></i>
+                {% endif %}
               </div>
-            </div>
-          </a>
-        {% endif %}
-      {% endfor %}
+              <div class="p-3 flex flex-col flex-1 min-h-0">
+                <h3 class="font-semibold text-base-content line-clamp-1">{{ channel_title }}</h3>
+                {% if channel_description %}
+                  <p class="mt-1 text-sm text-base-content/60 line-clamp-2 flex-1">{{ channel_description }}</p>
+                {% endif %}
+                <div class="mt-2 flex items-center gap-1 text-xs text-base-content/50">
+                  <i class="ri-file-list-2-line"></i>
+                  <span>{{ sub_count }} {{ 'snippets.channel_section.resource_unit' | t: '个资源' }}</span>
+                </div>
+              </div>
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <button
+        type="button"
+        class="absolute right-0 top-1/2 z-10 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full border border-base-300 bg-white shadow-md text-base-content/70 transition hover:bg-base-200 hover:text-base-content disabled:pointer-events-none disabled:opacity-0 -mr-1"
+        x-show="canScrollNext"
+        x-cloak
+        @click="scrollNext()"
+        aria-label="{{ 'snippets.channel_section.scroll_next' | t: '向右滑动' }}"
+      >
+        <i class="ri-arrow-right-s-line text-xl"></i>
+      </button>
     </div>
   </section>
 {% endif %}

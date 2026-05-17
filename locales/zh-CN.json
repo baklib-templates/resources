@@ -2,7 +2,9 @@
   "snippets": {
     "channel_section": {
       "title": "栏目导航",
-      "resource_unit": "个资源"
+      "resource_unit": "个资源",
+      "scroll_prev": "向左滑动",
+      "scroll_next": "向右滑动"
     },
     "footer": {
       "copyright": "版权所有"

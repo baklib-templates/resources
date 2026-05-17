@@ -1,9 +1,0 @@
-{% comment %} Renders a theme preset by basename (maps to snippets/presets/_*.liquid, synced from presets/*.html) {% endcomment %}
-{% case name %}
-  {% when 'hero' %}
-    {% render 'presets/hero' %}
-  {% when 'header_default' %}
-    {% render 'presets/header_default' %}
-  {% when 'footer_default' %}
-    {% render 'presets/footer_default' %}
-{% endcase %}

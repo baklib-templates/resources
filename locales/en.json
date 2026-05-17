@@ -2,7 +2,9 @@
   "snippets": {
     "channel_section": {
       "title": "Channel navigation",
-      "resource_unit": "resources"
+      "resource_unit": "resources",
+      "scroll_prev": "Scroll left",
+      "scroll_next": "Scroll right"
     },
     "footer": {
       "copyright": "All rights reserved"

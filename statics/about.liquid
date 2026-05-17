@@ -1,16 +1,236 @@
 {% layout 'theme_no_content' %}
+<pre>
+预设样式列表：
+- header default: https://daisyui.com/components/header/
+- footer default: https://daisyui.com/components/footer/
+- hero carousel: https://daisyui.com/components/hero/
+- hero 2 carousel: https://daisyui.com/components/hero/
+- hero 3 carousel: https://daisyui.com/components/hero/
+- hero 4 content: https://tailwindcss.com/plus/ui-blocks/marketing/sections/heroes
+</pre>
 
-{% comment %}
-  Preset sections rendered in order. Add new presets under presets/*.html,
-  copy to snippets/presets/_<name>.liquid, then append the basename here.
-{% endcomment %}
-{% assign preset_sections = "hero,header_default,footer_default" | split: "," %}
+<section class="preset-section rounded-lg shadow-sm border border-base-300 px-6 py-8 md:px-10 md:py-10">
+  <!-- header default: https://daisyui.com/components/header/ -->
+  <main>
+    <div class="relative" data-controller="more-menu">
+      <button
+        type="button"
+        class="rounded-md p-2 text-gray-600 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+        data-action="click-&gt;more-menu#toggle"
+        title="Menu"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="size-6 h-6 w-6"
+        >
+          <path
+            d="M11.644 1.59a.75.75 0 0 1 .712 0l9.75 5.25a.75.75 0 0 1 0 1.32l-9.75 5.25a.75.75 0 0 1-.712 0l-9.75-5.25a.75.75 0 0 1 0-1.32l9.75-5.25Z"
+          />
+          <path
+            d="m3.265 10.602 7.668 4.129a2.25 2.25 0 0 0 2.134 0l7.668-4.13 1.37.739a.75.75 0 0 1 0 1.32l-9.75 5.25a.75.75 0 0 1-.71 0l-9.75-5.25a.75.75 0 0 1 0-1.32l1.37-.738Z"
+          />
+          <path
+            d="m10.933 19.231-7.668-4.13-1.37.739a.75.75 0 0 0 0 1.32l9.75 5.25c.221.12.489.12.71 0l9.75-5.25a.75.75 0 0 0 0-1.32l-1.37-.738-7.668 4.13a2.25 2.25 0 0 1-2.134-.001Z"
+          />
+        </svg>
+      </button>
+      <div
+        class="absolute right-0 z-50 mt-2 hidden w-48 rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
+        data-more-menu-target="menu"
+      >
+        <div class="py-1">
+          <a
+            href="/-/search"
+            class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+          >
+            <i class="ri-search-line"></i>
+            <span>全站搜索</span>
+          </a>
+          <a
+            href="/"
+            class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+          >
+            <i class="ri-link"></i>
+            <span>首页</span>
+          </a>
 
-<main class="mx-auto w-full max-w-6xl px-4 py-8 space-y-6">
-  {% for preset_name in preset_sections %}
-    <h2 class="text-lg font-bold text-base-content mb-4">{{ preset_name }}</h2>
-    <section class="preset-section rounded-lg shadow-sm border border-base-300 px-6 py-8 md:px-10 md:py-10" aria-label="{{ preset_name }}">
-      {% render 'presets', name: preset_name %}
-    </section>
-  {% endfor %}
-</main>
+          <a
+            href="/s/about"
+            class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+          >
+            <i class="ri-link"></i>
+            <span> 关于本站</span>
+          </a>
+
+          <a
+            href="https://www.baklib.com"
+            class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+          >
+            <i class="ri-link"></i>
+            <span>操作教程</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</section>
+
+<section class="preset-section rounded-lg shadow-sm border border-base-300 px-6 py-8 md:px-10 md:py-10">
+  <!-- footer default: https://daisyui.com/components/footer/ -->
+  <main>
+    <div class="mx-auto items-center justify-between sm:flex-row">
+      <div class="p-4">
+        <div class="flex justify-center space-x-3">
+          <span>© Baklib. 版权所有</span>
+          <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" class="hover:underline">蜀ICP备xxxx号</a>
+        </div>
+      </div>
+    </div>
+  </main>
+</section>
+
+<section class="preset-section rounded-lg shadow-sm border border-base-300 px-6 py-8 md:px-10 md:py-10">
+  <!-- hero carousel: https://daisyui.com/components/hero/ -->
+  <main>
+    <div class="bg-primary/10 rounded-lg shadow-sm border border-base-300 px-6 py-8 md:px-10 md:py-10">
+      <div class="max-w-3xl">
+        <p class="text-sm font-medium text-primary mb-2">Resources Portal</p>
+        <h1 class="text-2xl md:text-3xl font-bold text-base-content mb-3">数字资源库</h1>
+        <p class="text-base text-base-content/70 leading-relaxed">
+          集中管理图片、视频、文档等媒体资源，支持多级栏目、标签筛选与权限控制。
+        </p>
+      </div>
+    </div>
+  </main>
+</section>
+
+<section class="preset-section rounded-lg shadow-sm border border-base-300 px-6 py-8 md:px-10 md:py-10">
+  <!-- hero 2 carousel: https://daisyui.com/components/hero/ -->
+  <main>
+    <div
+      class="hero min-h-64"
+      style="background-image: url(https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp);"
+    >
+      <div class="hero-overlay"></div>
+      <div class="hero-content text-neutral-content text-center">
+        <div class="max-w-md">
+          <h1 class="mb-5 text-5xl font-bold">Hello there</h1>
+          <p class="mb-5">
+            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
+            quasi. In deleniti eaque aut repudiandae et a id nisi.
+          </p>
+          <a class="btn btn-primary" href="#main-content">Get Started</a>
+        </div>
+      </div>
+    </div>
+  </main>
+</section>
+
+<section class="preset-section rounded-lg shadow-sm border border-base-300 px-6 py-8 md:px-10 md:py-10">
+  <!-- hero 3 carousel: https://daisyui.com/components/hero/ -->
+  <main class="carousel w-full">
+    <div id="slide1" class="carousel-item relative w-full">
+      <img
+        src="https://img.daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.webp"
+        class="w-full" />
+      <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
+        <a href="#slide4" class="btn btn-circle">❮</a>
+        <a href="#slide2" class="btn btn-circle">❯</a>
+      </div>
+    </div>
+    <div id="slide2" class="carousel-item relative w-full">
+      <img
+        src="https://img.daisyui.com/images/stock/photo-1609621838510-5ad474b7d25d.webp"
+        class="w-full" />
+      <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
+        <a href="#slide1" class="btn btn-circle">❮</a>
+        <a href="#slide3" class="btn btn-circle">❯</a>
+      </div>
+    </div>
+    <div id="slide3" class="carousel-item relative w-full">
+      <img
+        src="https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp"
+        class="w-full" />
+      <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
+        <a href="#slide2" class="btn btn-circle">❮</a>
+        <a href="#slide4" class="btn btn-circle">❯</a>
+      </div>
+    </div>
+    <div id="slide4" class="carousel-item relative w-full">
+      <img
+        src="https://img.daisyui.com/images/stock/photo-1665553365602-b2fb8e5d1707.webp"
+        class="w-full" />
+      <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
+        <a href="#slide3" class="btn btn-circle">❮</a>
+        <a href="#slide1" class="btn btn-circle">❯</a>
+      </div>
+    </div>
+  </main>
+</section>
+
+<section class="preset-section rounded-lg shadow-sm border border-base-300 px-6 py-8 md:px-10 md:py-10">
+  <!-- hero 4 content: https://tailwindcss.com/plus/ui-blocks/marketing/sections/heroes -->
+  <main>
+    <div class="relative isolate">
+      <svg aria-hidden="true" class="absolute inset-x-0 top-0 -z-10 h-[44rem] w-full stroke-gray-200 [mask-image:radial-gradient(32rem_32rem_at_center,white,transparent)] dark:stroke-white/10">
+        <defs>
+          <pattern id="1f932ae7-37de-4c0a-a8b0-a6e3b4d44b84" width="200" height="200" x="50%" y="-1" patternUnits="userSpaceOnUse">
+            <path d="M.5 200V.5H200" fill="none" />
+          </pattern>
+        </defs>
+        <svg x="50%" y="-1" class="overflow-visible fill-gray-50 dark:fill-gray-800">
+          <path d="M-200 0h201v201h-201Z M600 0h201v201h-201Z M-400 600h201v201h-201Z M200 800h201v201h-201Z" stroke-width="0" />
+        </svg>
+        <rect width="100%" height="100%" fill="url(#1f932ae7-37de-4c0a-a8b0-a6e3b4d44b84)" stroke-width="0" />
+      </svg>
+      <div aria-hidden="true" class="absolute left-1/2 right-0 top-0 -z-10 -ml-24 transform-gpu overflow-hidden blur-3xl lg:ml-24 xl:ml-48">
+        <div style="clip-path: polygon(63.1% 29.5%, 100% 17.1%, 76.6% 3%, 48.4% 0%, 44.6% 4.7%, 54.5% 25.3%, 59.8% 49%, 55.2% 57.8%, 44.4% 57.2%, 27.8% 47.9%, 35.1% 81.5%, 0% 97.7%, 39.2% 100%, 35.2% 81.4%, 97.2% 52.8%, 63.1% 29.5%)" class="aspect-[801/1036] w-[50.0625rem] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30"></div>
+      </div>
+      <div class="overflow-hidden">
+        <div class="mx-auto max-w-7xl px-6 pb-32 pt-36 sm:pt-60 lg:px-8 lg:pt-32">
+          <div class="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
+            <div class="relative w-full lg:max-w-xl lg:shrink-0 xl:max-w-2xl">
+              <h1 class="text-pretty text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl dark:text-white">We’re changing the way people connect</h1>
+              <p class="mt-8 text-pretty text-lg font-medium text-gray-500 sm:max-w-md sm:text-xl/8 lg:max-w-none dark:text-gray-400">Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat fugiat aliqua. Anim aute id magna aliqua ad ad non deserunt sunt.</p>
+              <div class="mt-10 flex items-center gap-x-6">
+                <a href="#main-content" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:outline-indigo-500">Get started</a>
+                <a href="#main-content" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Live demo <span aria-hidden="true">→</span></a>
+              </div>
+            </div>
+            <div class="mt-14 flex justify-end gap-8 sm:-mt-44 sm:justify-start sm:pl-20 lg:mt-0 lg:pl-0">
+              <div class="ml-auto w-44 flex-none space-y-8 pt-32 sm:ml-0 sm:pt-80 lg:order-last lg:pt-36 xl:order-none xl:pt-80">
+                <div class="relative">
+                  <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80" alt="" class="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg dark:bg-gray-700/5" />
+                  <div class="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10 dark:ring-white/10"></div>
+                </div>
+              </div>
+              <div class="mr-auto w-44 flex-none space-y-8 sm:mr-0 sm:pt-52 lg:pt-36">
+                <div class="relative">
+                  <img src="https://images.unsplash.com/photo-1485217988980-11786ced9454?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80" alt="" class="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg dark:bg-gray-700/5" />
+                  <div class="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10 dark:ring-white/10"></div>
+                </div>
+                <div class="relative">
+                  <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=focalpoint&fp-x=.4&w=396&h=528&q=80" alt="" class="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg dark:bg-gray-700/5" />
+                  <div class="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10 dark:ring-white/10"></div>
+                </div>
+              </div>
+              <div class="w-44 flex-none space-y-8 pt-32 sm:pt-0">
+                <div class="relative">
+                  <img src="https://images.unsplash.com/photo-1670272504528-790c24957dda?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=left&w=400&h=528&q=80" alt="" class="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg dark:bg-gray-700/5" />
+                  <div class="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10 dark:ring-white/10"></div>
+                </div>
+                <div class="relative">
+                  <img src="https://images.unsplash.com/photo-1670272505284-8faba1c31f7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80" alt="" class="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg dark:bg-gray-700/5" />
+                  <div class="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10 dark:ring-white/10"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</section>

@@ -134,10 +134,20 @@
           </div>
         </div>
 
-        <!-- 标签筛选 -->
-        <div data-controller="tag-selector" data-tag-selector-url-value="{{ statics['tag_search'] }}"
-          @tags-changed="updateResourceTags($event)">
-          {% render 'tag_selector', label: "templates.index.filters.tag_filter" | t: "标签筛选" %}
+        <!-- 标签分类筛选 -->
+        <div class="flex flex-col md:flex-row md:items-start gap-4 md:gap-6">
+          <div class="flex-1 min-w-0" data-controller="tag-selector"
+            data-tag-selector-url-value="{{ statics['tag_search'] }}"
+            data-tag-selector-field-value="resource_tags"
+            @tags-changed="updateQueryTags($event)">
+            {% render 'tag_selector', label: "templates.index.filters.tag_filter_1" | t: "标签分类 1", field: 'resource_tags' %}
+          </div>
+          <div class="flex-1 min-w-0" data-controller="tag-selector"
+            data-tag-selector-url-value="{{ statics['tag_search'] }}"
+            data-tag-selector-field-value="resource_tags2"
+            @tags-changed="updateQueryTags($event)">
+            {% render 'tag_selector', label: "templates.index.filters.tag_filter_2" | t: "标签分类 2", field: 'resource_tags2' %}
+          </div>
         </div>
       </div>
     </div>

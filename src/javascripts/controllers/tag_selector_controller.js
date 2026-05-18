@@ -12,7 +12,8 @@ import { buildUrl } from "../utils/index"
 export default class extends Controller {
   static targets = ['searchInput', 'resultsContainer', 'resultsList', 'selectedTagsContainer', 'selectedTagsList', 'modal', 'clearSearchBtn', 'selectedCount', 'searchBtn', 'tagItemTemplate', 'selectedTagItemTemplate', 'loadingTemplate', 'emptyTemplate', 'loadMoreTemplate', 'errorTemplate', 'emptySelectedTagsTemplate'];
   static values = {
-    url: { type: String }
+    url: { type: String },
+    field: { type: String, default: 'resource_tags' },
   };
 
   connect() {
@@ -321,8 +322,9 @@ export default class extends Controller {
 
       if (alpineElement && window.Alpine) {
         const alpineData = window.Alpine.$data(alpineElement);
-        if (alpineData && alpineData.attachmentsQuery && alpineData.attachmentsQuery.resource_tags) {
-          const tags = alpineData.attachmentsQuery.resource_tags;
+        const field = this.fieldValue || 'resource_tags';
+        if (alpineData && alpineData.attachmentsQuery && alpineData.attachmentsQuery[field]) {
+          const tags = alpineData.attachmentsQuery[field];
           return Array.isArray(tags) ? tags : [tags].filter(Boolean);
         }
       }
@@ -520,6 +522,7 @@ export default class extends Controller {
     this.dispatch('tags-changed', {
       detail: {
         tags: Array.from(this.tempSelectedTags),
+        field: this.fieldValue || 'resource_tags',
       },
       prefix: false, // 禁用 Stimulus 的默认前缀
     });

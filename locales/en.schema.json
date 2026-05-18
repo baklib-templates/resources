@@ -55,7 +55,10 @@
           "label": "Resource Selector"
         },
         "resource_tags": {
-          "label": "Resource Tags"
+          "label": "Tag Category 1"
+        },
+        "resource_tags2": {
+          "label": "Tag Category 2"
         },
         "content": {
           "label": "Resource Description"

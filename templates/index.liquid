@@ -95,15 +95,8 @@
       this.viewMode = this.normalizeViewMode(this.attachmentsQuery.view || localStorage.getItem('picture-portal-view'))
       this.attachmentsQuery.view = this.viewMode
 
-      // 初始化 resource_tags 为数组
-      if (this.attachmentsQuery.resource_tags) {
-        if (!Array.isArray(this.attachmentsQuery.resource_tags)) {
-          // 如果是单个值，转换为数组
-          this.attachmentsQuery.resource_tags = [this.attachmentsQuery.resource_tags];
-        }
-      } else {
-        this.attachmentsQuery.resource_tags = [];
-      }
+      this.normalizeTagsField('resource_tags');
+      this.normalizeTagsField('resource_tags2');
 
       // 初始化 file_type 为数组
       if (this.attachmentsQuery.file_type) {
@@ -135,7 +128,8 @@
                         (this.attachmentsQuery.file_type && this.attachmentsQuery.file_type.length > 0) ||
                         this.attachmentsQuery.size_min ||
                         this.attachmentsQuery.size_max ||
-                        (this.attachmentsQuery.resource_tags && this.attachmentsQuery.resource_tags.length > 0);
+                        (this.attachmentsQuery.resource_tags && this.attachmentsQuery.resource_tags.length > 0) ||
+                        (this.attachmentsQuery.resource_tags2 && this.attachmentsQuery.resource_tags2.length > 0);
       this.showAdvancedFilters = hasFilters || false;
 
       // 检查是否有open_item参数（从403页面登录后重定向回来）
@@ -177,15 +171,8 @@
         this.attachmentsQuery = this.$getQueryParams(window.location.href);
         this.viewMode = this.normalizeViewMode(this.attachmentsQuery.view || localStorage.getItem('picture-portal-view'));
         this.attachmentsQuery.view = this.viewMode;
-        // 同步 resource_tags 为数组
-        if (this.attachmentsQuery.resource_tags) {
-          if (!Array.isArray(this.attachmentsQuery.resource_tags)) {
-            // 如果是单个值，转换为数组
-            this.attachmentsQuery.resource_tags = [this.attachmentsQuery.resource_tags];
-          }
-        } else {
-          this.attachmentsQuery.resource_tags = [];
-        }
+        this.normalizeTagsField('resource_tags');
+        this.normalizeTagsField('resource_tags2');
         // 同步 file_type 为数组
         if (this.attachmentsQuery.file_type) {
           if (!Array.isArray(this.attachmentsQuery.file_type)) {
@@ -211,7 +198,8 @@
                           (this.attachmentsQuery.file_type && this.attachmentsQuery.file_type.length > 0) ||
                           this.attachmentsQuery.size_min ||
                           this.attachmentsQuery.size_max ||
-                          (this.attachmentsQuery.resource_tags && this.attachmentsQuery.resource_tags.length > 0);
+                          (this.attachmentsQuery.resource_tags && this.attachmentsQuery.resource_tags.length > 0) ||
+                          (this.attachmentsQuery.resource_tags2 && this.attachmentsQuery.resource_tags2.length > 0);
         this.showAdvancedFilters = hasFilters || false;
         this.updateAttachmentsSrc(false);
       });
@@ -314,14 +302,23 @@
     isTagSelected(tagName) {
       return this.attachmentsQuery.resource_tags && this.attachmentsQuery.resource_tags.includes(tagName);
     },
-    removeTag(tagName) {
-      if (this.attachmentsQuery.resource_tags) {
-        const index = this.attachmentsQuery.resource_tags.indexOf(tagName);
-        if (index > -1) {
-          this.attachmentsQuery.resource_tags.splice(index, 1);
+    normalizeTagsField(field) {
+      if (this.attachmentsQuery[field]) {
+        if (!Array.isArray(this.attachmentsQuery[field])) {
+          this.attachmentsQuery[field] = [this.attachmentsQuery[field]];
         }
-        if (this.attachmentsQuery.resource_tags.length === 0) {
-          delete this.attachmentsQuery.resource_tags;
+      } else {
+        this.attachmentsQuery[field] = [];
+      }
+    },
+    removeTag(tagName, field = 'resource_tags') {
+      if (this.attachmentsQuery[field]) {
+        const index = this.attachmentsQuery[field].indexOf(tagName);
+        if (index > -1) {
+          this.attachmentsQuery[field].splice(index, 1);
+        }
+        if (this.attachmentsQuery[field].length === 0) {
+          delete this.attachmentsQuery[field];
         }
         this.updateAttachmentsSrc(true);
       }
@@ -520,13 +517,13 @@
     isSortByVisitsCount() {
       return this.attachmentsQuery.sort === '-visits_count';
     },
-    updateResourceTags(event) {
-      // 处理标签选择器的事件
+    updateQueryTags(event) {
+      const field = event.detail?.field || 'resource_tags';
       const tags = event.detail?.tags || [];
       if (tags.length > 0) {
-        this.attachmentsQuery.resource_tags = tags;
+        this.attachmentsQuery[field] = tags;
       } else {
-        delete this.attachmentsQuery.resource_tags;
+        delete this.attachmentsQuery[field];
       }
       this.updateAttachmentsSrc(true);
     }

@@ -3,8 +3,10 @@
 
   参数说明：
   - label: 标签文本（可选，默认为"标签筛选"）
+  - field: 查询参数字段名（可选，默认为 resource_tags）
 {% endcomment %}
 
+{% assign field = field | default: 'resource_tags' %}
 {% assign label = label | default: "snippets.tag_selector.label" | t: "标签筛选" %}
 
 <!-- 标签筛选 -->
@@ -17,22 +19,22 @@
         data-action="click->tag-selector#openModal">
         <i class="ri-search-line absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
         <span class="text-gray-500 pointer-events-none"
-              x-text="attachmentsQuery.resource_tags?.length ? `{{ 'snippets.tag_selector.selected_count_prefix' | t: '已选择' }} ${attachmentsQuery.resource_tags.length} {{ 'snippets.tag_selector.selected_count_suffix' | t: '个标签' }}` : '{{ 'snippets.tag_selector.select_hint' | t: '点击选择标签' }}'"></span>
+              x-text="(attachmentsQuery.{{ field }} || []).length ? `{{ 'snippets.tag_selector.selected_count_prefix' | t: '已选择' }} ${(attachmentsQuery.{{ field }} || []).length} {{ 'snippets.tag_selector.selected_count_suffix' | t: '个标签' }}` : '{{ 'snippets.tag_selector.select_hint' | t: '点击选择标签' }}'"></span>
         <i class="ri-arrow-down-s-line absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
       </button>
     </div>
 
     <!-- 已选标签显示 -->
     <div class="flex items-center text-xs gap-2 flex-wrap">
-      <template x-for="tag in attachmentsQuery.resource_tags || []" :key="tag">
+      <template x-for="tag in attachmentsQuery.{{ field }} || []" :key="tag">
         <span class="inline-flex items-center gap-1.5 px-2 py-1 bg-indigo-100 text-primary/90 rounded-md max-w-full md:max-w-xs"
               :title="tag">
           <span class="truncate block" x-text="tag"></span>
           <i class="ri-close-line cursor-pointer opacity-70 hover:opacity-100 text-sm shrink-0"
-             @click.stop="removeTag(tag)"></i>
+             @click.stop="removeTag(tag, '{{ field }}')"></i>
         </span>
       </template>
-      <span x-show="!attachmentsQuery.resource_tags || attachmentsQuery.resource_tags.length === 0"
+      <span x-show="!(attachmentsQuery.{{ field }} || []).length"
             class="text-gray-400">{{ "snippets.tag_selector.empty_selected_hint" | t: "暂无已选标签，点击上方按钮选择标签" }}</span>
     </div>
   </div>

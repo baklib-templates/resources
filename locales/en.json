@@ -264,7 +264,9 @@
         "size_100_mb_1_gb": "100MB-1GB",
         "size_1_10_gb": "1GB-10GB",
         "size_gt_10_gb": ">10GB",
-        "tag_filter": "Tag Filter"
+        "tag_filter": "Tag Filter",
+        "tag_filter_1": "Tag Category 1",
+        "tag_filter_2": "Tag Category 2"
       },
       "actions": {
         "search": "Search",

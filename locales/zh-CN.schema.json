@@ -55,7 +55,10 @@
           "label": "资源选择"
         },
         "resource_tags": {
-          "label": "资源标签"
+          "label": "标签分类 1"
+        },
+        "resource_tags2": {
+          "label": "标签分类 2"
         },
         "content": {
           "label": "资源描述"

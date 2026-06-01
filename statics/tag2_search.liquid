@@ -1,0 +1,24 @@
+{% response_type 'json' %}
+{% layout none %}
+
+{% assign keywords = params.keywords | presence %}
+{% assign page = params.page | presence | default: 1 %}
+{% assign per = params.per | presence | default: 50 %}
+
+{% if keywords %}
+  {% assign filtered_tags = site.tags | tag: keywords %}
+{% else %}
+  {% assign filtered_tags = site.tags %}
+{% endif %}
+
+{% paginate_tag filtered_tags, per: per, page: page %}
+{
+  "data": {{ filtered_tags | to_json }},
+  "paginate": {
+    "current_page": {{ paginate.current_page }},
+    "total_pages": {{ paginate.total_pages }},
+    "total_count": {{ paginate.total_count }},
+    "per_page": {{ paginate.per_page }}
+  }
+}
+{% endpaginate_tag %}

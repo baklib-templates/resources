@@ -8,22 +8,21 @@
     "theme_syntax_version": "v2",
     "theme_scope": "cms",
     "theme_author": "Baklib",
-    "theme_documentation_url": "https://dev.baklib.cn/",
-    "theme_support_url": "https://www.baklib.com/",
-    "theme_thumb_url": "images/theme/project-thumb.png",
+    "theme_documentation_url": "https://www.github.com/baklib/cms-templates/resources",
+    "theme_support_url": "https://www.github.com/baklib/cms-templates/resources",
+    "theme_thumb_url": "images/theme/thumb.png",
     "theme_preview_images": [
-      "images/theme/index.png",
-      "images/theme/page.png"
+      "images/theme/${lang}/cover.png",
+      "images/theme/${lang}/index.png",
+      "images/theme/${lang}/channel.png",
+      "images/theme/${lang}/page.png"
     ],
     "theme_languages": [
-      {
-        "name": "中文简体",
-        "value": "zh-CN"
-      },
-      {
-        "name": "English",
-        "value": "en"
-      }
+      { "name": "中文简体", "value": "zh-CN" },
+      { "name": "中文繁體", "value": "zh-TW" },
+      { "name": "한국어", "value": "ko" },
+      { "name": "English", "value": "en" },
+      { "name": "日本語", "value": "ja" }
     ],
     "track_events": {
       "resource_download": {

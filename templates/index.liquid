@@ -2,7 +2,10 @@
   {
     "name": "t:schema.templates.index.name",
     "description": "t:schema.templates.index.description",
-    "thumb_url": "images/theme/index.png",
+    "thumb_url": "images/theme/${lang}/index.png",
+    "preview_image_urls": [
+      "images/theme/${lang}/index.png"
+    ],
     "sub_page_templates": ["channel", "page"],
     "settings": [
       {
@@ -27,7 +30,7 @@
         "rows": 24,
         "default": "preset:hero.html"
       }
-      
+
     ]
   }
 {% endschema %}

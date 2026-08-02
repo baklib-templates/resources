@@ -29,7 +29,7 @@
   },
   "templates": {
     "channel": {
-      "name": "栏目页",
+      "name": "资源分类页",
       "description": "可用于资源的分类目录",
       "settings": {
         "title": {
@@ -46,7 +46,7 @@
       }
     },
     "page": {
-      "name": "详情页",
+      "name": "资源详情页",
       "settings": {
         "title": {
           "label": "资源名称"

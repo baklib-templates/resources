@@ -1,0 +1,199 @@
+{% comment %}
+  画廊全屏轮播：大图 + 左右翻页 + 底部缩略图条。
+  依赖父级 Alpine：galleryOpen / galleryItems / galleryIndex / gallery* 方法。
+{% endcomment %}
+<div
+  x-show="galleryOpen"
+  x-cloak
+  class="fixed inset-0 z-[100] flex flex-col bg-neutral text-neutral-content"
+  role="dialog"
+  aria-modal="true"
+  aria-label="{{ 'templates.index.gallery.viewer' | t: '图片画廊' }}"
+  @keydown.escape.window="galleryOpen && closeDetail()"
+  @keydown.left.window="galleryOpen && galleryPrev()"
+  @keydown.right.window="galleryOpen && galleryNext()"
+>
+  <!-- 顶栏 -->
+  <div class="flex shrink-0 items-center justify-between gap-3 px-3 py-2 sm:px-4">
+    <div class="min-w-0 truncate text-sm font-medium text-neutral-content/80" x-text="galleryCurrent()?.title || ''"></div>
+    <div class="flex items-center gap-1 shrink-0">
+      <span class="hidden sm:inline text-xs text-neutral-content/50 tabular-nums mr-2"
+        x-text="galleryItems.length ? ((galleryIndex + 1) + ' / ' + galleryItems.length) : ''"></span>
+      <button
+        type="button"
+        class="btn btn-ghost btn-sm btn-circle text-neutral-content"
+        @click="openGalleryDetailPanel()"
+        title="{{ 'templates.index.gallery.photo_info' | t: '照片信息' }}"
+        x-show="galleryCurrent()"
+      >
+        <i class="ri-information-line text-lg"></i>
+      </button>
+      <button
+        type="button"
+        class="btn btn-ghost btn-sm btn-circle text-neutral-content"
+        @click="closeDetail()"
+        title="{{ 'templates.index.detail.close' | t: '关闭' }}"
+      >
+        <i class="ri-close-line text-xl"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- 主图区 -->
+  <div class="relative flex min-h-0 flex-1 items-center justify-center px-2 sm:px-12">
+    <button
+      type="button"
+      class="absolute left-1 sm:left-3 z-10 btn btn-circle btn-ghost text-neutral-content/80 hover:bg-neutral-content/10 disabled:opacity-20"
+      @click="galleryPrev()"
+      :disabled="galleryIndex <= 0 && !galleryPrevPage"
+      aria-label="{{ 'templates.index.gallery.prev' | t: '上一张' }}"
+    >
+      <i class="ri-arrow-left-s-line text-3xl sm:text-4xl"></i>
+    </button>
+
+    <div class="flex h-full w-full max-w-6xl items-center justify-center">
+      <template x-if="galleryCurrent()?.preview">
+        <img
+          :src="galleryCurrent().preview"
+          :alt="galleryCurrent().title || ''"
+          class="max-h-full max-w-full object-contain select-none"
+          draggable="false"
+        >
+      </template>
+      <template x-if="galleryCurrent() && !galleryCurrent().preview">
+        <div class="flex flex-col items-center gap-2 text-neutral-content/50">
+          <i class="ri-image-line text-5xl"></i>
+          <span class="text-sm" x-text="galleryCurrent().title || '{{ 'snippets.attachment.common.no_preview' | t: '暂无预览' }}'"></span>
+        </div>
+      </template>
+    </div>
+
+    <button
+      type="button"
+      class="absolute right-1 sm:right-3 z-10 btn btn-circle btn-ghost text-neutral-content/80 hover:bg-neutral-content/10 disabled:opacity-20"
+      @click="galleryNext()"
+      :disabled="galleryIndex >= galleryItems.length - 1 && !galleryNextPage"
+      aria-label="{{ 'templates.index.gallery.next' | t: '下一张' }}"
+    >
+      <i class="ri-arrow-right-s-line text-3xl sm:text-4xl"></i>
+    </button>
+  </div>
+
+  <!-- 底栏：工具 + 缩略图 -->
+  <div class="shrink-0 border-t border-neutral-content/10 bg-neutral">
+    <div class="flex items-center justify-center gap-4 px-3 py-2 text-xs text-neutral-content/70">
+      <button type="button" class="inline-flex items-center gap-1.5 hover:text-neutral-content" @click="galleryThumbsCollapsed = !galleryThumbsCollapsed">
+        <i class="ri-arrow-down-double-line transition-transform" :class="galleryThumbsCollapsed && 'rotate-180'"></i>
+        <span x-text="galleryThumbsCollapsed ? '{{ 'templates.index.gallery.expand_list' | t: '展开列表' }}' : '{{ 'templates.index.gallery.collapse_list' | t: '收起列表' }}'"></span>
+      </button>
+      <a
+        class="inline-flex items-center gap-1.5 hover:text-neutral-content"
+        :href="galleryCurrent()?.url || '#'"
+        data-turbo="false"
+        x-show="galleryCurrent()?.url"
+      >
+        <i class="ri-external-link-line"></i>
+        <span>{{ 'templates.index.gallery.open_detail' | t: '打开详情' }}</span>
+      </a>
+    </div>
+
+    <div
+      class="relative px-8 pb-3"
+      x-show="!galleryThumbsCollapsed"
+      x-transition
+      x-ref="galleryThumbStrip"
+    >
+      <button
+        type="button"
+        class="absolute left-1 top-1/2 z-10 -translate-y-1/2 btn btn-circle btn-xs btn-ghost text-neutral-content/70"
+        @click="galleryScrollThumbs(-1)"
+        aria-label="{{ 'templates.index.gallery.scroll_thumbs_prev' | t: '向左滚动缩略图' }}"
+      >
+        <i class="ri-arrow-left-s-line text-lg"></i>
+      </button>
+      <button
+        type="button"
+        class="absolute right-1 top-1/2 z-10 -translate-y-1/2 btn btn-circle btn-xs btn-ghost text-neutral-content/70"
+        @click="galleryScrollThumbs(1)"
+        aria-label="{{ 'templates.index.gallery.scroll_thumbs_next' | t: '向右滚动缩略图' }}"
+      >
+        <i class="ri-arrow-right-s-line text-lg"></i>
+      </button>
+
+      <div
+        class="flex gap-2 overflow-x-auto scrollbar-hide scroll-smooth py-1"
+        x-ref="galleryThumbs"
+      >
+        <button
+          type="button"
+          class="relative h-14 w-20 shrink-0 overflow-hidden rounded-sm border-2 border-dashed border-neutral-content/40 bg-neutral-content/10 text-neutral-content/80 hover:bg-neutral-content/20 hover:border-neutral-content transition-colors flex flex-col items-center justify-center gap-0.5"
+          x-show="galleryPrevPage"
+          x-cloak
+          @click="galleryGoToPage(galleryPrevPage, 'last')"
+          :title="'{{ 'templates.index.gallery.prev_page' | t: '上一页' }}'"
+        >
+          <i class="ri-arrow-left-double-line text-lg"></i>
+          <span class="text-[10px] leading-none">{{ 'templates.index.gallery.prev_page' | t: '上一页' }}</span>
+        </button>
+
+        <template x-for="(item, idx) in galleryItems" :key="item.full_slug + '-' + idx">
+          <button
+            type="button"
+            class="relative h-14 w-20 shrink-0 overflow-hidden rounded-sm border-2 bg-neutral-content/10 transition-colors"
+            :class="idx === galleryIndex ? 'border-neutral-content' : 'border-transparent opacity-70 hover:opacity-100'"
+            :data-gallery-thumb-index="idx"
+            @click="galleryGoTo(idx)"
+          >
+            <img
+              :src="item.thumb || item.preview"
+              alt=""
+              class="h-full w-full object-cover"
+              loading="lazy"
+              x-show="item.thumb || item.preview"
+            >
+            <div class="flex h-full w-full items-center justify-center" x-show="!(item.thumb || item.preview)">
+              <i class="ri-file-line text-neutral-content/40"></i>
+            </div>
+          </button>
+        </template>
+
+        <button
+          type="button"
+          class="relative h-14 w-20 shrink-0 overflow-hidden rounded-sm border-2 border-dashed border-neutral-content/40 bg-neutral-content/10 text-neutral-content/80 hover:bg-neutral-content/20 hover:border-neutral-content transition-colors flex flex-col items-center justify-center gap-0.5"
+          x-show="galleryNextPage"
+          x-cloak
+          @click="galleryGoToPage(galleryNextPage, 'first')"
+          :title="'{{ 'templates.index.gallery.next_page' | t: '下一页' }}'"
+        >
+          <i class="ri-arrow-right-double-line text-lg"></i>
+          <span class="text-[10px] leading-none">{{ 'templates.index.gallery.next_page' | t: '下一页' }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 沿用现有详情：右侧抽屉 / 移动端 dialog -->
+  <div
+    class="absolute inset-y-0 right-0 z-20 w-full max-w-md border-l border-neutral-content/10 bg-base-100 text-base-content shadow-xl"
+    x-show="galleryDetailOpen"
+    x-cloak
+    x-transition:enter="transition ease-out duration-200"
+    x-transition:enter-start="translate-x-full"
+    x-transition:enter-end="translate-x-0"
+    x-transition:leave="transition ease-in duration-150"
+    x-transition:leave-start="translate-x-0"
+    x-transition:leave-end="translate-x-full"
+  >
+    <div class="flex h-full flex-col">
+      <div class="flex items-center justify-between border-b border-base-300 px-4 py-3">
+        <div class="font-semibold truncate" x-text="attachmentTitle || '{{ 'templates.index.detail.title' | t: '资源详情' }}'"></div>
+        <button type="button" class="btn btn-ghost btn-sm btn-circle" @click="galleryDetailOpen = false">
+          <i class="ri-close-line text-lg"></i>
+        </button>
+      </div>
+      <div class="min-h-0 flex-1">
+        {% render 'index/inner_detail', variant: 'sidebar', alpine_src_var: 'attachmentSidebarSrc' %}
+      </div>
+    </div>
+  </div>
+</div>

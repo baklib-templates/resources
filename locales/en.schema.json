@@ -55,10 +55,11 @@
           "label": "Resource Selector"
         },
         "resource_tags": {
-          "label": "Tag Category 1"
+          "label": "Tags"
         },
-        "resource_tags2": {
-          "label": "Tag Category 2"
+        "resource_types": {
+          "label": "Resource type",
+          "info": "Options come from site Resource Settings → Resource types; multiple selection supported"
         },
         "content": {
           "label": "Resource Description"
@@ -81,6 +82,10 @@
           "label": "Show channel navigation cards",
           "info": "When enabled, displays first-level channel cards with cover, title, description, and child page count"
         }
+      },
+      "gallery": {
+        "name": "Home · Gallery",
+        "description": "Gallery grid of resources; click to open fullscreen image carousel with thumbnail strip"
       }
     }
   },
@@ -110,6 +115,10 @@
     "api_host": {
       "label": "API host",
       "info": "API host for batch upload and related features. If empty, it is inferred as open.* (e.g. open.baklib.com)."
+    },
+    "resource_types": {
+      "label": "Resource types",
+      "info": "One type per line. Used for multi-select on resource pages and advanced filters. Default: Brand, Product, Case, Asset."
     }
   }
 }

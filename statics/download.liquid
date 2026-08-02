@@ -1,8 +1,9 @@
 {% layout none %}
 {% response_type 'json' %}
 
-{% if params.path %}
-  {% assign page = site.pages[params.slug] %}
+{% if params.slug or params.path %}
+  {% assign page_key = params.slug | default: params.path %}
+  {% assign page = site.pages[page_key] %}
   {% assign can_access = page | can_access? %}
   {% assign entity = page.settings.asset %}
 

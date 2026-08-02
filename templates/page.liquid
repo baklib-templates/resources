@@ -31,9 +31,11 @@
         "multiple": true
       },
       {
-        "id": "resource_tags2",
-        "type": "tag_picker",
-        "label": "t:schema.templates.page.settings.resource_tags2.label",
+        "id": "resource_types",
+        "type": "select",
+        "label": "t:schema.templates.page.settings.resource_types.label",
+        "info": "t:schema.templates.page.settings.resource_types.info",
+        "choices_from": "$site.resource_types",
         "queryable": true,
         "multiple": true
       },

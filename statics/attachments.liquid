@@ -7,7 +7,7 @@
 {% else %}
   {% assign detail_open_mode = 'modal' %}
 {% endif %}
-{% unless view_mode == 'list' %}
+{% unless view_mode == 'list' or view_mode == 'gallery' %}
   {% assign view_mode = 'grid' %}
 {% endunless %}
 {% comment %} 100MB {% endcomment %}
@@ -45,7 +45,7 @@
       "settings.asset.metadata.size_gteq": size_min_bytes,
       "settings.asset.metadata.size_lteq": size_max_bytes,
       "settings.resource_tags_array_cont_any": params.resource_tags,
-      "settings.resource_tags2_array_cont_any": params.resource_tags2,
+      "settings.resource_types_array_cont_any": params.resource_types,
       "published_at_gteq": date_start,
       "published_at_lteq": date_end
     }
@@ -70,6 +70,8 @@
         <div class="flex-1">
           {% if view_mode == 'list' %}
             {% render 'attachments/list', filtered_pages: search_pages, detail_open_mode: detail_open_mode %}
+          {% elsif view_mode == 'gallery' %}
+            {% render 'attachments/gallery', filtered_pages: search_pages, detail_open_mode: detail_open_mode, paginate: paginate %}
           {% else %}
             {% render 'attachments/grid', filtered_pages: search_pages, detail_open_mode: detail_open_mode %}
           {% endif %}

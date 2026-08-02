@@ -1,0 +1,120 @@
+{% comment %}
+  画廊网格：仅展示预览图，无标题/标签/大小/日期。
+  卡片带 data-gallery-*，供 lightbox 收集当前列表。
+{% endcomment %}
+<div
+  id="gallery-grid"
+  class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-1 bg-base-200 p-1"
+  data-gallery-pagination
+  data-gallery-prev-page="{{ paginate.prev_page }}"
+  data-gallery-next-page="{{ paginate.next_page }}"
+  data-gallery-current-page="{{ paginate.current_page }}"
+  data-gallery-total-pages="{{ paginate.total_pages }}"
+>
+  {% for item in filtered_pages %}
+    {% assign entity = item.settings.asset %}
+    {% assign can_access = item | can_access? %}
+    {% assign _detail_open_mode = detail_open_mode | default: 'detail_page' %}
+
+    {% assign thumb_url = '' %}
+    {% assign preview_url = '' %}
+    {% if entity and entity.previewable? %}
+      {% assign thumb_url = entity.preview.thumb | default: entity.preview.cover %}
+      {% assign preview_url = entity.preview.cover | default: entity.preview.thumb %}
+    {% elsif entity and entity.image? and entity.metadata.content_type == 'image/svg+xml' %}
+      {% assign preview_url = entity.url[site.settings.resource_download_expiry_time] %}
+      {% assign thumb_url = preview_url %}
+    {% elsif item.settings.cover %}
+      {% assign preview_url = item.settings.cover %}
+      {% assign thumb_url = item.settings.cover %}
+    {% endif %}
+
+    {% if _detail_open_mode == 'modal' %}
+      <button
+        type="button"
+        id="item-{{ item.full_slug | replace: '/', '-' | replace: '.', '-' }}"
+        class="gallery-card relative aspect-video overflow-hidden bg-base-300 cursor-pointer group border-0 p-0 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        data-gallery-item
+        data-full-slug="{{ item.full_slug | escape }}"
+        data-title="{{ item.link_text | escape }}"
+        data-url="{{ item.url | escape }}"
+        data-preview="{{ preview_url | escape }}"
+        data-thumb="{{ thumb_url | escape }}"
+        @click.prevent.stop="$dispatch('open-detail', {
+          full_slug: $el.dataset.fullSlug,
+          title: $el.dataset.title,
+          url: $el.dataset.url,
+          preview: $el.dataset.preview,
+          thumb: $el.dataset.thumb
+        })"
+      >
+        {% if preview_url != blank %}
+          <img
+            src="{{ thumb_url | default: preview_url }}"
+            alt=""
+            class="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+            loading="lazy"
+            decoding="async"
+          >
+        {% else %}
+          <div class="flex h-full w-full items-center justify-center text-base-content/40">
+            {% if entity and entity.video? %}
+              <i class="ri-video-line text-3xl"></i>
+            {% elsif entity and entity.audio? %}
+              <i class="ri-music-2-line text-3xl"></i>
+            {% elsif entity and entity.pdf? %}
+              <i class="ri-file-pdf-line text-3xl"></i>
+            {% else %}
+              <i class="ri-file-line text-3xl"></i>
+            {% endif %}
+          </div>
+        {% endif %}
+        {% unless can_access %}
+          <span class="absolute top-1.5 right-1.5 flex size-6 items-center justify-center rounded-full bg-warning text-warning-content shadow-sm">
+            <i class="ri-lock-2-line text-xs"></i>
+          </span>
+        {% endunless %}
+      </button>
+    {% else %}
+      <a
+        id="item-{{ item.full_slug | replace: '/', '-' | replace: '.', '-' }}"
+        href="{{ item.url }}"
+        data-turbo="false"
+        class="gallery-card relative aspect-video overflow-hidden bg-base-300 cursor-pointer group block"
+        data-gallery-item
+        data-full-slug="{{ item.full_slug | escape }}"
+        data-title="{{ item.link_text | escape }}"
+        data-url="{{ item.url | escape }}"
+        data-preview="{{ preview_url | escape }}"
+        data-thumb="{{ thumb_url | escape }}"
+      >
+        {% if preview_url != blank %}
+          <img
+            src="{{ thumb_url | default: preview_url }}"
+            alt=""
+            class="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+            loading="lazy"
+            decoding="async"
+          >
+        {% else %}
+          <div class="flex h-full w-full items-center justify-center text-base-content/40">
+            <i class="ri-file-line text-3xl"></i>
+          </div>
+        {% endif %}
+        {% unless can_access %}
+          <span class="absolute top-1.5 right-1.5 flex size-6 items-center justify-center rounded-full bg-warning text-warning-content shadow-sm">
+            <i class="ri-lock-2-line text-xs"></i>
+          </span>
+        {% endunless %}
+      </a>
+    {% endif %}
+  {% else %}
+    <div class="col-span-full w-full py-12 bg-base-100 rounded-lg">
+      <div class="text-center">
+        <i class="ri-folder-open-line text-6xl text-base-content/30 mb-4"></i>
+        <p class="text-base-content/70 text-lg">{{ "snippets.attachments.empty.title" | t: "暂无文件" }}</p>
+        <p class="text-base-content/50 text-sm mt-2">{{ "snippets.attachments.empty.description" | t: "当前筛选条件下没有找到任何资源" }}</p>
+      </div>
+    </div>
+  {% endfor %}
+</div>

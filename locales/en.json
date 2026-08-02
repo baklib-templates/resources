@@ -26,6 +26,17 @@
           "video": "Video",
           "audio": "Audio",
           "other": "Other"
+        },
+        "batch": {
+          "select_all": "Select all",
+          "selected_prefix": "Selected",
+          "selected_suffix": "items",
+          "download_all": "Download all",
+          "empty": "Please select resources to download",
+          "success": "Download started. Check your browser downloads.",
+          "fail": "Download failed. Please try again later.",
+          "partial": "Some downloads failed: %s succeeded, %f failed",
+          "no_access": "No download permission"
         }
       },
       "grid": {
@@ -265,8 +276,8 @@
         "size_1_10_gb": "1GB-10GB",
         "size_gt_10_gb": ">10GB",
         "tag_filter": "Tag Filter",
-        "tag_filter_1": "Tag Category 1",
-        "tag_filter_2": "Tag Category 2"
+        "tag_filter_1": "Tags",
+        "resource_types": "Resource type"
       },
       "actions": {
         "search": "Search",
@@ -289,6 +300,19 @@
         "title": "Resource Details",
         "open_full_page": "Open full page",
         "close": "Close"
+      },
+      "gallery": {
+        "viewer": "Photo gallery",
+        "prev": "Previous",
+        "next": "Next",
+        "prev_page": "Previous page",
+        "next_page": "Next page",
+        "collapse_list": "Collapse list",
+        "expand_list": "Expand list",
+        "photo_info": "Photo info",
+        "open_detail": "Open detail",
+        "scroll_thumbs_prev": "Scroll thumbnails left",
+        "scroll_thumbs_next": "Scroll thumbnails right"
       }
     }
   }

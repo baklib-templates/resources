@@ -14,6 +14,7 @@
     "theme_preview_images": [
       "images/theme/${lang}/cover.png",
       "images/theme/${lang}/index.png",
+      "images/theme/${lang}/index-gallery.png",
       "images/theme/${lang}/channel.png",
       "images/theme/${lang}/page.png"
     ],
@@ -78,6 +79,14 @@
         "width": 240,
         "label": "t:schema.generic.settings.logo_url.label",
         "info": "t:schema.generic.settings.logo_url.info"
+      },
+      {
+        "id": "resource_types",
+        "type": "textarea",
+        "label": "t:schema.resource_settings.resource_types.label",
+        "info": "t:schema.resource_settings.resource_types.info",
+        "rows": 6,
+        "default": "品牌\n产品\n案例\n素材"
       }
     ]
   },

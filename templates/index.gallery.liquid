@@ -1,7 +1,7 @@
 {% schema %}
   {
-    "name": "t:schema.templates.index.name",
-    "description": "t:schema.templates.index.description",
+    "name": "t:schema.templates.index.gallery.name",
+    "description": "t:schema.templates.index.gallery.description",
     "thumb_url": "images/theme/${lang}/index.png",
     "preview_image_urls": [
       "images/theme/${lang}/index.png"
@@ -78,7 +78,15 @@
     sizeMax: '',
     dateStart: '',
     dateEnd: '',
-    viewMode: 'grid',
+    viewMode: 'gallery',
+    galleryOpen: false,
+    galleryDetailOpen: false,
+    galleryItems: [],
+    galleryIndex: 0,
+    galleryThumbsCollapsed: false,
+    galleryPrevPage: null,
+    galleryNextPage: null,
+    galleryPendingOpen: null,
     tagInput: '',
     showAdvancedFilters: false,
     fileTypes: [
@@ -95,8 +103,8 @@
     init() {
       this.isCollapsed = (localStorage.getItem('sidebar-collapsed-status') || 'true') === 'true';
       this.attachmentsQuery = this.$getQueryParams(window.location.href)
-      this.viewMode = this.normalizeViewMode(this.attachmentsQuery.view || localStorage.getItem('picture-portal-view'))
-      this.attachmentsQuery.view = this.viewMode
+      this.viewMode = 'gallery'
+      this.attachmentsQuery.view = 'gallery'
 
       this.normalizeTagsField('resource_tags');
       this.normalizeTagsField('resource_types');
@@ -155,8 +163,16 @@
 
       this.updateAttachmentsSrc();
       this.temPage = this.attachmentsQuery._page;
+      const attachmentsFrame = document.getElementById('attachments_frame');
+      if (attachmentsFrame) {
+        attachmentsFrame.addEventListener('turbo:frame-load', () => {
+          this.handleGalleryFrameLoad();
+        });
+      }
       this.$watch('attachmentsQuery', (newValue, oldValue) => {
-        this.closeDetail();
+        if (!this.galleryPendingOpen) {
+          this.closeDetail();
+        }
         this.searchKeyword = this.attachmentsQuery.search_q;
         if (this.skipNextWatch) {
           this.skipNextWatch = false;
@@ -172,8 +188,8 @@
       window.addEventListener('popstate', () => {
         this.skipNextWatch = true;
         this.attachmentsQuery = this.$getQueryParams(window.location.href);
-        this.viewMode = this.normalizeViewMode(this.attachmentsQuery.view || localStorage.getItem('picture-portal-view'));
-        this.attachmentsQuery.view = this.viewMode;
+        this.viewMode = 'gallery';
+        this.attachmentsQuery.view = 'gallery';
         this.normalizeTagsField('resource_tags');
         this.normalizeTagsField('resource_types');
         // 同步 file_type 为数组
@@ -260,27 +276,135 @@
     },
     openDetail(item) {
       if (this.detailOpenMode === 'detail_page') return;
-      this.attachmentTitle = item.title;
-      this.detailPageUrl = item.url;
-      this.attachmentSidebarSrc = this.$buildUrl(this.attachmentDetailBaseSrc, { full_slug: item.full_slug, view: 'sidebar' });
-      this.attachmentModalSrc = this.$buildUrl(this.attachmentDetailBaseSrc, { full_slug: item.full_slug, view: 'sidebar' });
-      this.showDetail = true;
-
-      // 移动端打开 modal
-      if (window.innerWidth < 768) {
-        const modal = document.getElementById('mobile-detail-modal');
-        if (modal) {
-          modal.showModal();
-        }
+      this.collectGalleryItems();
+      this.readGalleryPagination();
+      const slug = item.full_slug;
+      const idx = this.galleryItems.findIndex((g) => g.full_slug === slug);
+      this.galleryIndex = idx >= 0 ? idx : 0;
+      if (idx < 0 && item) {
+        this.galleryItems.unshift({
+          full_slug: item.full_slug,
+          title: item.title || '',
+          url: item.url || '',
+          preview: item.preview || '',
+          thumb: item.thumb || item.preview || ''
+        });
+        this.galleryIndex = 0;
       }
+      this.syncGalleryAttachment(this.galleryCurrent());
+      this.galleryDetailOpen = false;
+      this.galleryOpen = true;
+      this.showDetail = true;
+      document.documentElement.classList.add('overflow-hidden');
+      this.$nextTick(() => this.galleryScrollActiveThumbIntoView());
+    },
+    collectGalleryItems() {
+      const nodes = document.querySelectorAll('#attachments_frame [data-gallery-item]');
+      this.galleryItems = Array.from(nodes).map((el) => ({
+        full_slug: el.dataset.fullSlug || '',
+        title: el.dataset.title || '',
+        url: el.dataset.url || '',
+        preview: el.dataset.preview || '',
+        thumb: el.dataset.thumb || el.dataset.preview || ''
+      }));
+    },
+    readGalleryPagination() {
+      const root = document.querySelector('#attachments_frame [data-gallery-pagination]');
+      const parsePage = (value) => {
+        const n = parseInt(value, 10);
+        return Number.isFinite(n) && n > 0 ? n : null;
+      };
+      this.galleryPrevPage = parsePage(root && root.dataset.galleryPrevPage);
+      this.galleryNextPage = parsePage(root && root.dataset.galleryNextPage);
+    },
+    galleryCurrent() {
+      return this.galleryItems[this.galleryIndex] || null;
+    },
+    syncGalleryAttachment(item) {
+      if (!item) return;
+      this.attachmentTitle = item.title || '';
+      this.detailPageUrl = item.url || '';
+      this.attachmentSidebarSrc = this.$buildUrl(this.attachmentDetailBaseSrc, { full_slug: item.full_slug, view: 'sidebar' });
+      this.attachmentModalSrc = this.attachmentSidebarSrc;
+    },
+    galleryGoTo(index) {
+      if (index < 0 || index >= this.galleryItems.length) return;
+      this.galleryIndex = index;
+      this.syncGalleryAttachment(this.galleryCurrent());
+      this.$nextTick(() => this.galleryScrollActiveThumbIntoView());
+    },
+    galleryPrev() {
+      if (this.galleryIndex <= 0) {
+        if (this.galleryPrevPage) {
+          this.galleryGoToPage(this.galleryPrevPage, 'last');
+        }
+        return;
+      }
+      this.galleryGoTo(this.galleryIndex - 1);
+    },
+    galleryNext() {
+      if (this.galleryIndex >= this.galleryItems.length - 1) {
+        if (this.galleryNextPage) {
+          this.galleryGoToPage(this.galleryNextPage, 'first');
+        }
+        return;
+      }
+      this.galleryGoTo(this.galleryIndex + 1);
+    },
+    galleryGoToPage(page, focus) {
+      if (!page) return;
+      this.galleryPendingOpen = { focus: focus || 'first' };
+      this.galleryDetailOpen = false;
+      if (page === 1) {
+        delete this.attachmentsQuery._page;
+      } else {
+        this.attachmentsQuery._page = page;
+      }
+    },
+    handleGalleryFrameLoad() {
+      if (!this.galleryPendingOpen) return;
+      const focus = this.galleryPendingOpen.focus || 'first';
+      this.galleryPendingOpen = null;
+      this.collectGalleryItems();
+      this.readGalleryPagination();
+      if (!this.galleryItems.length) {
+        this.closeDetail();
+        return;
+      }
+      this.galleryIndex = focus === 'last' ? this.galleryItems.length - 1 : 0;
+      this.syncGalleryAttachment(this.galleryCurrent());
+      this.galleryOpen = true;
+      this.showDetail = true;
+      document.documentElement.classList.add('overflow-hidden');
+      this.$nextTick(() => this.galleryScrollActiveThumbIntoView());
+    },
+    galleryScrollThumbs(direction) {
+      const el = this.$refs.galleryThumbs;
+      if (!el) return;
+      el.scrollBy({ left: direction * Math.max(160, el.clientWidth * 0.6), behavior: 'smooth' });
+    },
+    galleryScrollActiveThumbIntoView() {
+      const el = this.$refs.galleryThumbs;
+      if (!el) return;
+      const active = el.querySelector('[data-gallery-thumb-index=\'' + this.galleryIndex + '\']');
+      if (active && typeof active.scrollIntoView === 'function') {
+        active.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    },
+    openGalleryDetailPanel() {
+      this.syncGalleryAttachment(this.galleryCurrent());
+      this.galleryDetailOpen = true;
     },
     closeDetail() {
       this.showDetail = false;
+      this.galleryOpen = false;
+      this.galleryDetailOpen = false;
+      this.galleryPendingOpen = null;
       this.detailPageUrl = '';
       this.attachmentSidebarSrc = '';
       this.attachmentModalSrc = '';
+      document.documentElement.classList.remove('overflow-hidden');
 
-      // 移动端关闭 modal
       const modal = document.getElementById('mobile-detail-modal');
       if (modal) {
         modal.close();
@@ -516,17 +640,15 @@
       this.showAdvancedFilters = !this.showAdvancedFilters;
     },
     normalizeViewMode(view) {
-      return view === 'list' ? 'list' : 'grid';
+      return 'gallery';
     },
     setViewMode(view) {
-      const normalizedView = this.normalizeViewMode(view);
-      this.viewMode = normalizedView;
-      this.attachmentsQuery.view = normalizedView;
-      localStorage.setItem('picture-portal-view', normalizedView);
+      this.viewMode = 'gallery';
+      this.attachmentsQuery.view = 'gallery';
       this.updateAttachmentsSrc(true);
     },
     isViewMode(view) {
-      return this.viewMode === this.normalizeViewMode(view);
+      return view === 'gallery';
     },
     setSortByEditedAt() {
       this.attachmentsQuery.sort = '-edited_at';
@@ -575,38 +697,15 @@
       {% render 'channel_section', page: page %}
     {% endif %}
 
-    <!-- main content section: settings detail_open_mode -->
+    <!-- main content section: gallery lightbox -->
     {% if detail_open_mode == 'detail_page' %}
-      {% render 'index/main_content' %}
+      {% render 'index/main_content', gallery_layout: true %}
     {% else %}
       <div class="flex h-full">
-        <div class="flex-1">
-          {% render 'index/main_content' %}
-        </div>
-
-        <div class="w-96 hidden lg:block" x-show="showDetail" x-cloak>
-          {% render 'index/inner_detail', variant: 'sidebar', alpine_src_var: 'attachmentSidebarSrc' %}
+        <div class="flex-1 min-w-0">
+          {% render 'index/main_content', gallery_layout: true %}
         </div>
       </div>
-
-      <dialog id="mobile-detail-modal" class="modal lg:hidden">
-        <div class="modal-box w-screen h-screen max-w-none max-h-none rounded-none p-0 flex flex-col">
-          <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200">
-            <div class="font-semibold text-gray-900 truncate" x-text="attachmentTitle || '{{ 'templates.index.detail.title' | t: '资源详情' }}'"></div>
-            <form method="dialog">
-              <button type="submit" class="btn btn-ghost btn-sm">
-                <i class="ri-close-line text-lg"></i>
-              </button>
-            </form>
-          </div>
-          <div class="flex-1 min-h-0 p-0">
-            {% render 'index/inner_detail', variant: 'dialog', alpine_src_var: 'attachmentModalSrc' %}
-          </div>
-        </div>
-        <form method="dialog" class="modal-backdrop">
-          <button>{{ "templates.index.detail.close" | t: "关闭" }}</button>
-        </form>
-      </dialog>
     {% endif %}
 
     <div class="flex-0">
@@ -614,4 +713,8 @@
     </div>
 
   </main>
+
+  {% unless detail_open_mode == 'detail_page' %}
+    {% render 'index/gallery_lightbox' %}
+  {% endunless %}
 </div>

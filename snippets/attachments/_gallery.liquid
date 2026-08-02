@@ -1,5 +1,6 @@
 {% comment %}
   画廊网格：仅展示预览图，无标题/标签/大小/日期。
+  Smart Cover：统一 1:1 格子；同图 blur 铺底 + 前景 object-contain。
   卡片带 data-gallery-*，供 lightbox 收集当前列表。
 {% endcomment %}
 <div
@@ -29,11 +30,13 @@
       {% assign thumb_url = item.settings.cover %}
     {% endif %}
 
+    {% assign _thumb_src = thumb_url | default: preview_url %}
+
     {% if _detail_open_mode == 'modal' %}
       <button
         type="button"
         id="item-{{ item.full_slug | replace: '/', '-' | replace: '.', '-' }}"
-        class="gallery-card relative aspect-video overflow-hidden bg-base-300 cursor-pointer group border-0 p-0 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        class="gallery-card relative aspect-square overflow-hidden bg-base-300 cursor-pointer group border-0 p-0 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         data-gallery-item
         data-full-slug="{{ item.full_slug | escape }}"
         data-title="{{ item.link_text | escape }}"
@@ -48,11 +51,19 @@
           thumb: $el.dataset.thumb
         })"
       >
-        {% if preview_url != blank %}
+        {% if _thumb_src != blank %}
           <img
-            src="{{ thumb_url | default: preview_url }}"
+            src="{{ _thumb_src }}"
             alt=""
-            class="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+            aria-hidden="true"
+            class="absolute inset-0 h-full w-full scale-125 object-cover blur-2xl opacity-60"
+            loading="lazy"
+            decoding="async"
+          >
+          <img
+            src="{{ _thumb_src }}"
+            alt=""
+            class="relative z-10 h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
             loading="lazy"
             decoding="async"
           >
@@ -70,7 +81,7 @@
           </div>
         {% endif %}
         {% unless can_access %}
-          <span class="absolute top-1.5 right-1.5 flex size-6 items-center justify-center rounded-full bg-warning text-warning-content shadow-sm">
+          <span class="absolute top-1.5 right-1.5 z-20 flex size-6 items-center justify-center rounded-full bg-warning text-warning-content shadow-sm">
             <i class="ri-lock-2-line text-xs"></i>
           </span>
         {% endunless %}
@@ -80,7 +91,7 @@
         id="item-{{ item.full_slug | replace: '/', '-' | replace: '.', '-' }}"
         href="{{ item.url }}"
         data-turbo="false"
-        class="gallery-card relative aspect-video overflow-hidden bg-base-300 cursor-pointer group block"
+        class="gallery-card relative aspect-square overflow-hidden bg-base-300 cursor-pointer group block"
         data-gallery-item
         data-full-slug="{{ item.full_slug | escape }}"
         data-title="{{ item.link_text | escape }}"
@@ -88,11 +99,19 @@
         data-preview="{{ preview_url | escape }}"
         data-thumb="{{ thumb_url | escape }}"
       >
-        {% if preview_url != blank %}
+        {% if _thumb_src != blank %}
           <img
-            src="{{ thumb_url | default: preview_url }}"
+            src="{{ _thumb_src }}"
             alt=""
-            class="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+            aria-hidden="true"
+            class="absolute inset-0 h-full w-full scale-125 object-cover blur-2xl opacity-60"
+            loading="lazy"
+            decoding="async"
+          >
+          <img
+            src="{{ _thumb_src }}"
+            alt=""
+            class="relative z-10 h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
             loading="lazy"
             decoding="async"
           >
@@ -102,7 +121,7 @@
           </div>
         {% endif %}
         {% unless can_access %}
-          <span class="absolute top-1.5 right-1.5 flex size-6 items-center justify-center rounded-full bg-warning text-warning-content shadow-sm">
+          <span class="absolute top-1.5 right-1.5 z-20 flex size-6 items-center justify-center rounded-full bg-warning text-warning-content shadow-sm">
             <i class="ri-lock-2-line text-xs"></i>
           </span>
         {% endunless %}

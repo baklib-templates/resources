@@ -1,20 +1,20 @@
-<div id="main-content" class="flex-1 grid grid-rows-[auto_1fr] h-full px-2 md:px-4 pt-2">
-  <div class="flex-0 sticky top-2 bg-gray-50 z-1">
+<div id="main-content" class="flex flex-col w-full min-w-0 px-2 md:px-4">
+  <div class="flex-0 sticky top-0 md:pt-2 bg-gray-50 z-1">
     <!-- 筛选区域 -->
     <div class="flex-0 bg-white rounded-lg shadow-sm p-3 md:p-6 mb-4 space-y-2 md:space-y-4 text-sm">
-      <!-- 关键词搜索和操作按钮 -->
-      <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3 md:gap-4"
+      <!-- 关键词搜索和操作按钮：移动端与 PC 同一行 -->
+      <div class="flex flex-row items-center justify-between gap-2 md:gap-4"
         :class="showAdvancedFilters ? '': 'mb-0'">
-        <div class="flex flex-col md:flex-row md:items-start flex-1 gap-2 md:gap-0">
-          <span class="hidden md:inline-block w-18 md:w-24 shrink-0 text-gray-500 pt-1.5">{{
+        <div class="flex flex-row items-center flex-1 min-w-0 gap-2 md:gap-0">
+          <span class="hidden md:inline-block w-18 md:w-24 shrink-0 text-gray-500">{{
             "templates.index.filters.keyword" | t: "关键词" }}</span>
-          <div class="flex-1 flex flex-wrap gap-3 items-center w-full">
-            <div class="join w-full md:max-w-lg">
-              <input type="text" class="input input-bordered input-sm join-item flex-1 bg-gray-50 h-9 text-sm"
+          <div class="flex-1 min-w-0 flex items-center w-full">
+            <div class="join w-full md:max-w-lg min-w-0">
+              <input type="text" class="input input-bordered input-sm join-item flex-1 min-w-0 bg-gray-50 h-9 text-sm"
                 placeholder='{{ "templates.index.filters.keyword_placeholder" | t: "输入关键词搜索资源..." }}'
                 x-model="searchKeyword" @keydown.enter.prevent="submitSearch">
               <button
-                class="btn btn-sm border-gray-300 text-gray-600 hover:bg-gray-50 hover:text-primary hover:border-gray-300 join-item h-9 min-h-0 px-3 md:px-4"
+                class="btn btn-sm border-gray-300 text-gray-600 hover:bg-gray-50 hover:text-primary hover:border-gray-300 join-item h-9 min-h-0 px-3 md:px-4 shrink-0"
                 @click="submitSearch">
                 <i class="ri-search-2-line"></i> <span class="hidden sm:inline">{{ "templates.index.actions.search" | t:
                   "搜索" }}</span>
@@ -22,17 +22,17 @@
             </div>
           </div>
         </div>
-        <!-- 重置和高级筛选按钮 -->
-        <div class="flex items-center gap-2 md:gap-1 shrink-0 justify-end">
-          <button class="btn btn-sm btn-link text-gray-600 hover:text-red-700 hover:bg-red-50 px-2 md:px-4"
-            @click="resetFilters">
-            {{ "templates.index.actions.reset" | t: "重置" }}
-          </button>
-          <button class="btn btn-sm btn-link px-2 md:px-4"
+        <!-- 筛选（主操作）在前，重置（次要）在后 -->
+        <div class="flex items-center gap-1 md:gap-1 shrink-0">
+          <button class="btn btn-sm btn-link px-1.5 md:px-4"
             :class="showAdvancedFilters ? 'btn-primary' : 'btn-ghost text-gray-600 hover:bg-gray-100'"
             @click="toggleAdvancedFilters">
             <span class="hidden sm:inline">{{ "templates.index.actions.advanced_filters" | t: "高级筛选" }}</span>
             <span class="sm:hidden">{{ "templates.index.actions.filters" | t: "筛选" }}</span>
+          </button>
+          <button class="btn btn-sm btn-link text-gray-600 hover:text-red-700 hover:bg-red-50 px-1.5 md:px-4"
+            @click="resetFilters">
+            {{ "templates.index.actions.reset" | t: "重置" }}
           </button>
         </div>
       </div>
@@ -174,21 +174,30 @@
     <div class="flex-0 flex justify-between items-center pb-4">
       <!-- 排序按钮 -->
       <div class="flex gap-2">
-        <button @click="setSortByEditedAt()" class="btn btn-outline btn-sm gap-2 shadow-none"
-          :class="isSortByEditedAt() ? 'bg-white border-gray-200 text-primary' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-primary hover:border-gray-300'">
-          <i class="ri-time-line"></i>
-          <span class="hidden md:block">{{ "templates.index.sort.latest_uploaded" | t: "最新上传" }}</span>
-        </button>
-        <button @click="setSortByVisitsCount()" class="btn btn-outline btn-sm gap-2 shadow-none"
-          :class="isSortByVisitsCount() ? 'bg-white border-gray-200 text-primary' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-primary hover:border-gray-300'">
-          <i class="ri-fire-line"></i>
-          <span class="hidden md:block">{{ "templates.index.sort.most_viewed" | t: "最多浏览" }}</span>
-        </button>
+        <div class="tooltip tooltip-bottom"
+          data-tip='{{ "templates.index.sort.latest_uploaded" | t: "最新上传" }}'>
+          <button type="button" @click="setSortByEditedAt()" class="btn btn-outline btn-sm gap-2 shadow-none"
+            :class="isSortByEditedAt() ? 'bg-white border-gray-200 text-primary' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-primary hover:border-gray-300'"
+            title='{{ "templates.index.sort.latest_uploaded" | t: "最新上传" }}'
+            aria-label='{{ "templates.index.sort.latest_uploaded" | t: "最新上传" }}'>
+            <i class="ri-time-line"></i>
+            <span class="hidden md:block">{{ "templates.index.sort.latest_uploaded" | t: "最新上传" }}</span>
+          </button>
+        </div>
+        <div class="tooltip tooltip-bottom"
+          data-tip='{{ "templates.index.sort.most_viewed" | t: "最多浏览" }}'>
+          <button type="button" @click="setSortByVisitsCount()" class="btn btn-outline btn-sm gap-2 shadow-none"
+            :class="isSortByVisitsCount() ? 'bg-white border-gray-200 text-primary' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-primary hover:border-gray-300'"
+            title='{{ "templates.index.sort.most_viewed" | t: "最多浏览" }}'
+            aria-label='{{ "templates.index.sort.most_viewed" | t: "最多浏览" }}'>
+            <i class="ri-fire-line"></i>
+            <span class="hidden md:block">{{ "templates.index.sort.most_viewed" | t: "最多浏览" }}</span>
+          </button>
+        </div>
       </div>
 
       <div class="flex gap-2">
-        {% comment %} 视图缩放按钮 {% endcomment %}
-        {% unless gallery_layout %}
+        {% comment %} 视图缩放按钮（含画廊首页） {% endcomment %}
         <div class="hidden md:flex items-center gap-2 mr-2 px-2 border border-gray-300 rounded-md bg-white">
           <i class="ri-zoom-out-line text-gray-500 dark:text-gray-400 text-sm"></i>
           <input type="range" min="50" max="200" value="100" step="5"
@@ -200,23 +209,30 @@
           <span class="text-xs text-gray-500 dark:text-gray-400 min-w-10 text-center"
             data-image-zoom-target="value">100%</span>
         </div>
-        {% endunless %}
 
-        {% comment %} 视图模式按钮 {% endcomment %}
-        {% unless gallery_layout %}
+        {% comment %} 视图模式按钮：网格/画廊 与 列表（列表含批量下载） {% endcomment %}
         <div class="flex gap-2">
-          <button class="btn btn-sm bg-white border-gray-300 text-gray-600 shadow-none"
-            :class="isViewMode('grid') ? 'border-primary text-primary' : 'hover:bg-gray-50 hover:text-primary hover:border-gray-300'"
-            @click="setViewMode('grid')">
-            <i class="ri-grid-line"></i>
-          </button>
-          <button class="btn btn-sm bg-white border-gray-300 text-gray-600 shadow-none"
-            :class="isViewMode('list') ? 'border-primary text-primary' : 'hover:bg-gray-50 hover:text-primary hover:border-gray-300'"
-            @click="setViewMode('list')">
-            <i class="ri-list-check"></i>
-          </button>
+          <div class="tooltip tooltip-bottom"
+            data-tip='{{ "templates.index.actions.grid_view" | t: "网格布局" }}'>
+            <button type="button" class="btn btn-sm bg-white border-gray-300 text-gray-600 shadow-none"
+              :class="isViewMode('grid') ? 'border-primary text-primary' : 'hover:bg-gray-50 hover:text-primary hover:border-gray-300'"
+              @click="setViewMode('grid')"
+              title='{{ "templates.index.actions.grid_view" | t: "网格布局" }}'
+              aria-label='{{ "templates.index.actions.grid_view" | t: "网格布局" }}'>
+              <i class="ri-grid-line"></i>
+            </button>
+          </div>
+          <div class="tooltip tooltip-bottom"
+            data-tip='{{ "templates.index.actions.list_view" | t: "列表布局" }}'>
+            <button type="button" class="btn btn-sm bg-white border-gray-300 text-gray-600 shadow-none"
+              :class="isViewMode('list') ? 'border-primary text-primary' : 'hover:bg-gray-50 hover:text-primary hover:border-gray-300'"
+              @click="setViewMode('list')"
+              title='{{ "templates.index.actions.list_view" | t: "列表布局" }}'
+              aria-label='{{ "templates.index.actions.list_view" | t: "列表布局" }}'>
+              <i class="ri-list-check"></i>
+            </button>
+          </div>
         </div>
-        {% endunless %}
 
         {% comment %} 排序规则 {% endcomment %}
         <div class="relative whitespace-nowrap" x-data="{
@@ -293,8 +309,8 @@
     </div>
   </div>
 
-  {% comment %} 图片网格区域 {% endcomment %}
-  <div class="flex-1 min-h-0 h-full overflow-y-auto">
+  {% comment %} 资源列表：随内容增高，与分页、footer 同属 main 滚动，避免占满视口把 footer 顶住底部 {% endcomment %}
+  <div class="flex-0 w-full min-w-0 pb-2">
     <turbo-frame id="attachments_frame" :src="attachmentsSrc">
       <div class="h-[200px] flex items-center justify-center text-gray-500 dark:text-gray-400">
         <span class="loading loading-spinner loading-md"></span>

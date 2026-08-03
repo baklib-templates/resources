@@ -14,9 +14,9 @@
         </button>
         <div class="absolute right-0 z-50 mt-2 hidden w-48 rounded-md border border-base-300 bg-base-100 shadow-lg" data-more-menu-target="menu">
           <div class="py-1 text-sm">
-            <a href="/-/search" class="flex items-center gap-2 px-4 py-2 hover:bg-base-200"><i class="ri-search-line"></i>全站搜索</a>
-            <a href="/" class="flex items-center gap-2 px-4 py-2 hover:bg-base-200"><i class="ri-link"></i>首页</a>
-            <a href="/s/about" class="flex items-center gap-2 px-4 py-2 hover:bg-base-200"><i class="ri-link"></i>关于本站</a>
+            <a href="{{ site.search_path }}" class="flex items-center gap-2 px-4 py-2 hover:bg-base-200"><i class="ri-search-line"></i>全站搜索</a>
+            <a href="{{ site.index_path }}" class="flex items-center gap-2 px-4 py-2 hover:bg-base-200"><i class="ri-link"></i>首页</a>
+            <a href="{{ statics['about'] }}" class="flex items-center gap-2 px-4 py-2 hover:bg-base-200"><i class="ri-link"></i>关于本站</a>
           </div>
         </div>
       </div>
@@ -64,7 +64,7 @@
             <p class="mb-2 text-sm font-medium opacity-80">数字资源门户</p>
             <h4 class="mb-3 text-2xl font-bold md:text-4xl">让每一份资源，触手可及</h4>
             <p class="mb-5 text-sm md:text-base opacity-90">统一收纳图片、视频、文档与音视频素材，支持栏目分类、标签检索与权限管控。</p>
-            <a href="/" class="btn btn-primary btn-sm">浏览资源库</a>
+            <a href="{{ site.index_path }}" class="btn btn-primary btn-sm">浏览资源库</a>
           </div>
         </div>
       </div>

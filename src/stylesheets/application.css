@@ -1,5 +1,9 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: light --default;
+}
+/* 仅 class 触发 dark:，模板永不加 .dark → 始终 light */
+@custom-variant dark (&:where(.dark, .dark *));
 @import 'viewerjs/dist/viewer.css';
 @import "toastify-js/src/toastify.css";
 

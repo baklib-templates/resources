@@ -510,7 +510,7 @@
       return minMatch && maxMatch;
     },
     resetFilters() {
-      window.location.href = '/';
+      window.location.href = '{{ site.index_path }}';
     },
     toggleAdvancedFilters() {
       this.showAdvancedFilters = !this.showAdvancedFilters;
@@ -558,7 +558,7 @@
   {% render 'aside', page: page %}
 
   {% comment %} 主内容区 {% endcomment %}
-  <main class="flex flex-col flex-1 h-full bg-gray-50 mx-auto max-w-screen min-h-[calc(100vh-80px)] overflow-y-auto scrollbar-hide" data-controller="image-zoom">
+  <main class="flex flex-col flex-1 min-h-0 bg-gray-50 mx-auto max-w-screen overflow-y-auto scrollbar-hide" data-controller="image-zoom">
 
     <!-- hero section: settings hero_html -->
     {% assign hero_html = page.settings.hero_html | presence %}
@@ -579,12 +579,12 @@
     {% if detail_open_mode == 'detail_page' %}
       {% render 'index/main_content' %}
     {% else %}
-      <div class="flex h-full">
-        <div class="flex-1">
+      <div class="flex items-start w-full min-w-0">
+        <div class="flex-1 min-w-0">
           {% render 'index/main_content' %}
         </div>
 
-        <div class="w-96 hidden lg:block" x-show="showDetail" x-cloak>
+        <div class="w-96 shrink-0 hidden lg:block sticky top-0 self-start h-[calc(100vh-80px)]" x-show="showDetail" x-cloak>
           {% render 'index/inner_detail', variant: 'sidebar', alpine_src_var: 'attachmentSidebarSrc' %}
         </div>
       </div>
@@ -609,7 +609,7 @@
       </dialog>
     {% endif %}
 
-    <div class="flex-0">
+    <div class="flex-0 mt-auto">
       {% render 'footer' %}
     </div>
 

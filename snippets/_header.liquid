@@ -1,4 +1,4 @@
-<header class="h-14 md:h-20 bg-white border-b border-gray-200 flex items-center justify-between px-4 md:px-8 shadow-sm">
+<header class="relative z-50 h-14 md:h-20 bg-white border-b border-gray-200 flex items-center justify-between px-4 md:px-8 shadow-sm">
   {% comment %} 左侧区域 {% endcomment %}
   <div class="flex items-center gap-2 md:gap-3">
     {% comment %} 展开/折叠左侧菜单 - 移动端显示 {% endcomment %}
@@ -10,18 +10,18 @@
 
     {% comment %} Logo {% endcomment %}
     {% if site.settings.logo_url %}
-      <a href="/" class="flex items-center">
+      <a href="{{ site.index_path }}" class="flex items-center">
         <img src="{{ site.settings.logo_url }}" alt="{{ site.name }}" class="h-8 md:h-10 w-auto">
       </a>
     {% else %}
       {% comment %} ICON {% endcomment %}
       {% if site.favicon_url %}
-        <a href="/" class="flex items-center">
+        <a href="{{ site.index_path }}" class="flex items-center">
           <img src="{{ site.favicon_url }}" alt="{{ site.name }}" class="h-8 md:h-10 w-auto">
         </a>
       {% else %}
         {% comment %} 移动端显示蓝色方块带R字母，桌面端显示三个蓝色条 {% endcomment %}
-        <a href="/" class="lg:hidden flex items-center justify-center w-8 h-8 bg-primary rounded-md text-white font-bold text-lg">
+        <a href="{{ site.index_path }}" class="lg:hidden flex items-center justify-center w-8 h-8 bg-primary rounded-md text-white font-bold text-lg">
           R
         </a>
         <div class="hidden lg:flex flex-col gap-0.5">
@@ -31,7 +31,7 @@
         </div>
       {% endif %}
       {% comment %} 站点名称 {% endcomment %}
-      <a href="/" class="text-lg md:text-2xl font-bold text-primary transition-colors">
+      <a href="{{ site.index_path }}" class="text-lg md:text-2xl font-bold text-primary transition-colors">
         {{ site.name | default: 'Resources' }}
       </a>
     {% endif %}

@@ -284,7 +284,9 @@
         "reset": "重置",
         "advanced_filters": "高级筛选",
         "filters": "筛选",
-        "zoom_workspace_images": "缩放工作区图片大小"
+        "zoom_workspace_images": "缩放工作区图片大小",
+        "grid_view": "网格布局",
+        "list_view": "列表布局"
       },
       "sort": {
         "latest_uploaded": "最新上传",

@@ -1,9 +1,15 @@
 <!doctype html>
-<html lang="{{ site.language }}" class="scroll-smooth">
+<html lang="{{ site.language }}" class="scroll-smooth" data-theme="light">
   <head>
+    <script>
+      document.documentElement.classList.remove('dark');
+      document.documentElement.dataset.theme = 'light';
+      try { localStorage.removeItem('dark-mode'); } catch (e) {}
+    </script>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="turbo-prefetch" content="false">
+    <meta name="theme-color" content="#ffffff">
     {% meta_tags %}
     {{ 'fonts/remixicon.css' | asset_url | stylesheet_tag: data-turbo-track: 'reload' }}
     {{ 'stylesheets/application.css' | asset_url | stylesheet_tag: data-turbo-track: 'reload' }}
@@ -13,6 +19,7 @@
 
     <style>
       :root {
+        color-scheme: light;
         /* daisyui css variables */
         --color-base-100: hsl(var(--theme-color-base-100));
         --color-base-200: hsl(var(--theme-color-base-200));
@@ -39,30 +46,6 @@
         --left-sidebar-width: {{ site.settings.left_sidebar_width.value | presence | default: '240px' }};
         --right-sidebar-width: {{ site.settings.right_sidebar_width.value | presence | default: '240px' }};
         --header-height: {{ site.settings.header_height.value | presence | default: '68px' }};
-      }
-
-      :root:has(input.theme-controller[value=dark]:checked),
-      [data-theme="dark"] {
-        --color-base-100: hsl(var(--theme-color-base-100-dark));
-        --color-base-200: hsl(var(--theme-color-base-200-dark));
-        --color-base-300: hsl(var(--theme-color-base-300-dark));
-        --color-base-content: hsl(var(--theme-color-base-content-dark));
-        --color-primary: hsl(var(--theme-color-primary-dark));
-        --color-primary-content: hsl(var(--theme-color-primary-content-dark));
-        --color-secondary: hsl(var(--theme-color-secondary-dark));
-        --color-secondary-content: hsl(var(--theme-color-secondary-content-dark));
-        --color-accent: hsl(var(--theme-color-accent-dark));
-        --color-accent-content: hsl(var(--theme-color-accent-content-dark));
-        --color-neutral: hsl(var(--theme-color-neutral-dark));
-        --color-neutral-content: hsl(var(--theme-color-neutral-content-dark));
-        --color-info: hsl(var(--theme-color-info-dark));
-        --color-info-content: hsl(var(--theme-color-info-content-dark));
-        --color-success: hsl(var(--theme-color-success-dark));
-        --color-success-content: hsl(var(--theme-color-success-content-dark));
-        --color-warning: hsl(var(--theme-color-warning-dark));
-        --color-warning-content: hsl(var(--theme-color-warning-content-dark));
-        --color-error: hsl(var(--theme-color-error-dark));
-        --color-error-content: hsl(var(--theme-color-error-content-dark));
       }
     </style>
   </head>

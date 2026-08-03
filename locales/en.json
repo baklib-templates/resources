@@ -284,7 +284,9 @@
         "reset": "Reset",
         "advanced_filters": "Advanced Filters",
         "filters": "Filters",
-        "zoom_workspace_images": "Zoom workspace image size"
+        "zoom_workspace_images": "Zoom workspace image size",
+        "grid_view": "Grid view",
+        "list_view": "List view"
       },
       "sort": {
         "latest_uploaded": "Latest Uploads",

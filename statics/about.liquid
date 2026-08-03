@@ -8,6 +8,7 @@
       { id: 'overview', label: '模板介绍' },
       { id: 'structure', label: '基本结构' },
       { id: 'quickstart', label: '快速开始' },
+      { id: 'gallery', label: '画廊主题' },
       { id: 'presets', label: '预设样式' }
     ],
     observeSections() {
@@ -29,7 +30,7 @@
     <div class="mx-auto max-w-7xl px-4 py-6 md:px-8">
       <p class="text-sm font-medium text-primary mb-1">Resources 主题</p>
       <h1 class="text-2xl font-bold text-base-content md:text-3xl">使用说明</h1>
-      <p class="mt-2 text-sm text-base-content/60">资源门户模板配置与预设样式参考</p>
+      <p class="mt-2 text-sm text-base-content/60">资源门户模板配置、画廊主题与预设样式参考</p>
     </div>
   </header>
 
@@ -63,7 +64,7 @@
           <div>
             <dt class="font-semibold text-base-content mb-1">描述</dt>
             <dd class="text-base-content/70 leading-relaxed">
-              专业的资源库站点模板，支持多级栏目分类导航、标签分类、多条件查询筛选，提供卡片与列表双视图，具备权限管理与资源下载有效期等能力。
+              专业的资源库站点模板，支持多级栏目分类导航、标签分类、多条件查询筛选；首页可选<strong>列表/网格</strong>或<strong>画廊照片墙</strong>两种主题样式，具备权限管理与资源下载有效期等能力。
             </dd>
           </div>
           <div>
@@ -72,6 +73,7 @@
               <ul class="mt-2 list-disc list-inside space-y-1">
                 <li>企业数字资产库、品牌素材中心</li>
                 <li>设计 / 运营团队的图片、视频、文档共享</li>
+                <li>图片为主的画廊 / 作品集展示门户</li>
                 <li>对外可检索的资源下载门户</li>
                 <li>按栏目与标签组织的大规模媒体文件管理</li>
               </ul>
@@ -92,12 +94,13 @@
               </tr>
             </thead>
             <tbody class="text-base-content/80">
-              <tr><td class="font-mono text-xs">templates/index.liquid</td><td>首页：栏目树、资源筛选列表、Hero / 栏目卡片</td></tr>
+              <tr><td class="font-mono text-xs">templates/index.liquid</td><td>首页（默认）：栏目树、筛选、网格/列表视图、Hero / 栏目卡片</td></tr>
+              <tr><td class="font-mono text-xs">templates/index.gallery.liquid</td><td>首页 · 画廊：照片墙网格；点击进入全屏大图轮播（可左右滑动）</td></tr>
               <tr><td class="font-mono text-xs">templates/channel.liquid</td><td>栏目页（访问后重定向至首页并带 channel 参数）</td></tr>
               <tr><td class="font-mono text-xs">templates/page.liquid</td><td>资源详情页：附件预览与下载</td></tr>
               <tr><td class="font-mono text-xs">config/settings_schema.json</td><td>站点全局设置（Logo、页头页脚 HTML、API 等）</td></tr>
               <tr><td class="font-mono text-xs">presets/*.html</td><td>HTML 预设片段，供设置项默认值或复制参考</td></tr>
-              <tr><td class="font-mono text-xs">statics/about.liquid</td><td>本说明页（/s/about）</td></tr>
+              <tr><td class="font-mono text-xs">statics/about.liquid</td><td>本说明页（{{ statics['about'] }}）</td></tr>
             </tbody>
           </table>
         </div>
@@ -125,6 +128,7 @@
             <h3 class="font-semibold text-base-content mb-2">2. 配置首页</h3>
             <p class="text-base-content/70 leading-relaxed mb-2">编辑<strong>首页</strong>页面设置：</p>
             <ul class="list-disc list-inside text-base-content/70 space-y-1">
+              <li><strong>主题样式</strong>：选择「首页」或「首页 · 画廊」（详见下方「画廊主题」）</li>
               <li><strong>Hero 区域 HTML</strong>：粘贴或引用 <code class="text-xs bg-base-200 px-1 rounded">preset:hero.html</code> 等预设</li>
               <li><strong>显示栏目导航卡片</strong>：勾选后展示一级栏目卡片（需为栏目配置封面）</li>
               <li><strong>在详情页面打开资源</strong>：控制点击资源后是页内预览还是跳转详情页</li>
@@ -152,6 +156,69 @@
             </ul>
           </li>
         </ol>
+      </section>
+
+      <section id="gallery" class="scroll-mt-24 rounded-lg border border-base-300 bg-base-100 p-6 md:p-8">
+        <h2 class="text-xl font-bold text-base-content mb-4">画廊主题</h2>
+        <p class="text-sm text-base-content/70 leading-relaxed mb-6">
+          适合以<strong>图片展示</strong>为主的资源站。首页以照片墙形式陈列资源；点击后进入全屏大图浏览，可左右滑动翻页，并支持查看照片信息与下载。
+        </p>
+
+        <div class="space-y-6 text-sm">
+          <div>
+            <h3 class="font-semibold text-base-content mb-2">如何切换</h3>
+            <ol class="list-decimal list-inside text-base-content/70 space-y-1.5 leading-relaxed">
+              <li>打开后台，进入站点的<strong>首页</strong>编辑页</li>
+              <li>在页面模板 / 主题样式中选择 <strong>首页 · 画廊</strong>（与默认「首页」二选一）</li>
+              <li>保存并发布后，前台首页即为照片墙布局</li>
+            </ol>
+            <p class="mt-3 text-base-content/60 leading-relaxed">
+              若需恢复网格与列表工具栏体验，将首页样式改回 <strong>首页</strong> 即可。两种样式共用同一套栏目、筛选与资源数据，仅展示方式不同。
+            </p>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-base-content mb-2">照片墙与全屏浏览</h3>
+            <ul class="list-disc list-inside text-base-content/70 space-y-1.5 leading-relaxed">
+              <li><strong>照片墙</strong>：以预览图网格展示当前栏目 / 筛选结果下的资源，突出画面本身</li>
+              <li><strong>全屏大图</strong>：点击某张照片进入深色全屏浏览；桌面端可用左右箭头，移动端可左右滑动切换</li>
+              <li><strong>缩略图条</strong>：全屏底部可展开 / 收起缩略图，快速跳到指定资源；支持翻到上一页 / 下一页结果</li>
+              <li><strong>照片信息</strong>：全屏右上角可打开侧栏，查看元数据并下载；也可从底栏「打开详情」进入完整详情页</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-base-content mb-2">与默认首页的差异</h3>
+            <div class="overflow-x-auto">
+              <table class="table table-sm w-full text-sm">
+                <thead>
+                  <tr class="text-base-content/60">
+                    <th>能力</th>
+                    <th>首页（默认）</th>
+                    <th>首页 · 画廊</th>
+                  </tr>
+                </thead>
+                <tbody class="text-base-content/80">
+                  <tr>
+                    <td>资源呈现</td>
+                    <td>网格 / 列表，可显示标题、标签等</td>
+                    <td>照片墙，突出预览图</td>
+                  </tr>
+                  <tr>
+                    <td>点击资源</td>
+                    <td>页内预览侧栏 / 弹层，或跳转详情页（由设置决定）</td>
+                    <td>进入全屏大图轮播</td>
+                  </tr>
+                  <tr>
+                    <td>批量下载</td>
+                    <td>列表视图中勾选下载</td>
+                    <td>可切换到列表视图后勾选下载</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section id="presets" class="scroll-mt-24 rounded-lg border border-base-300 bg-base-100 p-6 md:p-8">

@@ -5,7 +5,13 @@
 {% endcomment %}
 <div
   id="gallery-grid"
-  class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-1 bg-base-200 p-1"
+  class="grid bg-base-200 p-1 [--gallery-base-min:8rem] sm:[--gallery-base-min:9rem] md:[--gallery-base-min:10rem] lg:[--gallery-base-min:11rem] xl:[--gallery-base-min:12rem]"
+  style="
+    --gallery-gap: clamp(0.15rem, calc(0.25rem * var(--view-zoom, 1)), 0.75rem);
+    --gallery-min-size: clamp(5.5rem, calc(var(--gallery-base-min, 9rem) * var(--view-zoom, 1)), 18rem);
+    grid-template-columns: repeat(auto-fill, minmax(var(--gallery-min-size), 1fr));
+    gap: var(--gallery-gap);
+  "
   data-gallery-pagination
   data-gallery-prev-page="{{ paginate.prev_page }}"
   data-gallery-next-page="{{ paginate.next_page }}"
@@ -36,7 +42,7 @@
       <button
         type="button"
         id="item-{{ item.full_slug | replace: '/', '-' | replace: '.', '-' }}"
-        class="gallery-card relative aspect-square overflow-hidden bg-base-300 cursor-pointer group border-0 p-0 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        class="gallery-card relative isolate aspect-square overflow-hidden bg-base-300 cursor-pointer group border-0 p-0 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         data-gallery-item
         data-full-slug="{{ item.full_slug | escape }}"
         data-title="{{ item.link_text | escape }}"
@@ -91,7 +97,7 @@
         id="item-{{ item.full_slug | replace: '/', '-' | replace: '.', '-' }}"
         href="{{ item.url }}"
         data-turbo="false"
-        class="gallery-card relative aspect-square overflow-hidden bg-base-300 cursor-pointer group block"
+        class="gallery-card relative isolate aspect-square overflow-hidden bg-base-300 cursor-pointer group block"
         data-gallery-item
         data-full-slug="{{ item.full_slug | escape }}"
         data-title="{{ item.link_text | escape }}"

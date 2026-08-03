@@ -76,11 +76,11 @@
         },
         "hero_html": {
           "label": "Hero 区域 HTML",
-          "info": "首页主内容区顶部自定义 Hero 区块，支持 HTML 与有限的 Tailwind CSS 样式。仅在首页根路径 '/' 时显示"
+          "info": "首页主内容区顶部自定义 Hero 区块，支持 HTML 与有限的 Tailwind CSS 样式。仅在无 channel 参数的首页显示"
         },
         "show_channel_section": {
           "label": "首页显示栏目导航卡片",
-          "info": "勾选后在首页展示一级栏目的卡片导航（封面、标题、描述、子页面数量）。仅在首页根路径 '/' 时显示"
+          "info": "勾选后在首页展示一级栏目的卡片导航（封面、标题、描述、子页面数量）。仅在无 channel 参数的首页显示"
         }
       },
       "gallery": {
@@ -119,6 +119,25 @@
     "resource_types": {
       "label": "资源类型",
       "info": "每行一个类型，用于资源详情页多选与高级筛选。默认：品牌、产品、案例、素材"
+    }
+  },
+  "weixin_share": {
+    "title": "微信配置",
+    "weixin_app_id": {
+      "label": "开发者ID(AppID)",
+      "info": "<a href='https://mp.weixin.qq.com/cgi-bin/frame'>微信公众号/设置与开发/开发接口管理</a>中获取"
+    },
+    "weixin_app_secret": {
+      "label": "开发者密码(AppSecret)",
+      "info": "<a href='https://mp.weixin.qq.com/cgi-bin/frame'>微信公众号/设置与开发/开发接口管理</a>中获取"
+    },
+    "weixin_enabled": {
+      "label": "是否启用微信分享",
+      "info": "提供站点页面微信分享的能力</br>请在微信公众号中配置ip白名单（ip: ${service_ip}）, 配置后将有一段时间的生效延迟。</br>检查是否开启微信分享权限，微信公众号/设置与开发/开发接口管理: <a href='https://mp.weixin.qq.com/cgi-bin/frame'>网页服务/分享接口</a>。</br>分享链接是否为卡片：从卡片形式进入分享卡片形式，链接形式进入分享链接形式；网页初始链接分享可由公司的服务号中或收藏后进行卡片分享（此规则为微信分享限制）。"
+    },
+    "weixin_debug": {
+      "label": "是否开启debug提示",
+      "info": "请仅在配置阶段开启此选项；开启后在访问前端站点时若未正确配置微信分享将自动提示错误信息"
     }
   }
 }

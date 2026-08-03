@@ -39,8 +39,15 @@
     </div>
   </div>
 
-  <!-- 主图区 -->
-  <div class="relative flex min-h-0 flex-1 items-center justify-center px-2 sm:px-12">
+  <!-- 主图区：支持触控左右滑动翻页 -->
+  <div
+    class="relative flex min-h-0 flex-1 items-center justify-center px-2 sm:px-12"
+    style="touch-action: none;"
+    @touchstart.passive="gallerySwipeStart($event)"
+    @touchmove="gallerySwipeMove($event)"
+    @touchend.passive="gallerySwipeEnd()"
+    @touchcancel.passive="gallerySwipeCancel()"
+  >
     <button
       type="button"
       class="absolute left-1 sm:left-3 z-10 btn btn-circle btn-ghost text-neutral-content/80 hover:bg-neutral-content/10 disabled:opacity-20"
@@ -51,12 +58,17 @@
       <i class="ri-arrow-left-s-line text-3xl sm:text-4xl"></i>
     </button>
 
-    <div class="flex h-full w-full max-w-6xl items-center justify-center">
+    <div
+      class="flex h-full w-full max-w-6xl items-center justify-center will-change-transform"
+      :style="gallerySwiping
+        ? 'transform: translateX(' + gallerySwipeDeltaX + 'px); transition: none;'
+        : 'transform: translateX(0); transition: transform 0.2s ease-out;'"
+    >
       <template x-if="galleryCurrent()?.preview">
         <img
           :src="galleryCurrent().preview"
           :alt="galleryCurrent().title || ''"
-          class="max-h-full max-w-full object-contain select-none"
+          class="max-h-full max-w-full object-contain select-none pointer-events-none"
           draggable="false"
         >
       </template>
@@ -185,14 +197,30 @@
     x-transition:leave-end="translate-x-full"
   >
     <div class="flex h-full flex-col">
-      <div class="flex items-center justify-between border-b border-base-300 px-4 py-3">
+      <div class="flex items-center justify-between border-b border-base-300 px-4 py-3 shrink-0 relative z-10 bg-base-100">
         <div class="font-semibold truncate" x-text="attachmentTitle || '{{ 'templates.index.detail.title' | t: '资源详情' }}'"></div>
-        <button type="button" class="btn btn-ghost btn-sm btn-circle" @click="galleryDetailOpen = false">
-          <i class="ri-close-line text-lg"></i>
-        </button>
+        <div class="flex items-center shrink-0">
+          <a
+            :href="detailPageUrl || '#'"
+            class="btn btn-ghost btn-sm btn-circle"
+            :class="!detailPageUrl ? 'btn-disabled pointer-events-none opacity-40' : ''"
+            title="{{ 'templates.index.detail.open_full_page' | t: '打开完整页面' }}"
+          >
+            <i class="ri-external-link-line text-base"></i>
+          </a>
+          <button type="button" class="btn btn-ghost btn-sm btn-circle" @click="galleryDetailOpen = false" title="{{ 'templates.index.detail.close' | t: '关闭' }}">
+            <i class="ri-close-line text-lg"></i>
+          </button>
+        </div>
       </div>
-      <div class="min-h-0 flex-1">
-        {% render 'index/inner_detail', variant: 'sidebar', alpine_src_var: 'attachmentSidebarSrc' %}
+      {% comment %}
+        侧栏已有标题+关闭；inner_detail 的侧栏顶栏（含 py-2 + 标题行）会重复。
+        用负 margin 上移并裁切，只保留详情正文。高度约：py-2(8) + header(~52) ≈ 60px。
+      {% endcomment %}
+      <div class="min-h-0 flex-1 overflow-hidden">
+        <div class="-mt-[60px] h-[calc(100%+60px)]">
+          {% render 'index/inner_detail', variant: 'sidebar', alpine_src_var: 'attachmentSidebarSrc' %}
+        </div>
       </div>
     </div>
   </div>

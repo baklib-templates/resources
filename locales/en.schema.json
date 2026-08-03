@@ -120,5 +120,24 @@
       "label": "Resource types",
       "info": "One type per line. Used for multi-select on resource pages and advanced filters. Default: Brand, Product, Case, Asset."
     }
+  },
+  "weixin_share": {
+    "title": "WeChat configuration",
+    "weixin_app_id": {
+      "label": "Developer ID (AppID)",
+      "info": "<a href='https://mp.weixin.qq.com/cgi-bin/frame'>WeChat official account/setting and development/development interface management</a>"
+    },
+    "weixin_app_secret": {
+      "label": "Developer Password (AppSecret)",
+      "info": "Obtain from <a href='https://mp.weixin.qq.com/cgi-bin/frame'>WeChat Official Account / Settings & Development / Development Interface Management</a>"
+    },
+    "weixin_enabled": {
+      "label": "Do you want to enable WeChat sharing",
+      "info": "Provide the ability to share site pages on WeChat</br>Please configure the IP whitelist (ip: ${service_ip}) in the WeChat official account. After configuration, there will be a period of delay in effectiveness. </br>Check whether WeChat sharing permission is enabled, WeChat official account/setting and development/development interface management:<a href='https://mp.weixin.qq.com/cgi-bin/frame'> Web service/sharing interface</a>.</br>Whether the sharing link is a card: enter the sharing card form from the card form, and enter the sharing link form from the link form; The initial link sharing on the webpage can be done through the company's service account or by bookmarking and sharing cards (this rule is a WeChat sharing restriction)."
+    },
+    "weixin_debug": {
+      "label": "Do you want to enable debug prompt",
+      "info": "Please only enable this option during the configuration phase; If WeChat sharing is not configured correctly when accessing the front-end site after activation, an error message will be automatically prompted"
+    }
   }
 }

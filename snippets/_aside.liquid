@@ -1,4 +1,5 @@
-<div class="flex-0 drawer lg:drawer-open">
+{% comment %} z-50 必须加在 .drawer 根上：drawer-side 的 z-index 无法越过无层级的父级，否则会被后渲染的 main/画廊盖住 {% endcomment %}
+<div class="flex-0 drawer lg:drawer-open relative z-50">
   <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
   <div class="drawer-side">
     <label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label>

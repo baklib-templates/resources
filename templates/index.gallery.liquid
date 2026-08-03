@@ -87,6 +87,11 @@
     galleryPrevPage: null,
     galleryNextPage: null,
     galleryPendingOpen: null,
+    gallerySwipeStartX: 0,
+    gallerySwipeStartY: 0,
+    gallerySwipeDeltaX: 0,
+    gallerySwiping: false,
+    gallerySwipeAxis: null,
     tagInput: '',
     showAdvancedFilters: false,
     fileTypes: [
@@ -103,8 +108,8 @@
     init() {
       this.isCollapsed = (localStorage.getItem('sidebar-collapsed-status') || 'true') === 'true';
       this.attachmentsQuery = this.$getQueryParams(window.location.href)
-      this.viewMode = 'gallery'
-      this.attachmentsQuery.view = 'gallery'
+      this.viewMode = this.normalizeViewMode(this.attachmentsQuery.view || localStorage.getItem('picture-portal-view'))
+      this.attachmentsQuery.view = this.viewMode
 
       this.normalizeTagsField('resource_tags');
       this.normalizeTagsField('resource_types');
@@ -188,8 +193,8 @@
       window.addEventListener('popstate', () => {
         this.skipNextWatch = true;
         this.attachmentsQuery = this.$getQueryParams(window.location.href);
-        this.viewMode = 'gallery';
-        this.attachmentsQuery.view = 'gallery';
+        this.viewMode = this.normalizeViewMode(this.attachmentsQuery.view || localStorage.getItem('picture-portal-view'));
+        this.attachmentsQuery.view = this.viewMode;
         this.normalizeTagsField('resource_tags');
         this.normalizeTagsField('resource_types');
         // 同步 file_type 为数组
@@ -276,6 +281,11 @@
     },
     openDetail(item) {
       if (this.detailOpenMode === 'detail_page') return;
+      // 列表/网格视图：进入详情页（批量下载主要在列表勾选，不必走画廊灯箱）
+      if (this.viewMode !== 'gallery') {
+        if (item && item.url) window.location.href = item.url;
+        return;
+      }
       this.collectGalleryItems();
       this.readGalleryPagination();
       const slug = item.full_slug;
@@ -351,6 +361,48 @@
       }
       this.galleryGoTo(this.galleryIndex + 1);
     },
+    gallerySwipeStart(event) {
+      if (!this.galleryOpen || this.galleryDetailOpen) return;
+      if (!event.touches || event.touches.length !== 1) return;
+      this.gallerySwipeStartX = event.touches[0].clientX;
+      this.gallerySwipeStartY = event.touches[0].clientY;
+      this.gallerySwipeDeltaX = 0;
+      this.gallerySwiping = false;
+      this.gallerySwipeAxis = null;
+    },
+    gallerySwipeMove(event) {
+      if (!this.galleryOpen || this.galleryDetailOpen) return;
+      if (!event.touches || event.touches.length !== 1) return;
+      const dx = event.touches[0].clientX - this.gallerySwipeStartX;
+      const dy = event.touches[0].clientY - this.gallerySwipeStartY;
+      if (!this.gallerySwipeAxis) {
+        if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+        this.gallerySwipeAxis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      }
+      if (this.gallerySwipeAxis !== 'x') return;
+      event.preventDefault();
+      this.gallerySwiping = true;
+      this.gallerySwipeDeltaX = dx;
+    },
+    gallerySwipeEnd() {
+      if (!this.galleryOpen || this.galleryDetailOpen) return;
+      const dx = this.gallerySwipeDeltaX;
+      const axis = this.gallerySwipeAxis;
+      this.gallerySwipeDeltaX = 0;
+      this.gallerySwiping = false;
+      this.gallerySwipeAxis = null;
+      if (axis !== 'x') return;
+      if (dx > 60) {
+        this.galleryPrev();
+      } else if (dx < -60) {
+        this.galleryNext();
+      }
+    },
+    gallerySwipeCancel() {
+      this.gallerySwipeDeltaX = 0;
+      this.gallerySwiping = false;
+      this.gallerySwipeAxis = null;
+    },
     galleryGoToPage(page, focus) {
       if (!page) return;
       this.galleryPendingOpen = { focus: focus || 'first' };
@@ -396,6 +448,7 @@
       this.galleryDetailOpen = true;
     },
     closeDetail() {
+      this.gallerySwipeCancel();
       this.showDetail = false;
       this.galleryOpen = false;
       this.galleryDetailOpen = false;
@@ -634,21 +687,27 @@
       return minMatch && maxMatch;
     },
     resetFilters() {
-      window.location.href = '/';
+      window.location.href = '{{ site.index_path }}';
     },
     toggleAdvancedFilters() {
       this.showAdvancedFilters = !this.showAdvancedFilters;
     },
     normalizeViewMode(view) {
+      // 画廊首页主题：默认/网格按钮对应 gallery；可切到 list 做批量下载
+      if (view === 'list') return 'list';
       return 'gallery';
     },
     setViewMode(view) {
-      this.viewMode = 'gallery';
-      this.attachmentsQuery.view = 'gallery';
+      const normalizedView = this.normalizeViewMode(view);
+      this.viewMode = normalizedView;
+      this.attachmentsQuery.view = normalizedView;
+      localStorage.setItem('picture-portal-view', normalizedView);
       this.updateAttachmentsSrc(true);
     },
     isViewMode(view) {
-      return view === 'gallery';
+      // 工具栏「网格」按钮在画廊主题下表示 gallery
+      if (view === 'grid') return this.viewMode === 'gallery';
+      return this.viewMode === view;
     },
     setSortByEditedAt() {
       this.attachmentsQuery.sort = '-edited_at';
@@ -680,7 +739,7 @@
   {% render 'aside', page: page %}
 
   {% comment %} 主内容区 {% endcomment %}
-  <main class="flex flex-col flex-1 h-full bg-gray-50 mx-auto max-w-screen min-h-[calc(100vh-80px)] overflow-y-auto scrollbar-hide" data-controller="image-zoom">
+  <main class="flex flex-col flex-1 min-h-0 bg-gray-50 mx-auto max-w-screen overflow-y-auto scrollbar-hide" data-controller="image-zoom">
 
     <!-- hero section: settings hero_html -->
     {% assign hero_html = page.settings.hero_html | presence %}
@@ -701,14 +760,14 @@
     {% if detail_open_mode == 'detail_page' %}
       {% render 'index/main_content', gallery_layout: true %}
     {% else %}
-      <div class="flex h-full">
+      <div class="flex items-start w-full min-w-0">
         <div class="flex-1 min-w-0">
           {% render 'index/main_content', gallery_layout: true %}
         </div>
       </div>
     {% endif %}
 
-    <div class="flex-0">
+    <div class="flex-0 mt-auto">
       {% render 'footer' %}
     </div>
 

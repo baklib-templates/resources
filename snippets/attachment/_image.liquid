@@ -1,9 +1,9 @@
 {% comment %} 图片资源详情展示 {% endcomment %}
-<div class="grid grid-cols-1 lg:grid-cols-7 gap-6 mb-8">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
   <!-- Left Column - Image Preview (2/3 width) -->
-  <div class="lg:col-span-3">
+  <div class="lg:col-span-8">
     <div class="space-y-4 sticky top-6">
-      <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow flex items-center justify-center h-[20vh] md:min-h-[400px] md:h-[calc(100vh-300px)] relative" data-controller="images-viewer" x-data="{ openViewer: function() { this.$refs['images-viewer']?.click() } }">
+      <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow flex items-center justify-center min-h-[45vh] h-[55vh] md:min-h-[520px] md:h-[calc(100vh-180px)] relative" data-controller="images-viewer" x-data="{ openViewer: function() { this.$refs['images-viewer']?.click() } }">
         {% if entity and entity.previewable? %}
           <img src="{{ entity.preview.cover }}"
               alt="{{ page.link_text }}"
@@ -35,15 +35,15 @@
   <!-- Right Column - Resource Details Card (1/3 width) -->
   <div class="lg:col-span-4">
     <div class="space-y-4">
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
         <!-- Title Section -->
-        <div class="flex items-center gap-2 border-b border-gray-100 pb-4 mb-4">
+        <div class="flex items-center gap-2 border-b border-gray-100 pb-3 mb-3">
           <i class="ri-price-tag-3-line text-primary"></i>
           <span class="font-medium">{{ "snippets.attachment.common.metadata" | t: "文件元数据" }}</span>
         </div>
 
         <!-- Metadata Section -->
-        <div class="grid grid-cols-2 gap-4 mb-6">
+        <div class="grid grid-cols-2 gap-3 mb-4">
           <div class="flex items-center gap-2">
             <div class="w-[36px] h-[36px] rounded-sm bg-gray-100 flex justify-center items-center">
               <i class="ri-hard-drive-line"></i>
@@ -126,36 +126,40 @@
         </div>
 
         <!-- Action Buttons -->
-        <div class="text-center max-w-50 block">
+        <div class="text-center w-full">
           {% render 'attachment/download_btn', entity: entity, page: page %}
         </div>
       </div>
 
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-        <div class="flex items-center gap-2 border-b border-gray-100 pb-4 mb-4">
-          <i class="ri-price-tag-3-line text-primary"></i>
-          <span class="font-medium">{{ "snippets.attachment.common.tags" | t: "文件标签" }}</span>
+      {% if page.settings.resource_tags.size > 0 %}
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+          <div class="flex items-center gap-2 border-b border-gray-100 pb-3 mb-3">
+            <i class="ri-price-tag-3-line text-primary"></i>
+            <span class="font-medium">{{ "snippets.attachment.common.tags" | t: "文件标签" }}</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            {% for tag in page.settings.resource_tags %}
+              <span class="inline-flex items-center px-3 py-1 bg-primary/10 text-primary/80 rounded text-sm">{{ tag.name }}</span>
+            {% endfor %}
+          </div>
         </div>
-        <div class="flex flex-wrap gap-2 min-h-9">
-          {% for tag in page.settings.resource_tags %}
-            <span class="inline-flex items-center px-3 py-1 bg-primary/10 text-primary/80 rounded text-sm">{{ tag.name }}</span>
-          {% endfor %}
-        </div>
-      </div>
+      {% endif %}
 
       <!-- Resource Description -->
       {% assign has_content = page.settings.content | replace: '<p></p>', '' | present? %}
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <div class="flex items-center gap-2 border-b border-gray-100 pb-4 mb-4">
+      {% if has_content %}
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+          <div class="flex items-center gap-2 border-b border-gray-100 pb-3 mb-3">
             <i class="ri-article-line text-primary"></i>
             <span class="font-medium">{{ "snippets.attachment.common.description" | t: "文件描述" }}</span>
           </div>
           <section
-            class="ProseMirror prose prose-sm max-w-none dark:prose-invert prose-headings:mt-4 prose-headings:mb-2 prose-p:my-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-1 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg prose-img:my-4 min-h-9"
+            class="ProseMirror prose prose-sm max-w-none dark:prose-invert prose-headings:mt-4 prose-headings:mb-2 prose-p:my-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-1 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg prose-img:my-4"
             data-controller="link-target images-viewer">
             {{ page.settings.content }}
           </section>
         </div>
+      {% endif %}
     </div>
   </div>
 </div>

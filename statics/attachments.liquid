@@ -30,7 +30,7 @@
 {% assign file_type = params.file_type %}
 {% if params.channel %}
   {% assign parent_page = site.pages[params.channel] %}
-  {% assign base_pages = parent_page.pages_in_list %}
+  {% assign base_pages = parent_page.children_in_list %}
 {% else %}
   {% assign parent_page = site.pages['/'] %}
   {% assign base_pages = site.pages_in_list %}

@@ -12,11 +12,8 @@
     grid-template-columns: repeat(auto-fill, minmax(var(--gallery-min-size), 1fr));
     gap: var(--gallery-gap);
   "
+  data-attachments-list
   data-gallery-pagination
-  data-gallery-prev-page="{{ paginate.prev_page }}"
-  data-gallery-next-page="{{ paginate.next_page }}"
-  data-gallery-current-page="{{ paginate.current_page }}"
-  data-gallery-total-pages="{{ paginate.total_pages }}"
 >
   {% assign has_any_item = false %}
 
@@ -175,8 +172,8 @@
     {% endif %}
   {% endfor %}
 
-  {% unless has_any_item %}
-    <div class="col-span-full w-full py-12 bg-base-100 rounded-lg">
+  {% unless has_any_item or append_mode %}
+    <div class="col-span-full w-full py-12 bg-base-100 rounded-lg" data-attachments-empty>
       <div class="text-center">
         <i class="ri-folder-open-line text-6xl text-base-content/30 mb-4"></i>
         <p class="text-base-content/70 text-lg">{{ "snippets.attachments.empty.title" | t: "暂无文件" }}</p>

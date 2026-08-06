@@ -1,0 +1,36 @@
+{% comment %}
+  无限滚动哨兵：可观测元素 + 分页元数据；有下一页时显示加载中，否则显示已全部加载。
+  @param paginate
+{% endcomment %}
+<div
+  class="my-6 flex-0 flex flex-col items-center justify-center gap-2 px-2 text-center"
+  data-infinite-scroll-sentinel
+  data-next-page="{{ paginate.next_page }}"
+  data-current-page="{{ paginate.current_page }}"
+  data-total-pages="{{ paginate.total_pages }}"
+  data-total-count="{{ paginate.total_count }}"
+  data-loaded-to="{{ paginate.to }}"
+  aria-live="polite"
+>
+  {% if paginate.next_page %}
+    <div
+      class="flex items-center gap-2 text-sm text-base-content/60"
+      data-infinite-scroll-loading
+      hidden
+    >
+      <span class="loading loading-spinner loading-sm"></span>
+      <span>{{ "paginate.loading_more" | t: "加载更多…" }}</span>
+    </div>
+    <div class="h-8 w-full" aria-hidden="true"></div>
+  {% elsif paginate.total_count > 0 %}
+    <div class="text-xs text-base-content/60 md:text-sm">
+      {{ "paginate.records" | t: "总共" }}
+      <span class="font-semibold text-base-content">{{ paginate.total_count }}</span>
+      {{ "paginate.records" | t: "条记录" }}
+      {% if paginate.total_pages > 1 %}
+        <span class="text-base-content/40">·</span>
+        {{ "paginate.all_loaded" | t: "已全部加载" }}
+      {% endif %}
+    </div>
+  {% endif %}
+</div>

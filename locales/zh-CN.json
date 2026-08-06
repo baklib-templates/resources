@@ -175,7 +175,10 @@
     "previous": "上一页",
     "next": "下一页",
     "showing": "当前显示第",
-    "records": "条记录"
+    "records": "条记录",
+    "loading_more": "加载更多…",
+    "load_more": "加载更多",
+    "all_loaded": "已全部加载"
   },
   "shared": {
     "templates": {

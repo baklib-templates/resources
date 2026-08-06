@@ -255,6 +255,9 @@
             delete cleanedQuery[key];
           }
         });
+        // 无限滚动：列表始终从第 1 页加载，分页由滚动追加，不写入 URL
+        delete cleanedQuery._page;
+        delete cleanedQuery.append;
         this.attachmentsSrc = this.$buildUrl(this.attachmentsBaseSrc, cleanedQuery);
         if (push) this.$updateQuery(cleanedQuery);
       });
@@ -559,7 +562,7 @@
   {% render 'aside', page: page %}
 
   {% comment %} 主内容区 {% endcomment %}
-  <main class="flex flex-col flex-1 min-h-0 bg-gray-50 mx-auto max-w-screen overflow-y-auto scrollbar-hide" data-controller="image-zoom">
+  <main class="flex flex-col flex-1 min-h-0 bg-gray-50 mx-auto max-w-screen overflow-y-auto scrollbar-hide" data-controller="image-zoom infinite-scroll">
 
     <!-- hero section: settings hero_html -->
     {% assign hero_html = page.settings.hero_html | presence %}

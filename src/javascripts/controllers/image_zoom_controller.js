@@ -30,11 +30,15 @@ export default class extends Controller {
         this.applyZoom(this.getCurrentZoom())
       }
     }
+    this.handleAttachmentsAppended = () => {
+      this.applyZoom(this.getCurrentZoom())
+    }
 
     window.addEventListener("resize", this.handleResize)
     window.addEventListener("sidebar-collapsed-status-changed", this.handleResize)
     window.addEventListener("image-zoom:change", this.handleExternalZoom)
     document.addEventListener("turbo:frame-load", this.handleTurboFrameLoad)
+    document.addEventListener("attachments:appended", this.handleAttachmentsAppended)
   }
 
   viewTargetConnected() {
@@ -49,6 +53,7 @@ export default class extends Controller {
     window.removeEventListener("sidebar-collapsed-status-changed", this.handleResize)
     window.removeEventListener("image-zoom:change", this.handleExternalZoom)
     document.removeEventListener("turbo:frame-load", this.handleTurboFrameLoad)
+    document.removeEventListener("attachments:appended", this.handleAttachmentsAppended)
   }
 
   // 防抖函数

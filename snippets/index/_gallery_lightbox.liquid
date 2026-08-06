@@ -174,11 +174,11 @@
           class="relative h-14 w-20 shrink-0 overflow-hidden rounded-sm border-2 border-dashed border-neutral-content/40 bg-neutral-content/10 text-neutral-content/80 hover:bg-neutral-content/20 hover:border-neutral-content transition-colors flex flex-col items-center justify-center gap-0.5"
           x-show="galleryNextPage"
           x-cloak
-          @click="galleryGoToPage(galleryNextPage, 'first')"
-          :title="'{{ 'templates.index.gallery.next_page' | t: '下一页' }}'"
+          @click="requestLoadMoreAttachments().then(() => { collectGalleryItems(); readGalleryPagination(); })"
+          :title="'{{ 'paginate.load_more' | t: '加载更多' }}'"
         >
-          <i class="ri-arrow-right-double-line text-lg"></i>
-          <span class="text-[10px] leading-none">{{ 'templates.index.gallery.next_page' | t: '下一页' }}</span>
+          <i class="ri-add-line text-lg"></i>
+          <span class="text-[10px] leading-none">{{ 'paginate.load_more' | t: '加载更多' }}</span>
         </button>
       </div>
     </div>

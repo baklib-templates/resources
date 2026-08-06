@@ -2,6 +2,10 @@
 
 {% assign sort = params.sort %}
 {% assign view_mode = params.view | default: 'grid' %}
+{% assign is_append = false %}
+{% if params.append == '1' or params.append == 'true' %}
+  {% assign is_append = true %}
+{% endif %}
 {% if site.pages['/'].settings.detail_open_mode %}
   {% assign detail_open_mode = 'detail_page' %}
 {% else %}
@@ -38,10 +42,10 @@
 
 {% comment %}
   当前目录下的子栏目 → 文件夹（Finder / 资源管理器语义）。
-  关键词搜索时不混入文件夹，避免与全站文件结果叠在一起。
+  关键词搜索、追加加载（第 2 页起）不混入文件夹。
 {% endcomment %}
 {% assign folder_pages = parent_page.children_in_nav_menu | where: 'template_name', 'channel' %}
-{% if params.search_q != blank %}
+{% if params.search_q != blank or is_append %}
   {% assign folder_pages = nil %}
 {% endif %}
 
@@ -65,37 +69,48 @@
 {% endquery %}
 
 <turbo-frame id="attachments_frame">
-  <div
-    class="flex flex-col w-full min-w-0"
-    data-image-zoom-target="view"
-    style="--view-zoom: 1; --zoom-font: 1; --zoom-thumb: 1;"
-    x-cloak
-  >
-    {% render 'attachments/folder_breadcrumb', parent_page: parent_page, channel: params.channel %}
+  {% search filtered_pages, keywords: params.search_q, by_user: true, allow_empty_keywords: true %}
+    {% if sort %}
+      {% assign search_pages = search.pages | order_by: sort %}
+    {% else %}
+      {% assign search_pages = search.pages %}
+    {% endif %}
 
-    {% search filtered_pages, keywords: params.search_q, by_user: true, allow_empty_keywords: true %}
-      {% if sort %}
-        {% assign search_pages = search.pages | order_by: sort %}
-      {% else %}
-        {% assign search_pages = search.pages %}
-      {% endif %}
-
-      {% paginate_tag search_pages, per: 50 %}
-        <div class="flex-1">
+    {% paginate_tag search_pages, per: 50 %}
+      {% if is_append %}
+        {% comment %} 仅返回本页条目，供滚动追加 {% endcomment %}
+        <div data-infinite-scroll-page>
           {% if view_mode == 'list' %}
-            {% render 'attachments/list', filtered_pages: search_pages, folder_pages: folder_pages, detail_open_mode: detail_open_mode %}
+            {% render 'attachments/list', filtered_pages: search_pages, folder_pages: nil, detail_open_mode: detail_open_mode, append_mode: true %}
           {% elsif view_mode == 'gallery' %}
-            {% render 'attachments/gallery', filtered_pages: search_pages, folder_pages: folder_pages, detail_open_mode: detail_open_mode, paginate: paginate %}
+            {% render 'attachments/gallery', filtered_pages: search_pages, folder_pages: nil, detail_open_mode: detail_open_mode, paginate: paginate, append_mode: true %}
           {% else %}
-            {% render 'attachments/grid', filtered_pages: search_pages, folder_pages: folder_pages, detail_open_mode: detail_open_mode %}
+            {% render 'attachments/grid', filtered_pages: search_pages, folder_pages: nil, detail_open_mode: detail_open_mode, append_mode: true %}
           {% endif %}
+          {% render 'attachments/infinite_scroll_sentinel', paginate: paginate %}
         </div>
+      {% else %}
+        <div
+          class="flex flex-col w-full min-w-0"
+          data-image-zoom-target="view"
+          style="--view-zoom: 1; --zoom-font: 1; --zoom-thumb: 1;"
+          x-cloak
+        >
+          {% render 'attachments/folder_breadcrumb', parent_page: parent_page, channel: params.channel %}
 
-        {% comment %} 分页 {% endcomment %}
-        <div class="my-6 flex-0">
-          {% render 'paginate', paginate: paginate %}
+          <div class="flex-1">
+            {% if view_mode == 'list' %}
+              {% render 'attachments/list', filtered_pages: search_pages, folder_pages: folder_pages, detail_open_mode: detail_open_mode %}
+            {% elsif view_mode == 'gallery' %}
+              {% render 'attachments/gallery', filtered_pages: search_pages, folder_pages: folder_pages, detail_open_mode: detail_open_mode, paginate: paginate %}
+            {% else %}
+              {% render 'attachments/grid', filtered_pages: search_pages, folder_pages: folder_pages, detail_open_mode: detail_open_mode %}
+            {% endif %}
+          </div>
+
+          {% render 'attachments/infinite_scroll_sentinel', paginate: paginate %}
         </div>
-      {% endpaginate_tag %}
-    {% endsearch %}
-  </div>
+      {% endif %}
+    {% endpaginate_tag %}
+  {% endsearch %}
 </turbo-frame>

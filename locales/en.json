@@ -175,7 +175,10 @@
     "previous": "Previous",
     "next": "Next",
     "showing": "Showing",
-    "records": "records"
+    "records": "records",
+    "loading_more": "Loading more…",
+    "load_more": "Load more",
+    "all_loaded": "All loaded"
   },
   "shared": {
     "templates": {

@@ -55,7 +55,7 @@
         <div class="whitespace-nowrap hidden md:block">{{ "snippets.attachments.list.headers.created_at" | t: "创建时间" }}</div>
       </div>
 
-      <div class="divide-y divide-gray-100 dark:divide-gray-900">
+      <div class="divide-y divide-gray-100 dark:divide-gray-900" data-attachments-list>
         {% assign has_any_item = false %}
 
         {% for item in folder_pages %}
@@ -318,8 +318,8 @@
           </div>
         {% endfor %}
 
-        {% unless has_any_item %}
-          <div class="px-4 py-12">
+        {% unless has_any_item or append_mode %}
+          <div class="px-4 py-12" data-attachments-empty>
             <div class="text-center">
               <i class="ri-folder-open-line text-6xl text-gray-400 mb-4"></i>
               <p class="text-gray-600 dark:text-gray-400 text-lg">{{ "snippets.attachments.empty.title" | t: "暂无文件" }}</p>

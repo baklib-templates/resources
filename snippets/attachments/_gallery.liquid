@@ -18,7 +18,47 @@
   data-gallery-current-page="{{ paginate.current_page }}"
   data-gallery-total-pages="{{ paginate.total_pages }}"
 >
+  {% assign has_any_item = false %}
+
+  {% for item in folder_pages %}
+    {% assign has_any_item = true %}
+    {% assign folder_title = item.settings.title | default: item.link_text %}
+    {% assign folder_thumb = item.settings.thumb_url | presence %}
+    <a
+      href="{{ site.index_path }}?channel={{ item.full_slug }}"
+      class="gallery-card relative isolate aspect-square overflow-hidden bg-amber-50 cursor-pointer group block"
+      @click.prevent.stop="updateChannel('{{ item.full_slug }}'); if (typeof handleSidebarClick === 'function') handleSidebarClick();"
+    >
+      {% if folder_thumb %}
+        <img
+          src="{{ folder_thumb }}"
+          alt=""
+          aria-hidden="true"
+          class="absolute inset-0 h-full w-full scale-125 object-cover blur-2xl opacity-40"
+          loading="lazy"
+          decoding="async"
+        >
+        <img
+          src="{{ folder_thumb }}"
+          alt="{{ folder_title | escape }}"
+          class="relative z-10 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          loading="lazy"
+          decoding="async"
+        >
+      {% else %}
+        <div class="flex h-full w-full flex-col items-center justify-center gap-2 text-amber-500/80">
+          <i class="ri-folder-6-fill text-4xl"></i>
+          <span class="px-2 text-center text-xs font-medium text-base-content/70 line-clamp-2">{{ folder_title }}</span>
+        </div>
+      {% endif %}
+      <span class="absolute bottom-1.5 left-1.5 z-20 rounded bg-amber-500/90 px-1.5 py-0.5 text-[0.65rem] font-medium text-white">
+        {{ "snippets.attachments.grid.file_types.folder" | t: "文件夹" }}
+      </span>
+    </a>
+  {% endfor %}
+
   {% for item in filtered_pages %}
+    {% assign has_any_item = true %}
     {% assign entity = item.settings.asset %}
     {% assign can_access = item | can_access? %}
     {% assign _detail_open_mode = detail_open_mode | default: 'detail_page' %}
@@ -133,7 +173,9 @@
         {% endunless %}
       </a>
     {% endif %}
-  {% else %}
+  {% endfor %}
+
+  {% unless has_any_item %}
     <div class="col-span-full w-full py-12 bg-base-100 rounded-lg">
       <div class="text-center">
         <i class="ri-folder-open-line text-6xl text-base-content/30 mb-4"></i>
@@ -141,5 +183,5 @@
         <p class="text-base-content/50 text-sm mt-2">{{ "snippets.attachments.empty.description" | t: "当前筛选条件下没有找到任何资源" }}</p>
       </div>
     </div>
-  {% endfor %}
+  {% endunless %}
 </div>

@@ -1,0 +1,75 @@
+{% comment %}
+  文件夹路径面包屑（随 attachments turbo-frame 刷新）。
+  根目录、1 级与 2 级栏目不显示；仅进入 3 级及更深（channel 路径段数 > 2）时显示。
+  @param parent_page — 当前目录对应的页面（channel 或首页）
+  @param channel — params.channel，空表示根目录
+{% endcomment %}
+{% assign channel_path = channel | presence %}
+{% assign channel_depth = 0 %}
+{% if channel_path %}
+  {% assign channel_segments = channel_path | split: '/' %}
+  {% assign channel_depth = channel_segments.size %}
+{% endif %}
+
+{% if channel_depth > 2 %}
+{% assign crumbs = parent_page.breadcrumb | default: empty %}
+
+<nav
+  class="mb-3 flex min-w-0 items-center gap-1 overflow-x-auto whitespace-nowrap rounded-lg border border-base-300 bg-white px-3 py-2 text-sm shadow-sm"
+  aria-label="{{ 'snippets.attachments.folder_breadcrumb.label' | t: '当前位置' }}"
+>
+  <a
+    href="{{ site.index_path }}"
+    class="inline-flex shrink-0 items-center gap-1.5 rounded-md px-1.5 py-1 text-base-content/70 transition-colors hover:bg-base-200 hover:text-primary"
+    @click.prevent.stop="updateChannel(''); if (typeof handleSidebarClick === 'function') handleSidebarClick();"
+  >
+    <i class="ri-home-5-line text-base" aria-hidden="true"></i>
+    <span>{{ "statics.index.nav_tree.all_resources" | t: "全部资源" }}</span>
+  </a>
+
+  {% if crumbs.size > 0 %}
+    {% for crumb in crumbs %}
+      {% unless forloop.first %}
+        {% assign crumb_channel = crumb.full_slug | default: crumb.path %}
+        {% assign crumb_label = crumb.link_text | default: crumb.title | default: crumb_channel %}
+        <span class="shrink-0 text-base-content/35" aria-hidden="true">
+          <i class="ri-arrow-right-s-line text-base"></i>
+        </span>
+        {% if forloop.last %}
+          <span
+            class="inline-flex max-w-[12rem] items-center gap-1.5 truncate rounded-md px-1.5 py-1 font-medium text-base-content sm:max-w-xs"
+            aria-current="page"
+            title="{{ crumb_label | escape }}"
+          >
+            <i class="ri-folder-fill shrink-0 text-amber-500" aria-hidden="true"></i>
+            <span class="truncate">{{ crumb_label }}</span>
+          </span>
+        {% else %}
+          <a
+            href="{{ site.index_path }}?channel={{ crumb_channel }}"
+            class="inline-flex max-w-[10rem] items-center gap-1.5 truncate rounded-md px-1.5 py-1 text-base-content/70 transition-colors hover:bg-base-200 hover:text-primary sm:max-w-[14rem]"
+            title="{{ crumb_label | escape }}"
+            @click.prevent.stop="updateChannel('{{ crumb_channel }}'); if (typeof handleSidebarClick === 'function') handleSidebarClick();"
+          >
+            <i class="ri-folder-fill shrink-0 text-amber-500/80" aria-hidden="true"></i>
+            <span class="truncate">{{ crumb_label }}</span>
+          </a>
+        {% endif %}
+      {% endunless %}
+    {% endfor %}
+  {% elsif parent_page %}
+    {% assign fallback_label = parent_page.settings.title | default: parent_page.link_text %}
+    <span class="shrink-0 text-base-content/35" aria-hidden="true">
+      <i class="ri-arrow-right-s-line text-base"></i>
+    </span>
+    <span
+      class="inline-flex max-w-[12rem] items-center gap-1.5 truncate rounded-md px-1.5 py-1 font-medium text-base-content sm:max-w-xs"
+      aria-current="page"
+      title="{{ fallback_label | escape }}"
+    >
+      <i class="ri-folder-fill shrink-0 text-amber-500" aria-hidden="true"></i>
+      <span class="truncate">{{ fallback_label }}</span>
+    </span>
+  {% endif %}
+</nav>
+{% endif %}

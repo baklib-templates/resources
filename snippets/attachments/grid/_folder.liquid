@@ -1,0 +1,40 @@
+{% comment %} 文件夹类型（channel 栏目）— 网格视图 {% endcomment %}
+{% assign folder_title = item.settings.title | default: item.link_text %}
+{% assign folder_thumb = item.settings.thumb_url | presence %}
+{% assign folder_count = item.children_in_list | size %}
+
+<div class="relative aspect-video bg-amber-50 overflow-hidden">
+  {% if folder_thumb %}
+    <img
+      src="{{ folder_thumb }}"
+      alt="{{ folder_title | escape }}"
+      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+      loading="lazy"
+    >
+    <div class="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent"></div>
+  {% else %}
+    <div class="w-full h-full flex items-center justify-center">
+      <i class="ri-folder-6-fill text-5xl text-amber-400/90 group-hover:scale-110 transition-transform duration-300"></i>
+    </div>
+  {% endif %}
+
+  <div class="absolute top-2 right-2 px-1.5 py-0.5 rounded text-(length:--grid-badge-size) font-medium bg-amber-500/80 text-white backdrop-blur-[2px]">
+    {{ "snippets.attachments.grid.file_types.folder" | t: "文件夹" }}
+  </div>
+</div>
+
+<div class="p-4 flex flex-col flex-1 space-y-2">
+  <p class="font-medium text-(length:--grid-title-size) line-clamp-1 truncate flex items-center gap-1.5">
+    <i class="ri-folder-fill text-amber-500 shrink-0"></i>
+    {{ folder_title }}
+  </p>
+  <div class="flex overflow-hidden whitespace-nowrap items-center text-(length:--grid-meta-size) text-base-content/60">
+    <div>
+      {{ folder_count }} {{ "snippets.attachments.folder.items_unit" | t: "项" }}
+    </div>
+    {% if item.published_at %}
+      <div class='bg-gray-300 w-[1.5px] h-[15px] mx-2'></div>
+      <div>{{ item.published_at | date: "%Y-%m-%d" }}</div>
+    {% endif %}
+  </div>
+</div>

@@ -56,7 +56,68 @@
       </div>
 
       <div class="divide-y divide-gray-100 dark:divide-gray-900">
+        {% assign has_any_item = false %}
+
+        {% for item in folder_pages %}
+          {% assign has_any_item = true %}
+          {% assign folder_title = item.settings.title | default: item.link_text %}
+          {% assign folder_thumb = item.settings.thumb_url | presence %}
+          {% assign folder_count = item.children_in_list | size %}
+
+          <div
+            class="flex items-stretch hover:bg-gray-50 transition-colors group {% cycle 'bg-white', 'bg-gray-50' %}"
+            data-image-zoom-target="item"
+          >
+            <div class="flex shrink-0 items-center justify-center w-8 md:w-10 px-1 md:px-2">
+              <span class="size-4" aria-hidden="true"></span>
+            </div>
+
+            <a
+              class="grid flex-1 min-w-0 grid-cols-[minmax(0,1fr)_70px_70px] md:grid-cols-[minmax(220px,1fr)_120px_100px_160px] pr-2 md:pr-4 py-2 md:py-3 items-center"
+              href="{{ site.index_path }}?channel={{ item.full_slug }}"
+              @click.prevent.stop="updateChannel('{{ item.full_slug }}'); if (typeof handleSidebarClick === 'function') handleSidebarClick();"
+            >
+              <div class="min-w-0">
+                <div class="grid grid-cols-[auto_minmax(0,1fr)] items-stretch gap-2 md:gap-3 min-h-10 md:min-h-20">
+                  {% if folder_thumb %}
+                    <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 overflow-hidden rounded bg-amber-50">
+                      <img src="{{ folder_thumb }}" alt="{{ folder_title | escape }}" class="w-full h-full object-cover">
+                    </div>
+                  {% else %}
+                    <div class="w-[var(--list-thumb-size)] h-[var(--list-thumb-size)] shrink-0 bg-amber-50 rounded flex items-center justify-center">
+                      <i class="ri-folder-6-fill text-(length:--list-title-size) text-amber-400"></i>
+                    </div>
+                  {% endif %}
+                  <div class="min-w-0 h-full overflow-hidden flex flex-col justify-center">
+                    <div class="gap-2 truncate flex items-center">
+                      <i class="ri-folder-fill text-amber-500 shrink-0"></i>
+                      <span class="text-(length:--list-title-size) text-gray-900 dark:text-gray-100 min-w-0 group-hover:text-primary truncate">{{ folder_title }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-(length:--list-meta-size) text-gray-700 dark:text-gray-300 whitespace-nowrap">
+                {{ folder_count }} {{ "snippets.attachments.folder.items_unit" | t: "项" }}
+              </div>
+
+              <div class="whitespace-nowrap">
+                <span class="px-1.5 md:px-2 py-0.5 md:py-1 bg-amber-500 text-white text-(length:--list-badge-size) rounded font-semibold whitespace-nowrap">{{ "snippets.attachments.list.file_types.folder" | t: "文件夹" }}</span>
+              </div>
+
+              <div class="text-(length:--list-meta-size) text-gray-700 dark:text-gray-300 whitespace-nowrap hidden md:block">
+                {% if item.created_at %}
+                  {{ item.created_at | date: '%Y-%m-%d %H:%M:%S' }}
+                {% else %}
+                  -
+                {% endif %}
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+
         {% for item in filtered_pages %}
+          {% assign has_any_item = true %}
           {% assign entity = item.settings.asset %}
           {% assign can_access = item | can_access? %}
           {% assign _detail_open_mode = detail_open_mode | default: 'detail_page' %}
@@ -255,7 +316,9 @@
               </div>
             </a>
           </div>
-        {% else %}
+        {% endfor %}
+
+        {% unless has_any_item %}
           <div class="px-4 py-12">
             <div class="text-center">
               <i class="ri-folder-open-line text-6xl text-gray-400 mb-4"></i>
@@ -263,7 +326,7 @@
               <p class="text-gray-500 dark:text-gray-500 text-sm mt-2">{{ "snippets.attachments.empty.description" | t: "当前筛选条件下没有找到任何资源" }}</p>
             </div>
           </div>
-        {% endfor %}
+        {% endunless %}
       </div>
     </div>
   </div>

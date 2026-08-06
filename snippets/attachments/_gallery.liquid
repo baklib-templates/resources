@@ -22,7 +22,7 @@
     {% assign folder_title = item.settings.title | default: item.link_text %}
     {% assign folder_thumb = item.settings.thumb_url | presence %}
     <a
-      href="{{ site.index_path }}?channel={{ item.full_slug }}"
+      href="{{ item.path }}"
       class="gallery-card relative isolate aspect-square overflow-hidden bg-amber-50 cursor-pointer group block"
       @click.prevent.stop="updateChannel('{{ item.full_slug }}'); if (typeof handleSidebarClick === 'function') handleSidebarClick();"
     >

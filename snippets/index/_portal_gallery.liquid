@@ -1,0 +1,812 @@
+{% comment %}
+  资源门户主壳（index / channel 共用）。
+  @param channel_slug {String} 当前栏目 full_slug，空表示全部资源
+  @param settings_page {Object} 提供门户设置的页面（一般为首页）
+{% endcomment %}
+{% assign settings_page = settings_page | default: page %}
+{% if channel_slug == blank and params.channel %}
+  {% assign channel_slug = params.channel %}
+{% endif %}
+{% assign channel_slug = channel_slug | default: '' %}
+{% assign channel_key = channel_slug | default: '/' %}
+{% assign defaultBreadcrumb = site.pages[channel_key].breadcrumb | default: [] %}
+{% if settings_page.settings.detail_open_mode %}
+  {% assign detail_open_mode = 'detail_page' %}
+{% else %}
+  {% assign detail_open_mode = 'modal' %}
+{% endif %}
+<div
+  class="flex-1 flex min-h-0 overflow-hidden"
+  data-controller="breadcrumb"
+  data-breadcrumb-channel-value="{{ channel_slug }}"
+  data-breadcrumb-default-breadcrumb-value='{{ defaultBreadcrumb | to_json }}'
+  data-channel-slug="{{ channel_slug | escape }}"
+  @open-detail="openDetail($event.detail)"
+  x-data="{
+    isCollapsed: true,
+    indexPath: '{{ site.index_path }}',
+    channel: '',
+    toggleSidebar(v) {
+      this.isCollapsed = v;
+      localStorage.setItem('sidebar-collapsed-status', this.isCollapsed);
+      window.dispatchEvent(new CustomEvent('sidebar-collapsed-status-changed', { detail: this.isCollapsed }));
+    },
+    handleSidebarClick(event) {
+      const isDesktop = window.matchMedia('(width >= 64rem)').matches;
+      if (isDesktop) return;
+
+      document.querySelector('#my-drawer-3').click()
+    },
+    pathForChannelSlug(fullSlug) {
+      const raw = (fullSlug || '').trim();
+      if (!raw || raw === '/') return this.indexPath;
+      const slug = raw.startsWith('/') ? raw : ('/' + raw);
+      const base = String(this.indexPath || '/').replace(/\/$/, '');
+      return base + slug;
+    },
+    browserQueryFromAttachments() {
+      const cleanedQuery = { ...this.attachmentsQuery };
+      Object.keys(cleanedQuery).forEach((key) => {
+        const value = cleanedQuery[key];
+        if (value === '' || value === null || value === undefined) delete cleanedQuery[key];
+        if (Array.isArray(value) && value.length === 0) delete cleanedQuery[key];
+      });
+      delete cleanedQuery.channel;
+      delete cleanedQuery._page;
+      delete cleanedQuery.append;
+      return cleanedQuery;
+    },
+    attachmentsBaseSrc: '{{ statics['attachments'] }}',
+    attachmentDetailBaseSrc: '{{ statics['index/attachment'] }}',
+    attachmentsQuery: {},
+    attachmentsSrc: '',
+    attachmentSidebarSrc: '',
+    attachmentModalSrc: '',
+    skipNextWatch: false,
+    showDetail: false,
+    detailDrawerOpen: false,
+    detailOpenMode: '{{ detail_open_mode }}',
+    attachmentTitle: '',
+    detailPageUrl: '',
+    searchKeyword: '',
+    sizeMin: '',
+    sizeMax: '',
+    dateStart: '',
+    dateEnd: '',
+    viewMode: 'gallery',
+    galleryOpen: false,
+    galleryDetailOpen: false,
+    galleryItems: [],
+    galleryIndex: 0,
+    galleryThumbsCollapsed: false,
+    galleryPrevPage: null,
+    galleryNextPage: null,
+    galleryPendingOpen: null,
+    gallerySwipeStartX: 0,
+    gallerySwipeStartY: 0,
+    gallerySwipeDeltaX: 0,
+    gallerySwiping: false,
+    gallerySwipeAxis: null,
+    tagInput: '',
+    showAdvancedFilters: false,
+    fileTypes: [
+      { value: 'folder', label: '{{ "templates.index.file_types.folder" | t: "文件夹" }}', icon: 'ri-folder-fill', icon_color: 'text-amber-500' },
+      { value: 'image', label: '{{ "templates.index.file_types.image" | t: "图片" }}', icon: 'ri-image-line', icon_color: 'text-blue-500' },
+      { value: 'video', label: '{{ "templates.index.file_types.video" | t: "视频" }}', icon: 'ri-video-line', icon_color: 'text-purple-500' },
+      { value: 'audio', label: '{{ "templates.index.file_types.audio" | t: "音频" }}', icon: 'ri-audio-line', icon_color: 'text-green-500' },
+      { value: 'pdf', label: '{{ "templates.index.file_types.pdf" | t: "PDF" }}', icon: 'ri-file-pdf-line', icon_color: 'text-red-500' },
+      { value: 'ppt', label: '{{ "templates.index.file_types.ppt" | t: "PPT" }}', icon: 'ri-file-ppt-line', icon_color: 'text-orange-500' },
+      { value: 'word', label: '{{ "templates.index.file_types.word" | t: "Word" }}', icon: 'ri-file-word-line', icon_color: 'text-blue-600' },
+      { value: 'excel', label: '{{ "templates.index.file_types.excel" | t: "Excel" }}', icon: 'ri-file-excel-line', icon_color: 'text-green-600' },
+      { value: 'archive', label: '{{ "templates.index.file_types.archive" | t: "压缩包" }}', icon: 'ri-file-zip-line', icon_color: 'text-yellow-500' },
+      { value: 'other', label: '{{ "templates.index.file_types.other" | t: "其他" }}', icon: 'ri-file-line', icon_color: 'text-gray-500' },
+    ],
+    init() {
+      this.isCollapsed = (localStorage.getItem('sidebar-collapsed-status') || 'true') === 'true';
+      this.attachmentsQuery = this.$getQueryParams(window.location.href)
+      this.viewMode = this.normalizeViewMode(this.attachmentsQuery.view || localStorage.getItem('picture-portal-view'))
+      this.attachmentsQuery.view = this.viewMode
+
+      this.normalizeTagsField('resource_tags');
+      this.normalizeTagsField('resource_types');
+
+      // 初始化 file_type 为数组
+      if (this.attachmentsQuery.file_type) {
+        if (!Array.isArray(this.attachmentsQuery.file_type)) {
+          // 如果是单个值，转换为数组
+          this.attachmentsQuery.file_type = [this.attachmentsQuery.file_type];
+        }
+      } else {
+        this.attachmentsQuery.file_type = [];
+      }
+
+      // 初始化搜索关键词
+      this.searchKeyword = this.attachmentsQuery.search_q || '';
+
+      // 初始化文件大小范围
+      this.sizeMin = this.attachmentsQuery.size_min || '';
+      this.sizeMax = this.attachmentsQuery.size_max || '';
+
+      // 栏目来自 path（data-channel-slug）；兼容旧 ?channel=
+      const liquidChannel = (this.$el.dataset.channelSlug || '').trim();
+      const queryChannel = this.attachmentsQuery.channel || '';
+      if (queryChannel && !liquidChannel) {
+        // 旧链接 /?channel=/media → 跳到 /media?...
+        const q = { ...this.attachmentsQuery };
+        delete q.channel;
+        window.location.replace(this.$buildUrl(this.pathForChannelSlug(queryChannel), q, true));
+        return;
+      }
+      this.channel = liquidChannel || '';
+      delete this.attachmentsQuery.channel;
+
+      // 初始化时间范围筛选
+      this.dateStart = this.attachmentsQuery.date_start || '';
+      this.dateEnd = this.attachmentsQuery.date_end || '';
+
+      // 检查是否有筛选参数，如果有则自动展开高级筛选
+      const hasFilters = this.attachmentsQuery.date_start ||
+                        this.attachmentsQuery.date_end ||
+                        (this.attachmentsQuery.file_type && this.attachmentsQuery.file_type.length > 0) ||
+                        this.attachmentsQuery.size_min ||
+                        this.attachmentsQuery.size_max ||
+                        (this.attachmentsQuery.resource_tags && this.attachmentsQuery.resource_tags.length > 0) ||
+                        (this.attachmentsQuery.resource_types && this.attachmentsQuery.resource_types.length > 0);
+      this.showAdvancedFilters = hasFilters || false;
+
+      // 检查是否有open_item参数（从403页面登录后重定向回来）
+      const openItem = this.attachmentsQuery.open_item;
+      if (openItem) {
+        // 从URL中删除open_item参数
+        delete this.attachmentsQuery.open_item;
+        this.$updateQuery(this.attachmentsQuery, 'replace');
+
+        // 等待turbo-frame加载完成后，滚动到对应资源并打开详情
+        const attachmentsFrame = document.getElementById('attachments_frame');
+        if (attachmentsFrame) {
+          const handleFrameLoad = () => {
+            this.openItemBySlug(openItem);
+            attachmentsFrame.removeEventListener('turbo:frame-load', handleFrameLoad);
+          };
+          attachmentsFrame.addEventListener('turbo:frame-load', handleFrameLoad, { once: true });
+        }
+      }
+
+      this.updateAttachmentsSrc();
+      this.temPage = this.attachmentsQuery._page;
+      const attachmentsFrame = document.getElementById('attachments_frame');
+      if (attachmentsFrame) {
+        attachmentsFrame.addEventListener('turbo:frame-load', () => {
+          this.handleGalleryFrameLoad();
+          this.collectGalleryItems();
+          this.readGalleryPagination();
+        });
+      }
+      document.addEventListener('infinite-scroll:appended', () => {
+        this.collectGalleryItems();
+        this.readGalleryPagination();
+        if (this.galleryPendingOpen) {
+          this.finishGalleryPendingOpen();
+        }
+      });
+      this.$watch('attachmentsQuery', (newValue, oldValue) => {
+        if (!this.galleryPendingOpen) {
+          this.closeDetail();
+        }
+        this.searchKeyword = this.attachmentsQuery.search_q;
+        if (this.skipNextWatch) {
+          this.skipNextWatch = false;
+          return;
+        }
+        if (this.temPage && this.attachmentsQuery._page == this.temPage) {
+          this.skipNextWatch = true;
+          delete this.attachmentsQuery._page;
+        }
+        this.temPage = this.attachmentsQuery._page;
+        this.updateAttachmentsSrc(true);
+      }, { deep: true });
+      window.addEventListener('popstate', () => {
+        this.skipNextWatch = true;
+        this.attachmentsQuery = this.$getQueryParams(window.location.href);
+        this.viewMode = this.normalizeViewMode(this.attachmentsQuery.view || localStorage.getItem('picture-portal-view'));
+        this.attachmentsQuery.view = this.viewMode;
+        this.normalizeTagsField('resource_tags');
+        this.normalizeTagsField('resource_types');
+        // 同步 file_type 为数组
+        if (this.attachmentsQuery.file_type) {
+          if (!Array.isArray(this.attachmentsQuery.file_type)) {
+            // 如果是单个值，转换为数组
+            this.attachmentsQuery.file_type = [this.attachmentsQuery.file_type];
+          }
+        } else {
+          this.attachmentsQuery.file_type = [];
+        }
+        // 同步搜索关键词
+        this.searchKeyword = this.attachmentsQuery.search_q || '';
+        // 同步文件大小范围
+        this.sizeMin = this.attachmentsQuery.size_min || '';
+        this.sizeMax = this.attachmentsQuery.size_max || '';
+        // 栏目由当前 path 决定，query 中不携带 channel
+        delete this.attachmentsQuery.channel;
+        // 同步时间范围
+        this.dateStart = this.attachmentsQuery.date_start || '';
+        this.dateEnd = this.attachmentsQuery.date_end || '';
+        // 同步高级筛选展开状态
+        const hasFilters = this.attachmentsQuery.date_start ||
+                          this.attachmentsQuery.date_end ||
+                          (this.attachmentsQuery.file_type && this.attachmentsQuery.file_type.length > 0) ||
+                          this.attachmentsQuery.size_min ||
+                          this.attachmentsQuery.size_max ||
+                          (this.attachmentsQuery.resource_tags && this.attachmentsQuery.resource_tags.length > 0) ||
+                          (this.attachmentsQuery.resource_types && this.attachmentsQuery.resource_types.length > 0);
+        this.showAdvancedFilters = hasFilters || false;
+        this.updateAttachmentsSrc(false);
+      });
+      // 监听移动端 modal 关闭事件
+      const modal = document.getElementById('mobile-detail-modal');
+      if (modal) {
+        modal.addEventListener('close', () => {
+          this.showDetail = false;
+          this.attachmentSrc = '';
+        });
+      }
+    },
+    openItemBySlug(fullSlug) {
+      // 构建item的id（将full_slug中的/和.替换为-）
+      const itemId = 'item-' + fullSlug.replace(/\//g, '-').replace(/\./g, '-');
+      const targetItem = document.getElementById(itemId);
+
+      if (targetItem) {
+        // 滚动到目标元素
+        targetItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        // 等待滚动完成后触发点击事件打开详情
+        setTimeout(() => {
+          targetItem.click();
+        }, 300);
+      }
+    },
+    submitSearch() {
+      // 将搜索关键词同步到查询参数
+      if (this.searchKeyword && this.searchKeyword.trim()) {
+        this.attachmentsQuery.search_q = this.searchKeyword.trim();
+      } else {
+        delete this.attachmentsQuery.search_q;
+      }
+      this.updateAttachmentsSrc(true);
+    },
+    updateAttachmentsSrc(push = false) {
+      $nextTick(() => {
+        const cleanedQuery = this.browserQueryFromAttachments();
+        const frameQuery = { ...cleanedQuery };
+        if (this.channel) frameQuery.channel = this.channel;
+        this.attachmentsSrc = this.$buildUrl(this.attachmentsBaseSrc, frameQuery);
+        if (push) this.$updateQuery(cleanedQuery);
+      });
+    },
+    openDetail(item) {
+      if (this.detailOpenMode === 'detail_page') return;
+      // 列表/网格视图：进入详情页（批量下载主要在列表勾选，不必走画廊灯箱）
+      if (this.viewMode !== 'gallery') {
+        if (item && item.url) window.location.href = item.url;
+        return;
+      }
+      this.collectGalleryItems();
+      this.readGalleryPagination();
+      const slug = item.full_slug;
+      const idx = this.galleryItems.findIndex((g) => g.full_slug === slug);
+      this.galleryIndex = idx >= 0 ? idx : 0;
+      if (idx < 0 && item) {
+        this.galleryItems.unshift({
+          full_slug: item.full_slug,
+          title: item.title || '',
+          url: item.url || '',
+          preview: item.preview || '',
+          thumb: item.thumb || item.preview || ''
+        });
+        this.galleryIndex = 0;
+      }
+      this.syncGalleryAttachment(this.galleryCurrent());
+      this.galleryDetailOpen = false;
+      this.galleryOpen = true;
+      this.showDetail = true;
+      document.documentElement.classList.add('overflow-hidden');
+      this.$nextTick(() => this.galleryScrollActiveThumbIntoView());
+    },
+    collectGalleryItems() {
+      const nodes = document.querySelectorAll('#attachments_frame [data-gallery-item]');
+      this.galleryItems = Array.from(nodes).map((el) => ({
+        full_slug: el.dataset.fullSlug || '',
+        title: el.dataset.title || '',
+        url: el.dataset.url || '',
+        preview: el.dataset.preview || '',
+        thumb: el.dataset.thumb || el.dataset.preview || ''
+      }));
+    },
+    readGalleryPagination() {
+      const root = document.querySelector('#attachments_frame [data-infinite-scroll-sentinel]');
+      const parsePage = (value) => {
+        const n = parseInt(value, 10);
+        return Number.isFinite(n) && n > 0 ? n : null;
+      };
+      // 无限滚动从第 1 页累加，灯箱内不再跳「上一页」
+      this.galleryPrevPage = null;
+      this.galleryNextPage = parsePage(root && root.dataset.nextPage);
+    },
+    galleryCurrent() {
+      return this.galleryItems[this.galleryIndex] || null;
+    },
+    syncGalleryAttachment(item) {
+      if (!item) return;
+      this.attachmentTitle = item.title || '';
+      this.detailPageUrl = item.url || '';
+      this.attachmentSidebarSrc = this.$buildUrl(this.attachmentDetailBaseSrc, { full_slug: item.full_slug, view: 'sidebar' });
+      this.attachmentModalSrc = this.attachmentSidebarSrc;
+    },
+    galleryGoTo(index) {
+      if (index < 0 || index >= this.galleryItems.length) return;
+      this.galleryIndex = index;
+      this.syncGalleryAttachment(this.galleryCurrent());
+      this.$nextTick(() => this.galleryScrollActiveThumbIntoView());
+    },
+    galleryPrev() {
+      if (this.galleryIndex <= 0) return;
+      this.galleryGoTo(this.galleryIndex - 1);
+    },
+    async galleryNext() {
+      if (this.galleryIndex < this.galleryItems.length - 1) {
+        this.galleryGoTo(this.galleryIndex + 1);
+        return;
+      }
+      if (!this.galleryNextPage) return;
+      const before = this.galleryItems.length;
+      await this.requestLoadMoreAttachments();
+      this.collectGalleryItems();
+      this.readGalleryPagination();
+      if (this.galleryItems.length > before) {
+        this.galleryGoTo(before);
+      }
+    },
+    gallerySwipeStart(event) {
+      if (!this.galleryOpen || this.galleryDetailOpen) return;
+      if (!event.touches || event.touches.length !== 1) return;
+      this.gallerySwipeStartX = event.touches[0].clientX;
+      this.gallerySwipeStartY = event.touches[0].clientY;
+      this.gallerySwipeDeltaX = 0;
+      this.gallerySwiping = false;
+      this.gallerySwipeAxis = null;
+    },
+    gallerySwipeMove(event) {
+      if (!this.galleryOpen || this.galleryDetailOpen) return;
+      if (!event.touches || event.touches.length !== 1) return;
+      const dx = event.touches[0].clientX - this.gallerySwipeStartX;
+      const dy = event.touches[0].clientY - this.gallerySwipeStartY;
+      if (!this.gallerySwipeAxis) {
+        if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+        this.gallerySwipeAxis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      }
+      if (this.gallerySwipeAxis !== 'x') return;
+      event.preventDefault();
+      this.gallerySwiping = true;
+      this.gallerySwipeDeltaX = dx;
+    },
+    gallerySwipeEnd() {
+      if (!this.galleryOpen || this.galleryDetailOpen) return;
+      const dx = this.gallerySwipeDeltaX;
+      const axis = this.gallerySwipeAxis;
+      this.gallerySwipeDeltaX = 0;
+      this.gallerySwiping = false;
+      this.gallerySwipeAxis = null;
+      if (axis !== 'x') return;
+      if (dx > 60) {
+        this.galleryPrev();
+      } else if (dx < -60) {
+        this.galleryNext();
+      }
+    },
+    gallerySwipeCancel() {
+      this.gallerySwipeDeltaX = 0;
+      this.gallerySwiping = false;
+      this.gallerySwipeAxis = null;
+    },
+    requestLoadMoreAttachments() {
+      return new Promise((resolve) => {
+        let settled = false;
+        const done = (ok) => {
+          if (settled) return;
+          settled = true;
+          document.removeEventListener('infinite-scroll:appended', onAppended);
+          document.removeEventListener('infinite-scroll:exhausted', onExhausted);
+          document.removeEventListener('infinite-scroll:error', onError);
+          resolve(ok);
+        };
+        const onAppended = () => done(true);
+        const onExhausted = () => done(false);
+        const onError = () => done(false);
+        document.addEventListener('infinite-scroll:appended', onAppended, { once: true });
+        document.addEventListener('infinite-scroll:exhausted', onExhausted, { once: true });
+        document.addEventListener('infinite-scroll:error', onError, { once: true });
+        document.dispatchEvent(new CustomEvent('infinite-scroll:request', {
+          bubbles: true,
+          detail: { reason: 'gallery' }
+        }));
+        // 若控制器未挂载，避免 Promise 挂起
+        setTimeout(() => done(false), 15000);
+      });
+    },
+    galleryGoToPage(_page, focus) {
+      // 兼容旧调用：改为请求追加下一页，并在追加后定位
+      this.galleryPendingOpen = { focus: focus || 'first' };
+      this.requestLoadMoreAttachments().then(() => {
+        this.finishGalleryPendingOpen();
+      });
+    },
+    finishGalleryPendingOpen() {
+      if (!this.galleryPendingOpen) return;
+      const focus = this.galleryPendingOpen.focus || 'first';
+      this.galleryPendingOpen = null;
+      this.collectGalleryItems();
+      this.readGalleryPagination();
+      if (!this.galleryItems.length) {
+        this.closeDetail();
+        return;
+      }
+      const prevIndex = this.galleryIndex;
+      if (focus === 'last') {
+        this.galleryIndex = this.galleryItems.length - 1;
+      } else if (focus === 'first' && this.galleryItems.length > prevIndex + 1) {
+        this.galleryIndex = prevIndex + 1;
+      }
+      this.syncGalleryAttachment(this.galleryCurrent());
+      this.galleryOpen = true;
+      this.showDetail = true;
+      document.documentElement.classList.add('overflow-hidden');
+      this.$nextTick(() => this.galleryScrollActiveThumbIntoView());
+    },
+    handleGalleryFrameLoad() {
+      if (!this.galleryPendingOpen) return;
+      this.finishGalleryPendingOpen();
+    },
+    galleryScrollThumbs(direction) {
+      const el = this.$refs.galleryThumbs;
+      if (!el) return;
+      el.scrollBy({ left: direction * Math.max(160, el.clientWidth * 0.6), behavior: 'smooth' });
+    },
+    galleryScrollActiveThumbIntoView() {
+      const el = this.$refs.galleryThumbs;
+      if (!el) return;
+      const active = el.querySelector('[data-gallery-thumb-index=\'' + this.galleryIndex + '\']');
+      if (active && typeof active.scrollIntoView === 'function') {
+        active.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    },
+    openGalleryDetailPanel() {
+      this.syncGalleryAttachment(this.galleryCurrent());
+      this.galleryDetailOpen = true;
+    },
+    closeDetail() {
+      this.gallerySwipeCancel();
+      this.showDetail = false;
+      this.galleryOpen = false;
+      this.galleryDetailOpen = false;
+      this.galleryPendingOpen = null;
+      this.detailPageUrl = '';
+      this.attachmentSidebarSrc = '';
+      this.attachmentModalSrc = '';
+      document.documentElement.classList.remove('overflow-hidden');
+
+      const modal = document.getElementById('mobile-detail-modal');
+      if (modal) {
+        modal.close();
+      }
+    },
+    toggleTag(tagName) {
+      if (!this.attachmentsQuery.resource_tags) {
+        this.attachmentsQuery.resource_tags = [];
+      }
+      const index = this.attachmentsQuery.resource_tags.indexOf(tagName);
+      if (index > -1) {
+        this.attachmentsQuery.resource_tags.splice(index, 1);
+      } else {
+        this.attachmentsQuery.resource_tags.push(tagName);
+      }
+      // 如果数组为空，删除该属性
+      if (this.attachmentsQuery.resource_tags.length === 0) {
+        delete this.attachmentsQuery.resource_tags;
+      }
+      this.updateAttachmentsSrc(true);
+    },
+    isTagSelected(tagName) {
+      return this.attachmentsQuery.resource_tags && this.attachmentsQuery.resource_tags.includes(tagName);
+    },
+    normalizeTagsField(field) {
+      if (this.attachmentsQuery[field]) {
+        if (!Array.isArray(this.attachmentsQuery[field])) {
+          this.attachmentsQuery[field] = [this.attachmentsQuery[field]];
+        }
+      } else {
+        this.attachmentsQuery[field] = [];
+      }
+    },
+    removeTag(tagName, field = 'resource_tags') {
+      if (this.attachmentsQuery[field]) {
+        const index = this.attachmentsQuery[field].indexOf(tagName);
+        if (index > -1) {
+          this.attachmentsQuery[field].splice(index, 1);
+        }
+        if (this.attachmentsQuery[field].length === 0) {
+          delete this.attachmentsQuery[field];
+        }
+        this.updateAttachmentsSrc(true);
+      }
+    },
+    toggleFileType(fileType) {
+      if (!this.attachmentsQuery.file_type) {
+        this.attachmentsQuery.file_type = [];
+      }
+      const index = this.attachmentsQuery.file_type.indexOf(fileType);
+      if (index > -1) {
+        this.attachmentsQuery.file_type.splice(index, 1);
+      } else {
+        this.attachmentsQuery.file_type.push(fileType);
+      }
+      // 如果数组为空，删除该属性
+      if (this.attachmentsQuery.file_type.length === 0) {
+        delete this.attachmentsQuery.file_type;
+      }
+      this.updateAttachmentsSrc(true);
+    },
+    isFileTypeSelected(fileType) {
+      return this.attachmentsQuery.file_type && this.attachmentsQuery.file_type.includes(fileType);
+    },
+    removeFileType(fileType) {
+      if (this.attachmentsQuery.file_type) {
+        const index = this.attachmentsQuery.file_type.indexOf(fileType);
+        if (index > -1) {
+          this.attachmentsQuery.file_type.splice(index, 1);
+        }
+        if (this.attachmentsQuery.file_type.length === 0) {
+          delete this.attachmentsQuery.file_type;
+        }
+        this.updateAttachmentsSrc(true);
+      }
+    },
+    getFileTypeLabel(fileType) {
+      const found = this.fileTypes.find(ft => ft.value === fileType);
+      return found ? found.label : fileType;
+    },
+    clearAllTags() {
+      delete this.attachmentsQuery.resource_tags;
+      this.updateAttachmentsSrc(true);
+    },
+    clearAllFileTypes() {
+      delete this.attachmentsQuery.file_type;
+      this.updateAttachmentsSrc(true);
+    },
+    toggleResourceType(typeName) {
+      if (!this.attachmentsQuery.resource_types) {
+        this.attachmentsQuery.resource_types = [];
+      }
+      const index = this.attachmentsQuery.resource_types.indexOf(typeName);
+      if (index > -1) {
+        this.attachmentsQuery.resource_types.splice(index, 1);
+      } else {
+        this.attachmentsQuery.resource_types.push(typeName);
+      }
+      if (this.attachmentsQuery.resource_types.length === 0) {
+        delete this.attachmentsQuery.resource_types;
+      }
+      this.updateAttachmentsSrc(true);
+    },
+    isResourceTypeSelected(typeName) {
+      return this.attachmentsQuery.resource_types && this.attachmentsQuery.resource_types.includes(typeName);
+    },
+    clearAllResourceTypes() {
+      delete this.attachmentsQuery.resource_types;
+      this.updateAttachmentsSrc(true);
+    },
+    updateSizeFilter(type, value) {
+      // 设置 skipNextWatch 避免触发 watch
+      this.skipNextWatch = true;
+      if (type === 'min') {
+        this.sizeMin = value;
+        if (value && value.trim() !== '') {
+          this.attachmentsQuery.size_min = value;
+        } else {
+          delete this.attachmentsQuery.size_min;
+        }
+      } else if (type === 'max') {
+        this.sizeMax = value;
+        if (value && value.trim() !== '') {
+          this.attachmentsQuery.size_max = value;
+        } else {
+          delete this.attachmentsQuery.size_max;
+        }
+      }
+      this.updateAttachmentsSrc(true);
+    },
+    updateChannel(channelPath) {
+      const slug = (channelPath || '').trim();
+      const q = this.browserQueryFromAttachments();
+      const targetPath = (!slug || slug === '/') ? this.indexPath : this.pathForChannelSlug(slug);
+      window.location.assign(this.$buildUrl(targetPath, q, true));
+    },
+    setDateRange(startDate, endDate) {
+      this.skipNextWatch = true;
+      this.dateStart = startDate || '';
+      this.dateEnd = endDate || '';
+      if (startDate && startDate.trim() !== '') {
+        this.attachmentsQuery.date_start = startDate.trim();
+      } else {
+        delete this.attachmentsQuery.date_start;
+      }
+      if (endDate && endDate.trim() !== '') {
+        this.attachmentsQuery.date_end = endDate.trim();
+      } else {
+        delete this.attachmentsQuery.date_end;
+      }
+      this.updateAttachmentsSrc(true);
+    },
+    updateDateStart(value) {
+      this.skipNextWatch = true;
+      this.dateStart = value || '';
+      if (value && value.trim() !== '') {
+        this.attachmentsQuery.date_start = value.trim();
+      } else {
+        delete this.attachmentsQuery.date_start;
+      }
+      this.updateAttachmentsSrc(true);
+    },
+    updateDateEnd(value) {
+      this.skipNextWatch = true;
+      this.dateEnd = value || '';
+      if (value && value.trim() !== '') {
+        this.attachmentsQuery.date_end = value.trim();
+      } else {
+        delete this.attachmentsQuery.date_end;
+      }
+      this.updateAttachmentsSrc(true);
+    },
+    clearDateRange() {
+      this.skipNextWatch = true;
+      this.dateStart = '';
+      this.dateEnd = '';
+      delete this.attachmentsQuery.date_start;
+      delete this.attachmentsQuery.date_end;
+      this.updateAttachmentsSrc(true);
+    },
+    clearDateStart() {
+      this.skipNextWatch = true;
+      this.dateStart = '';
+      delete this.attachmentsQuery.date_start;
+      this.updateAttachmentsSrc(true);
+    },
+    clearDateEnd() {
+      this.skipNextWatch = true;
+      this.dateEnd = '';
+      delete this.attachmentsQuery.date_end;
+      this.updateAttachmentsSrc(true);
+    },
+    applySizeRange(min, max) {
+      this.skipNextWatch = true;
+      this.sizeMin = min ? `${min}` : '';
+      this.sizeMax = max ? `${max}` : '';
+      if (min !== undefined && min !== null && min !== '') {
+        this.attachmentsQuery.size_min = `${min}`;
+      } else {
+        delete this.attachmentsQuery.size_min;
+      }
+      if (max !== undefined && max !== null && max !== '') {
+        this.attachmentsQuery.size_max = `${max}`;
+      } else {
+        delete this.attachmentsQuery.size_max;
+      }
+      this.updateAttachmentsSrc(true);
+    },
+    isSizeRangeActive(min, max) {
+      const currentMin = this.attachmentsQuery.size_min || '';
+      const currentMax = this.attachmentsQuery.size_max || '';
+
+      // 处理 min 的比较：当 min 是 0 或空时，如果 currentMin 也是空或 '0'，认为匹配
+      const minMatch = (min === 0 || min === '' || min === null || min === undefined)
+        ? (currentMin === '' || currentMin === '0' || currentMin === null || currentMin === undefined)
+        : `${min}` === `${currentMin}`;
+
+      // 处理 max 的比较
+      const maxMatch = (max === '' || max === null || max === undefined)
+        ? (currentMax === '' || currentMax === null || currentMax === undefined)
+        : `${max}` === `${currentMax}`;
+
+      return minMatch && maxMatch;
+    },
+    resetFilters() {
+      window.location.href = '{{ site.index_path }}';
+    },
+    toggleAdvancedFilters() {
+      this.showAdvancedFilters = !this.showAdvancedFilters;
+    },
+    normalizeViewMode(view) {
+      // 画廊首页主题：默认/网格按钮对应 gallery；可切到 list 做批量下载
+      if (view === 'list') return 'list';
+      return 'gallery';
+    },
+    setViewMode(view) {
+      const normalizedView = this.normalizeViewMode(view);
+      this.viewMode = normalizedView;
+      this.attachmentsQuery.view = normalizedView;
+      localStorage.setItem('picture-portal-view', normalizedView);
+      this.updateAttachmentsSrc(true);
+    },
+    isViewMode(view) {
+      // 工具栏「网格」按钮在画廊主题下表示 gallery
+      if (view === 'grid') return this.viewMode === 'gallery';
+      return this.viewMode === view;
+    },
+    setSortByEditedAt() {
+      this.attachmentsQuery.sort = '-edited_at';
+      this.updateAttachmentsSrc(true);
+    },
+    setSortByVisitsCount() {
+      this.attachmentsQuery.sort = '-visits_count';
+      this.updateAttachmentsSrc(true);
+    },
+    isSortByEditedAt() {
+      return this.attachmentsQuery.sort === '-edited_at';
+    },
+    isSortByVisitsCount() {
+      return this.attachmentsQuery.sort === '-visits_count';
+    },
+    updateQueryTags(event) {
+      const field = event.detail?.field || 'resource_tags';
+      const tags = event.detail?.tags || [];
+      if (tags.length > 0) {
+        this.attachmentsQuery[field] = tags;
+      } else {
+        delete this.attachmentsQuery[field];
+      }
+      this.updateAttachmentsSrc(true);
+    }
+  }"
+>
+  {% comment %} 左侧边栏 {% endcomment %}
+  {% render 'aside', channel_slug: channel_slug %}
+
+  {% comment %} 主内容区 {% endcomment %}
+  <main class="flex flex-col flex-1 min-h-0 bg-gray-50 mx-auto max-w-screen overflow-y-auto scrollbar-hide" data-controller="image-zoom infinite-scroll">
+
+    <!-- hero section: settings hero_html -->
+    {% assign hero_html = settings_page.settings.hero_html | presence %}
+    {% if hero_html and channel_slug == blank %}
+      <div class="flex-0 px-2 md:px-4 pt-2">
+        <section class="rounded-lg overflow-hidden bg-secondary-100">
+          {{ hero_html }}
+        </section>
+      </div>
+    {% endif %}
+
+    <!-- channel section: settings show_channel_section -->
+    {% if settings_page.settings.show_channel_section and channel_slug == blank %}
+      {% render 'channel_section', page: settings_page %}
+    {% endif %}
+
+    <!-- main content section: gallery lightbox -->
+    {% if detail_open_mode == 'detail_page' %}
+      {% render 'index/main_content', gallery_layout: true %}
+    {% else %}
+      <div class="flex items-start w-full min-w-0">
+        <div class="flex-1 min-w-0">
+          {% render 'index/main_content', gallery_layout: true %}
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="flex-0 mt-auto">
+      {% render 'footer' %}
+    </div>
+
+  </main>
+
+  {% unless detail_open_mode == 'detail_page' %}
+    {% render 'index/gallery_lightbox' %}
+  {% endunless %}
+</div>

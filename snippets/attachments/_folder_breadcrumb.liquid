@@ -2,7 +2,7 @@
   文件夹路径面包屑（随 attachments turbo-frame 刷新）。
   根目录、1 级与 2 级栏目不显示；仅进入 3 级及更深（channel 路径段数 > 2）时显示。
   @param parent_page — 当前目录对应的页面（channel 或首页）
-  @param channel — params.channel，空表示根目录
+  @param channel — 当前栏目 full_slug（attachments 请求里的 channel），空表示根目录
 {% endcomment %}
 {% assign channel_path = channel | presence %}
 {% assign channel_depth = 0 %}
@@ -45,8 +45,9 @@
             <span class="truncate">{{ crumb_label }}</span>
           </span>
         {% else %}
+          {% assign crumb_href_page = site.pages[crumb_channel] %}
           <a
-            href="{{ site.index_path }}?channel={{ crumb_channel }}"
+            href="{{ crumb_href_page.path | default: site.index_path }}"
             class="inline-flex max-w-[10rem] items-center gap-1.5 truncate rounded-md px-1.5 py-1 text-base-content/70 transition-colors hover:bg-base-200 hover:text-primary sm:max-w-[14rem]"
             title="{{ crumb_label | escape }}"
             @click.prevent.stop="updateChannel('{{ crumb_channel }}'); if (typeof handleSidebarClick === 'function') handleSidebarClick();"

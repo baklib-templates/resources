@@ -23,7 +23,7 @@
     {% assign has_any_item = true %}
     <a
       class="block bg-white rounded-lg overflow-hidden transition-all duration-300 ease-in-out group hover:-translate-y-0.5 hover:shadow-lg cursor-pointer shadow-sm shadow-primary/4"
-      href="{{ site.index_path }}?channel={{ item.full_slug }}"
+      href="{{ item.path }}"
       @click.prevent.stop="updateChannel('{{ item.full_slug }}'); if (typeof handleSidebarClick === 'function') handleSidebarClick();"
     >
       {% render 'attachments/grid/folder', item: item %}

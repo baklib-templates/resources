@@ -74,7 +74,7 @@
 
             <a
               class="grid flex-1 min-w-0 grid-cols-[minmax(0,1fr)_70px_70px] md:grid-cols-[minmax(220px,1fr)_120px_100px_160px] pr-2 md:pr-4 py-2 md:py-3 items-center"
-              href="{{ site.index_path }}?channel={{ item.full_slug }}"
+              href="{{ item.path }}"
               @click.prevent.stop="updateChannel('{{ item.full_slug }}'); if (typeof handleSidebarClick === 'function') handleSidebarClick();"
             >
               <div class="min-w-0">

@@ -31,16 +31,13 @@
 }
 {% endschema %}
 
-{% layout 'theme_no_content' %}
-
-<div
-  data-controller="redirect"
-  data-redirect-target-url-value="{{ site.index_path }}"
-  data-redirect-params-value='{"channel": "{{ page.full_slug }}"}'
-  data-redirect-use-current-url-value="true"
-  data-redirect-override-value="false"
-  data-redirect-keep-history-value="false"
-  class="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center"
->
-  <span class="loading loading-spinner loading-md"></span>
-</div>
+{% comment %}
+  栏目页与首页共用门户壳；URL 为栏目 path（如 /media?view=grid），
+  门户设置读取首页；展示风格跟随首页 template_style。
+{% endcomment %}
+{% assign index_page = site.pages['/'] %}
+{% if index_page.template_style == 'gallery' %}
+  {% render 'index/portal_gallery', channel_slug: page.full_slug, settings_page: index_page %}
+{% else %}
+  {% render 'index/portal_default', channel_slug: page.full_slug, settings_page: index_page %}
+{% endif %}

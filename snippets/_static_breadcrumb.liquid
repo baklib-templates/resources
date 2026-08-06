@@ -1,6 +1,6 @@
 {% comment %}
   Header 区备用面包屑（与 attachments/folder_breadcrumb 行为对齐）。
-  点击调用 Alpine updateChannel，不整页跳转。
+  点击调用 Alpine updateChannel，切换到栏目 path。
 {% endcomment %}
 <div class="hidden md:flex flex-1 items-center gap-2 text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap overflow-auto">
   <div class="flex items-center">
@@ -27,7 +27,7 @@
           </path>
         </svg>
         <a
-          href="?channel={{path}}"
+          href="#"
           class="hover:text-gray-900 dark:hover:text-gray-100 transition-colors cursor-pointer"
           @click.prevent.stop="updateChannel('{{path}}'); if (typeof handleSidebarClick === 'function') handleSidebarClick();"
         >{{link_text}}</a>

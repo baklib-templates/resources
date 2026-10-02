@@ -1,0 +1,67 @@
+pages:
+  name: "首页"
+  slug: "index"
+  template_name: "index"
+  children:
+    - name: "产品资料"
+      slug: "product"
+      template_name: "channel"
+      settings:
+        title: "产品资料"
+        description: "产品说明、手册和发布材料（示例数据）"
+      children:
+        - name: "产品白皮书"
+          slug: "whitepaper"
+          template_name: "page"
+          settings:
+            title: "产品白皮书"
+            resource_tags:
+              - 产品
+              - 白皮书
+            resource_types:
+              - 白皮书
+            content: |
+              <p>这是一篇示例资源，用来演示资源库的栏目、标签和类型。</p>
+              <p>正式使用时，把文件上传到资源字段，并替换这段说明。</p>
+        - name: "快速入门手册"
+          slug: "getting-started"
+          template_name: "page"
+          settings:
+            title: "快速入门手册"
+            resource_tags:
+              - 手册
+              - 入门
+            resource_types:
+              - 手册
+            content: |
+              <p>这是一篇示例资源。手册文件可以稍后补上，当前正文只用于演示搜索和筛选。</p>
+    - name: "品牌素材"
+      slug: "brand"
+      template_name: "channel"
+      settings:
+        title: "品牌素材"
+        description: "品牌规范与客户案例（示例数据）"
+      children:
+        - name: "品牌使用规范"
+          slug: "brand-guidelines"
+          template_name: "page"
+          settings:
+            title: "品牌使用规范"
+            resource_tags:
+              - 品牌
+            resource_types:
+              - 手册
+            content: |
+              <p>这是一篇示例资源，说明品牌色、标志和对外物料的用法。</p>
+        - name: "客户案例集"
+          slug: "customer-stories"
+          template_name: "page"
+          settings:
+            title: "客户案例集"
+            resource_tags:
+              - 案例
+              - 客户
+            resource_types:
+              - 案例
+            content: |
+              <p>这是一篇示例资源，汇总若干客户如何使用产品解决问题。</p>

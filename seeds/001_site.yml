@@ -1,0 +1,9 @@
+site:
+  language: "zh-CN"
+  time_zone: "Asia/Shanghai"
+  favicon: ""
+  settings:
+    resource_types: |
+      白皮书
+      手册
+      案例

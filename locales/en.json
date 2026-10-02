@@ -102,7 +102,8 @@
       "signout_loading": "Signing out...",
       "signin_loading": "Signing in...",
       "signin": "Sign In",
-      "signin_or_signup": "Sign In / Sign Up"
+      "signin_or_signup": "Sign In / Sign Up",
+      "search": "Search"
     },
     "search_form": {
       "search_placeholder": "Search image resources...",
@@ -328,6 +329,11 @@
         "scroll_thumbs_prev": "Scroll thumbnails left",
         "scroll_thumbs_next": "Scroll thumbnails right"
       }
+    },
+    "search": {
+      "title": "Search",
+      "empty": "No resources found.",
+      "prompt": "Enter a keyword to start searching."
     }
   }
 }
